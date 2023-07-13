@@ -51,17 +51,12 @@ class ReflectionBuilder implements Builder {
 
   @override
   final buildExtensions = const {
-    '{{dir}}/{{file}}.dart': [
-      '{{dir}}/reflection/{{file}}.g.dart',
-      '{{dir}}/{{file}}.reflection.g.dart'
-    ]
+    '{{dir}}/{{file}}.dart': ['{{dir}}/reflection/{{file}}.g.dart', '{{dir}}/{{file}}.reflection.g.dart']
   };
 
-  static const TypeChecker typeReflectionBridge =
-      TypeChecker.fromRuntime(ReflectionBridge);
+  static const TypeChecker typeReflectionBridge = TypeChecker.fromRuntime(ReflectionBridge);
 
-  static const TypeChecker typeEnableReflection =
-      TypeChecker.fromRuntime(EnableReflection);
+  static const TypeChecker typeEnableReflection = TypeChecker.fromRuntime(EnableReflection);
 
   static const TypeChecker typeClassProxy = TypeChecker.fromRuntime(ClassProxy);
 
@@ -90,10 +85,7 @@ class ReflectionBuilder implements Builder {
     Future<void> callBuildImpl(_) {
       var future = _buildImpl(buildStep);
 
-      future
-          .timeout(buildStepTimeout,
-              onTimeout: () => _onBuildTimeout(buildStep))
-          .then(complete, onError: complete);
+      future.timeout(buildStepTimeout, onTimeout: () => _onBuildTimeout(buildStep)).then(complete, onError: complete);
 
       return future;
     }
@@ -110,8 +102,7 @@ class ReflectionBuilder implements Builder {
 
   bool _isReflectionFactoryLibraryCode(AssetId assetId) {
     if (assetId.package == 'reflection_factory') {
-      if (!assetId.path.startsWith('example/') &&
-          !assetId.path.startsWith('test/')) {
+      if (!assetId.path.startsWith('example/') && !assetId.path.startsWith('test/')) {
         return true;
       }
     }
@@ -119,8 +110,7 @@ class ReflectionBuilder implements Builder {
   }
 
   void _onBuildTimeout(BuildStep buildStep) {
-    log.warning(
-        'Build timeout (${buildStepTimeout.toHumanReadable()}): ${buildStep.inputId} >> Will continue with the next `BuildStep`...');
+    log.warning('Build timeout (${buildStepTimeout.toHumanReadable()}): ${buildStep.inputId} >> Will continue with the next `BuildStep`...');
   }
 
   Future<void> _buildImpl(BuildStep buildStep) async {
@@ -136,49 +126,42 @@ class ReflectionBuilder implements Builder {
 
     if (isPart) {
       final elapsedTime = DateTime.now().difference(initTime);
-      log.info(
-          " skipping `part` compilation unit. (${elapsedTime.inMilliseconds} ms)");
+      log.info(" skipping `part` compilation unit. (${elapsedTime.inMilliseconds} ms)");
       return;
     }
 
     final inputLib = await buildStep.inputLibrary;
 
-    if (inputLib.name == 'reflection_factory' ||
-        inputLib.name.startsWith('reflection_factory.')) {
+    if (inputLib.name == 'reflection_factory' || inputLib.name.startsWith('reflection_factory.')) {
       return;
     }
 
     var libraryReader = LibraryReader(inputLib);
 
-    var genPart = await buildStep.trackStage('Resolving `part` to generate',
-        () => _resolveGeneratedPart(buildStep, inputId, libraryReader));
+    var genPart = await buildStep.trackStage('Resolving `part` to generate', () => _resolveGeneratedPart(buildStep, inputId, libraryReader));
 
     if (genPart == null) {
       final elapsedTime = DateTime.now().difference(initTime);
-      log.info(
-          " no reflection to generate. (${elapsedTime.inMilliseconds} ms)");
+      log.info(" no reflection to generate. (${elapsedTime.inMilliseconds} ms)");
       return;
     }
 
     var typeAliasTable = _TypeAliasTable.fromLibraryReader(libraryReader);
 
-    var codeTable = await buildStep.trackStage('Generating reflection code',
-        () => _buildCodeTable(buildStep, libraryReader, typeAliasTable));
+    var codeTable = await buildStep.trackStage('Generating reflection code', () => _buildCodeTable(buildStep, libraryReader, typeAliasTable));
 
     if (codeTable.isEmpty) {
       throw StateError("Generated code expected for: $inputId");
     }
 
-    await buildStep.trackStage('Writing generated code',
-        () => _writeFullCode(buildStep, genPart, codeTable, initTime));
+    await buildStep.trackStage('Writing generated code', () => _writeFullCode(buildStep, genPart, codeTable, initTime));
 
     if (resolver is ReleasableResolver) {
       resolver.release();
     }
   }
 
-  Future<bool> _isPartCompilationUnit(
-      BuildStep buildStep, AssetId assetID) async {
+  Future<bool> _isPartCompilationUnit(BuildStep buildStep, AssetId assetID) async {
     var compUnit = await buildStep.resolver.compilationUnitFor(assetID);
     var partOf = _getCompilationUnitPartOf(compUnit);
     return partOf != null;
@@ -189,8 +172,7 @@ class ReflectionBuilder implements Builder {
     return partOf;
   }
 
-  Future<_GeneratedPart?> _resolveGeneratedPart(
-      BuildStep buildStep, AssetId inputId, LibraryReader libraryReader) async {
+  Future<_GeneratedPart?> _resolveGeneratedPart(BuildStep buildStep, AssetId inputId, LibraryReader libraryReader) async {
     var inputFile = inputId.pathSegments.last;
 
     var allParts = _readReflectionPartDirectives(libraryReader, inputFile);
@@ -201,8 +183,7 @@ class ReflectionBuilder implements Builder {
     var isSubPart = subParts.isNotEmpty;
 
     if (isSiblingPart && isSubPart) {
-      throw StateError(
-          "Can't generate multiple `reflection` files. Multiple reflection parts directives: $siblingParts AND $subParts");
+      throw StateError("Can't generate multiple `reflection` files. Multiple reflection parts directives: $siblingParts AND $subParts");
     }
 
     var hasCodeToGenerate = await _hasCodeToGenerate(buildStep, libraryReader);
@@ -211,8 +192,7 @@ class ReflectionBuilder implements Builder {
     }
 
     var genSiblingId = inputId.changeExtension('.reflection.g.dart');
-    var genSubId =
-        inputId.changeExtension('.g.dart').withParentDirectory('reflection');
+    var genSubId = inputId.changeExtension('.g.dart').withParentDirectory('reflection');
 
     var genId = isSiblingPart ? genSiblingId : genSubId;
 
@@ -220,11 +200,9 @@ class ReflectionBuilder implements Builder {
     if (siblingParts.isEmpty && subParts.isEmpty) {
       var gParts = _readAllGParts(libraryReader);
 
-      var outputsPaths =
-          _reflectionPartDirectivesPaths(libraryReader, inputFile);
+      var outputsPaths = _reflectionPartDirectivesPaths(libraryReader, inputFile);
 
-      throw StateError(
-          "Code generated but NO reflection part directive was found for input file: $inputId\n"
+      throw StateError("Code generated but NO reflection part directive was found for input file: $inputId\n"
           "  > Can't generate ONE of the output files:\n"
           "    -- $genSiblingId\n"
           "    -- $genSubId\n"
@@ -233,18 +211,15 @@ class ReflectionBuilder implements Builder {
           "  > Found part directives: $gParts");
     }
 
-    return _GeneratedPart(
-        genId.path, genId, isSiblingPart ? inputFile : '../$inputFile');
+    return _GeneratedPart(genId.path, genId, isSiblingPart ? inputFile : '../$inputFile');
   }
 
-  Future<void> _writeFullCode(BuildStep buildStep, _GeneratedPart genPart,
-      _CodeTable codeTable, DateTime initTime) async {
+  Future<void> _writeFullCode(BuildStep buildStep, _GeneratedPart genPart, _CodeTable codeTable, DateTime initTime) async {
     var fullCode = StringBuffer();
 
     fullCode.write('// \n');
     fullCode.write('// GENERATED CODE - DO NOT MODIFY BY HAND!\n');
-    fullCode
-        .write('// BUILDER: reflection_factory/${ReflectionFactory.VERSION}\n');
+    fullCode.write('// BUILDER: reflection_factory/${ReflectionFactory.VERSION}\n');
     fullCode.write('// BUILD COMMAND: dart run build_runner build\n');
     fullCode.write('// \n\n');
 
@@ -299,22 +274,16 @@ class ReflectionBuilder implements Builder {
     }
   }
 
-  List<List<String>> _readReflectionPartDirectives(
-      LibraryReader libraryReader, String inputFile) {
+  List<List<String>> _readReflectionPartDirectives(LibraryReader libraryReader, String inputFile) {
     var outputsPaths = _reflectionPartDirectivesPaths(libraryReader, inputFile);
     var outputFileSibling = outputsPaths[0];
     var outputFileSub = outputsPaths[1];
 
     var allGParts = _readAllGParts(libraryReader);
 
-    var siblingParts = allGParts
-        .where(
-            (p) => p == outputFileSibling || p.endsWith('/$outputFileSibling'))
-        .toList();
+    var siblingParts = allGParts.where((p) => p == outputFileSibling || p.endsWith('/$outputFileSibling')).toList();
 
-    var subParts = allGParts
-        .where((p) => p == outputFileSub || p.endsWith('/$outputFileSub'))
-        .toList();
+    var subParts = allGParts.where((p) => p == outputFileSub || p.endsWith('/$outputFileSub')).toList();
 
     return [siblingParts, subParts];
   }
@@ -322,16 +291,13 @@ class ReflectionBuilder implements Builder {
   List<String> _readAllGParts(LibraryReader libraryReader) {
     var allPartsPaths = libraryReader.allParts.map((e) {
       var uri = e.uri;
-      return uri is DirectiveUriWithRelativeUriString
-          ? uri.relativeUriString
-          : e.toString();
+      return uri is DirectiveUriWithRelativeUriString ? uri.relativeUriString : e.toString();
     }).toList();
 
     return allPartsPaths.where((e) => e.endsWith('.g.dart')).toList();
   }
 
-  List<String> _reflectionPartDirectivesPaths(
-      LibraryReader libraryReader, String inputFile) {
+  List<String> _reflectionPartDirectivesPaths(LibraryReader libraryReader, String inputFile) {
     var inputParts = pack_path.split(inputFile);
 
     var inputFileName = inputParts.last;
@@ -343,10 +309,8 @@ class ReflectionBuilder implements Builder {
     return <String>[outputFileSibling, outputFileSub];
   }
 
-  Future<bool> _hasCodeToGenerate(
-      BuildStep buildStep, LibraryReader libraryReader) async {
-    var annotatedEnableReflection =
-        libraryReader.annotatedWith(typeEnableReflection).toList();
+  Future<bool> _hasCodeToGenerate(BuildStep buildStep, LibraryReader libraryReader) async {
+    var annotatedEnableReflection = libraryReader.annotatedWith(typeEnableReflection).toList();
 
     for (var annotated in annotatedEnableReflection) {
       var kind = annotated.element.kind;
@@ -356,8 +320,7 @@ class ReflectionBuilder implements Builder {
       }
     }
 
-    var annotatedReflectionBridge =
-        libraryReader.annotatedWith(typeReflectionBridge).toList();
+    var annotatedReflectionBridge = libraryReader.annotatedWith(typeReflectionBridge).toList();
 
     for (var annotated in annotatedReflectionBridge) {
       if (annotated.element.kind == ElementKind.CLASS) {
@@ -365,8 +328,7 @@ class ReflectionBuilder implements Builder {
       }
     }
 
-    var annotatedClassProxy =
-        libraryReader.annotatedWith(typeClassProxy).toList();
+    var annotatedClassProxy = libraryReader.annotatedWith(typeClassProxy).toList();
 
     for (var annotated in annotatedClassProxy) {
       if (annotated.element.kind == ElementKind.CLASS) {
@@ -377,12 +339,10 @@ class ReflectionBuilder implements Builder {
     return false;
   }
 
-  Future<_CodeTable> _buildCodeTable(BuildStep buildStep,
-      LibraryReader libraryReader, _TypeAliasTable typeAliasTable) async {
+  Future<_CodeTable> _buildCodeTable(BuildStep buildStep, LibraryReader libraryReader, _TypeAliasTable typeAliasTable) async {
     var codeTable = _CodeTable(typeAliasTable);
 
-    var annotatedClassProxy =
-        libraryReader.annotatedWith(typeClassProxy).toList();
+    var annotatedClassProxy = libraryReader.annotatedWith(typeClassProxy).toList();
 
     for (var annotated in annotatedClassProxy) {
       if (annotated.element.kind == ElementKind.CLASS) {
@@ -396,51 +356,35 @@ class ReflectionBuilder implements Builder {
       codeTable.addFunctions(codes);
     }
 
-    var annotatedReflectionBridge =
-        libraryReader.annotatedWith(typeReflectionBridge).toList();
+    var annotatedReflectionBridge = libraryReader.annotatedWith(typeReflectionBridge).toList();
 
     for (var annotated in annotatedReflectionBridge) {
       if (annotated.element.kind == ElementKind.CLASS) {
-        var codes =
-            await _reflectionBridge(buildStep, annotated, typeAliasTable);
+        var codes = await _reflectionBridge(buildStep, annotated, typeAliasTable);
         codeTable.addAllClasses(codes);
       }
     }
 
-    var annotatedEnableReflection =
-        libraryReader.annotatedWith(typeEnableReflection).toList();
+    var annotatedEnableReflection = libraryReader.annotatedWith(typeEnableReflection).toList();
 
     for (var annotated in annotatedEnableReflection) {
       var annotation = annotated.annotation;
-      var reflectionClassName =
-          annotation.peek('reflectionClassName')!.stringValue;
-      var reflectionExtensionName =
-          annotated.annotation.peek('reflectionExtensionName')!.stringValue;
-      var optimizeReflectionInstances =
-          annotated.annotation.peek('optimizeReflectionInstances')!.boolValue;
+      var reflectionClassName = annotation.peek('reflectionClassName')!.stringValue;
+      var reflectionExtensionName = annotated.annotation.peek('reflectionExtensionName')!.stringValue;
+      var optimizeReflectionInstances = annotated.annotation.peek('optimizeReflectionInstances')!.boolValue;
 
       if (annotated.element.kind == ElementKind.CLASS) {
         var classElement = annotated.element as ClassElement;
 
-        var codes = await _enableReflectionClass(
-            buildStep,
-            classElement,
-            reflectionClassName,
-            reflectionExtensionName,
-            optimizeReflectionInstances,
-            typeAliasTable);
+        var codes =
+            await _enableReflectionClass(buildStep, classElement, reflectionClassName, reflectionExtensionName, optimizeReflectionInstances, typeAliasTable);
 
         codeTable.addAllClasses(codes);
       } else if (annotated.element.kind == ElementKind.ENUM) {
         var enumElement = annotated.element;
 
-        var codes = await _enableReflectionEnum(
-            buildStep,
-            enumElement,
-            reflectionClassName,
-            reflectionExtensionName,
-            optimizeReflectionInstances,
-            typeAliasTable);
+        var codes =
+            await _enableReflectionEnum(buildStep, enumElement, reflectionClassName, reflectionExtensionName, optimizeReflectionInstances, typeAliasTable);
 
         codeTable.addAllClasses(codes);
       }
@@ -469,45 +413,35 @@ class ReflectionBuilder implements Builder {
     return idx >= 0 ? s.substring(idx + 1) : s;
   }
 
-  Map<String, String> _classProxyFuntions(
-      BuildStep buildStep, _TypeAliasTable typeAliasTable) {
+  Map<String, String> _classProxyFuntions(BuildStep buildStep, _TypeAliasTable typeAliasTable) {
     var fReturnValue = typeAliasTable.fReturnValue;
     var fReturnFuture = typeAliasTable.fReturnFuture;
     var fReturnFutureOr = typeAliasTable.fReturnFutureOr;
 
-    var fReturnValueCode =
-        '\nT $fReturnValue<T>(Object? o) => ClassProxy.returnValue<T>(o);\n\n';
+    var fReturnValueCode = '\nT $fReturnValue<T>(Object? o) => ClassProxy.returnValue<T>(o);\n\n';
 
-    var fReturnFutureCode =
-        '\nFuture<T> $fReturnFuture<T>(Object? o) => ClassProxy.returnFuture<T>(o);\n\n';
+    var fReturnFutureCode = '\nFuture<T> $fReturnFuture<T>(Object? o) => ClassProxy.returnFuture<T>(o);\n\n';
 
-    var fReturnFutureOrCode =
-        '\nFutureOr<T> $fReturnFutureOr<T>(Object? o) => ClassProxy.returnFutureOr<T>(o);\n\n';
+    var fReturnFutureOrCode = '\nFutureOr<T> $fReturnFutureOr<T>(Object? o) => ClassProxy.returnFutureOr<T>(o);\n\n';
 
     return {
-      if (typeAliasTable.fReturnValueUseCount > 0)
-        fReturnValue: fReturnValueCode,
-      if (typeAliasTable.fReturnFutureUseCount > 0)
-        fReturnFuture: fReturnFutureCode,
-      if (typeAliasTable.fReturnFutureOrUseCount > 0)
-        fReturnFutureOr: fReturnFutureOrCode,
+      if (typeAliasTable.fReturnValueUseCount > 0) fReturnValue: fReturnValueCode,
+      if (typeAliasTable.fReturnFutureUseCount > 0) fReturnFuture: fReturnFutureCode,
+      if (typeAliasTable.fReturnFutureOrUseCount > 0) fReturnFutureOr: fReturnFutureOrCode,
     };
   }
 
-  Future<Map<String, String>> _classProxy(BuildStep buildStep,
-      AnnotatedElement annotated, _TypeAliasTable typeAliasTable) async {
+  Future<Map<String, String>> _classProxy(BuildStep buildStep, AnnotatedElement annotated, _TypeAliasTable typeAliasTable) async {
     var annotation = annotated.annotation;
     var annotatedClass = annotated.element as ClassElement;
 
     var className = annotation.peek('className')!.stringValue;
     var libraryName = annotation.peek('libraryName')!.stringValue;
     var libraryPath = annotation.peek('libraryPath')!.stringValue;
-    var reflectionProxyName =
-        annotation.peek('reflectionProxyName')!.stringValue;
+    var reflectionProxyName = annotation.peek('reflectionProxyName')!.stringValue;
     var alwaysReturnFuture = annotation.peek('alwaysReturnFuture')!.boolValue;
     var traverseReturnTypes = annotation.peek('traverseReturnTypes')!.setValue;
-    var ignoreParametersTypes =
-        annotation.peek('ignoreParametersTypes')!.setValue;
+    var ignoreParametersTypes = annotation.peek('ignoreParametersTypes')!.setValue;
     var ignoreMethods = annotation.peek('ignoreMethods')!.setValue;
 
     if (reflectionProxyName.isEmpty) {
@@ -523,15 +457,12 @@ class ReflectionBuilder implements Builder {
 
     var codeTable = <String, String>{};
 
-    var candidateClasses =
-        await _findClassElement(buildStep, className, libraryName, libraryPath);
+    var candidateClasses = await _findClassElement(buildStep, className, libraryName, libraryPath);
 
     if (candidateClasses.isEmpty) {
-      throw StateError(
-          "** Can't find a class with name `$className` to generate a `ClassProxy`! libraryName: `$libraryName` ; libraryPath: `$libraryPath`.");
+      throw StateError("** Can't find a class with name `$className` to generate a `ClassProxy`! libraryName: `$libraryName` ; libraryPath: `$libraryPath`.");
     } else if (candidateClasses.length > 1) {
-      throw StateError(
-          "** Found many candidate classes with name `$className`: $candidateClasses");
+      throw StateError("** Found many candidate classes with name `$className`: $candidateClasses");
     }
 
     var classElement = candidateClasses.first;
@@ -553,28 +484,20 @@ class ReflectionBuilder implements Builder {
 
     codeTable.putIfAbsent(
         classTree.reflectionProxyExtension,
-        () => classTree.buildReflectionProxyClass(
-            annotatedClass,
-            alwaysReturnFuture,
-            traverseReturnTypes,
-            ignoreParametersTypes,
-            ignoreMethods,
-            typeAliasTable));
+        () =>
+            classTree.buildReflectionProxyClass(annotatedClass, alwaysReturnFuture, traverseReturnTypes, ignoreParametersTypes, ignoreMethods, typeAliasTable));
 
     return codeTable;
   }
 
-  Future<List<ClassElement>> _findClassElement(BuildStep buildStep,
-      String className, String libraryName, String libraryPath) async {
+  Future<List<ClassElement>> _findClassElement(BuildStep buildStep, String className, String libraryName, String libraryPath) async {
     var inputLibrary = await buildStep.inputLibrary;
     var mainLibraries = <LibraryElement>[inputLibrary];
     var resolverLibraries = await buildStep.resolver.libraries.toList();
 
     if (libraryPath.isNotEmpty) {
-      libraryPath =
-          libraryPath.replaceAll(RegExp(r'^(?:package:)?/*'), '').trim();
-      var result =
-          await inputLibrary.session.getLibraryByUri('package:$libraryPath');
+      libraryPath = libraryPath.replaceAll(RegExp(r'^(?:package:)?/*'), '').trim();
+      var result = await inputLibrary.session.getLibraryByUri('package:$libraryPath');
 
       if (result is LibraryElementResult) {
         var libraryElement = result.element;
@@ -589,22 +512,15 @@ class ReflectionBuilder implements Builder {
       }
     }
 
-    var mainLibrariesExported =
-        mainLibraries.expand((e) => e.exportedLibraries).toList();
+    var mainLibrariesExported = mainLibraries.expand((e) => e.exportedLibraries).toList();
 
-    var allLibraries = <LibraryElement>{
-      ...mainLibraries,
-      ...resolverLibraries,
-      ...mainLibrariesExported
-    }.toList();
+    var allLibraries = <LibraryElement>{...mainLibraries, ...resolverLibraries, ...mainLibrariesExported}.toList();
 
-    var candidateClasses =
-        allLibraries.allUsedClasses.where((c) => c.name == className).toList();
+    var candidateClasses = allLibraries.allUsedClasses.where((c) => c.name == className).toList();
 
     if (candidateClasses.length > 1) {
       if (libraryName.isNotEmpty) {
-        var targetClass = candidateClasses
-            .firstWhereOrNull((e) => e.library.name == libraryName);
+        var targetClass = candidateClasses.firstWhereOrNull((e) => e.library.name == libraryName);
         if (targetClass != null) {
           return <ClassElement>[targetClass];
         }
@@ -614,29 +530,16 @@ class ReflectionBuilder implements Builder {
     return candidateClasses;
   }
 
-  Future<Map<String, String>> _reflectionBridge(BuildStep buildStep,
-      AnnotatedElement annotated, _TypeAliasTable typeAliasTable) async {
+  Future<Map<String, String>> _reflectionBridge(BuildStep buildStep, AnnotatedElement annotated, _TypeAliasTable typeAliasTable) async {
     var annotation = annotated.annotation;
     var annotatedClass = annotated.element as ClassElement;
 
-    var classesTypes = annotation
-        .peek('classesTypes')!
-        .listValue
-        .map((e) => e.toTypeValue()!)
-        .toList();
+    var classesTypes = annotation.peek('classesTypes')!.listValue.map((e) => e.toTypeValue()!).toList();
 
-    var bridgeExtensionName =
-        annotation.peek('bridgeExtensionName')!.stringValue;
-    var reflectionClassNames = annotation
-        .peek('reflectionClassNames')!
-        .mapValue
-        .map((k, v) => MapEntry(k!.toTypeValue()!, v!.toStringValue()!));
-    var reflectionExtensionNames = annotation
-        .peek('reflectionExtensionNames')!
-        .mapValue
-        .map((k, v) => MapEntry(k!.toTypeValue()!, v!.toStringValue()!));
-    var optimizeReflectionInstances =
-        annotated.annotation.peek('optimizeReflectionInstances')!.boolValue;
+    var bridgeExtensionName = annotation.peek('bridgeExtensionName')!.stringValue;
+    var reflectionClassNames = annotation.peek('reflectionClassNames')!.mapValue.map((k, v) => MapEntry(k!.toTypeValue()!, v!.toStringValue()!));
+    var reflectionExtensionNames = annotation.peek('reflectionExtensionNames')!.mapValue.map((k, v) => MapEntry(k!.toTypeValue()!, v!.toStringValue()!));
+    var optimizeReflectionInstances = annotated.annotation.peek('optimizeReflectionInstances')!.boolValue;
 
     log.info(' <ReflectionBridge>\n'
         '  -- classesTypes: $classesTypes\n'
@@ -673,36 +576,27 @@ class ReflectionBuilder implements Builder {
         log.info(' >> $classTree');
       }
 
-      codeTable.putIfAbsent(classTree.classGlobalFunction('_'),
-          () => classTree.buildClassGlobalFunctions());
-      codeTable.putIfAbsent(classTree.reflectionClass,
-          () => classTree.buildReflectionClass(typeAliasTable));
-      codeTable.putIfAbsent(classTree.reflectionExtension,
-          () => classTree.buildReflectionExtension());
+      codeTable.putIfAbsent(classTree.classGlobalFunction('_'), () => classTree.buildClassGlobalFunctions());
+      codeTable.putIfAbsent(classTree.reflectionClass, () => classTree.buildReflectionClass(typeAliasTable));
+      codeTable.putIfAbsent(classTree.reflectionExtension, () => classTree.buildReflectionExtension());
     }
 
-    codeTable.addAll(_reflectionBridgeExtension(annotatedClass, classesTypes,
-        bridgeExtensionName, reflectionClassNames));
+    codeTable.addAll(_reflectionBridgeExtension(annotatedClass, classesTypes, bridgeExtensionName, reflectionClassNames));
 
     return codeTable;
   }
 
   Map<String, String> _reflectionBridgeExtension(
-      ClassElement annotatedClass,
-      List<DartType> classesTypes,
-      String reflectionBridgeExtensionName,
-      Map<DartType, String> reflectionClassNames) {
+      ClassElement annotatedClass, List<DartType> classesTypes, String reflectionBridgeExtensionName, Map<DartType, String> reflectionClassNames) {
     var bridgeClassName = annotatedClass.name;
 
-    var bridgeExtensionName = _buildReflectionExtensionName(
-        bridgeClassName, reflectionBridgeExtensionName);
+    var bridgeExtensionName = _buildReflectionExtensionName(bridgeClassName, reflectionBridgeExtensionName);
 
     var str = StringBuffer();
 
     str.write('extension $bridgeExtensionName on $bridgeClassName {\n');
 
-    str.write(
-        '  /// Returns a [ClassReflection] for type [T] or [obj]. (Generated by [ReflectionFactory])\n');
+    str.write('  /// Returns a [ClassReflection] for type [T] or [obj]. (Generated by [ReflectionFactory])\n');
     str.write('  ClassReflection<T> reflection<T>([T? obj]) {\n');
 
     str.write('    switch (T) {\n');
@@ -711,14 +605,11 @@ class ReflectionBuilder implements Builder {
       var bridgeReflectionClassName = reflectionClassNames[classType] ?? '';
       var className = classType.elementDeclaration!.name!;
 
-      var reflectionClassName =
-          _buildReflectionClassName(className, bridgeReflectionClassName);
-      str.write(
-          '      case $className: return $reflectionClassName(obj as $className?) as ClassReflection<T>;\n');
+      var reflectionClassName = _buildReflectionClassName(className, bridgeReflectionClassName);
+      str.write('      case $className: return $reflectionClassName(obj as $className?) as ClassReflection<T>;\n');
     }
 
-    str.write(
-        "      default: throw UnsupportedError('<\$runtimeType> No reflection for Type: \$T');\n");
+    str.write("      default: throw UnsupportedError('<\$runtimeType> No reflection for Type: \$T');\n");
     str.write('    }\n');
 
     str.write('  }\n\n');
@@ -730,13 +621,8 @@ class ReflectionBuilder implements Builder {
     return {bridgeExtensionName: code};
   }
 
-  Future<Map<String, String>> _enableReflectionEnum(
-      BuildStep buildStep,
-      Element enumElement,
-      String reflectionClassName,
-      String reflectionExtensionName,
-      bool optimizeReflectionInstances,
-      _TypeAliasTable typeAliasTable) async {
+  Future<Map<String, String>> _enableReflectionEnum(BuildStep buildStep, Element enumElement, String reflectionClassName, String reflectionExtensionName,
+      bool optimizeReflectionInstances, _TypeAliasTable typeAliasTable) async {
     var enumLibrary = await _getElementLibrary(buildStep, enumElement);
 
     var enumTree = _EnumTree(
@@ -763,13 +649,8 @@ class ReflectionBuilder implements Builder {
     };
   }
 
-  Future<Map<String, String>> _enableReflectionClass(
-      BuildStep buildStep,
-      ClassElement classElement,
-      String reflectionClassName,
-      String reflectionExtensionName,
-      bool optimizeReflectionInstances,
-      _TypeAliasTable typeAliasTable) async {
+  Future<Map<String, String>> _enableReflectionClass(BuildStep buildStep, ClassElement classElement, String reflectionClassName, String reflectionExtensionName,
+      bool optimizeReflectionInstances, _TypeAliasTable typeAliasTable) async {
     var classLibrary = await _getElementLibrary(buildStep, classElement);
 
     var classTree = _ClassTree(
@@ -798,8 +679,7 @@ class ReflectionBuilder implements Builder {
     };
   }
 
-  Future<LibraryElement> _getElementLibrary(
-      BuildStep buildStep, Element element) async {
+  Future<LibraryElement> _getElementLibrary(BuildStep buildStep, Element element) async {
     var resolver = buildStep.resolver;
     var classAssetId = await resolver.assetIdForElement(element);
 
@@ -830,13 +710,11 @@ class ReflectionBuilder implements Builder {
 
     str.write('mixin ${codeTable.typeAliasTable.reflectionMixinName} {\n');
 
-    str.write(
-        "  static final Version _version = Version.parse('${ReflectionFactory.VERSION}');\n\n");
+    str.write("  static final Version _version = Version.parse('${ReflectionFactory.VERSION}');\n\n");
 
     str.write("  Version get reflectionFactoryVersion => _version;\n\n");
 
-    str.write(
-        '  List<Reflection> siblingsReflection() => _siblingsReflection();\n\n');
+    str.write('  List<Reflection> siblingsReflection() => _siblingsReflection();\n\n');
 
     str.write('}\n\n');
 
@@ -851,8 +729,7 @@ class ReflectionBuilder implements Builder {
     str.write('List<Reflection> _listSiblingsReflection() => ');
     str.write('<Reflection>[');
 
-    for (var c in codeTable.reflectionClassesKeys
-        .where((e) => e.endsWith(r'$reflection'))) {
+    for (var c in codeTable.reflectionClassesKeys.where((e) => e.endsWith(r'$reflection'))) {
       str.write(c);
       str.write('(), ');
     }
@@ -861,8 +738,7 @@ class ReflectionBuilder implements Builder {
 
     str.write('List<Reflection>? _siblingsReflectionList;\n');
     str.write('List<Reflection> _siblingsReflection() => ');
-    str.write(
-        '_siblingsReflectionList ??= List<Reflection>.unmodifiable( _listSiblingsReflection() );\n\n');
+    str.write('_siblingsReflectionList ??= List<Reflection>.unmodifiable( _listSiblingsReflection() );\n\n');
 
     str.write('bool _registerSiblingsReflectionCalled = false;\n');
     str.write('void _registerSiblingsReflection() {\n');
@@ -895,59 +771,37 @@ extension _AssetIdExtension on AssetId {
 }
 
 extension _LibraryElementExtension on LibraryElement {
-  static final Expando<List<ClassElement>> _exportedClasses =
-      Expando<List<ClassElement>>();
+  static final Expando<List<ClassElement>> _exportedClasses = Expando<List<ClassElement>>();
 
-  List<ClassElement> get exportedClasses =>
-      _exportedClasses[this] ??= UnmodifiableListView(
-          topLevelElements.whereType<ClassElement>().toList(growable: false));
+  List<ClassElement> get exportedClasses => _exportedClasses[this] ??= UnmodifiableListView(topLevelElements.whereType<ClassElement>().toList(growable: false));
 
-  static final Expando<List<LibraryElement>> _allExports =
-      Expando<List<LibraryElement>>();
+  static final Expando<List<LibraryElement>> _allExports = Expando<List<LibraryElement>>();
 
   List<LibraryElement> get allExports =>
-      _allExports[this] ??= UnmodifiableListView(libraryExports
-          .map((e) => e.exportedLibrary)
-          .whereNotNull()
-          .toList(growable: false));
+      _allExports[this] ??= UnmodifiableListView(libraryExports.map((e) => e.exportedLibrary).whereNotNull().toList(growable: false));
 
-  static final Expando<Set<ClassElement>> _allExportedClasses =
-      Expando<Set<ClassElement>>();
+  static final Expando<Set<ClassElement>> _allExportedClasses = Expando<Set<ClassElement>>();
 
-  Set<ClassElement> get allExportedClasses => _allExportedClasses[this] ??=
-      UnmodifiableSetView(allExports.expand((e) => e.exportedClasses).toSet());
+  Set<ClassElement> get allExportedClasses => _allExportedClasses[this] ??= UnmodifiableSetView(allExports.expand((e) => e.exportedClasses).toSet());
 
-  static final Expando<Set<ClassElement>> _allImportedClasses =
-      Expando<Set<ClassElement>>();
+  static final Expando<Set<ClassElement>> _allImportedClasses = Expando<Set<ClassElement>>();
 
   Set<ClassElement> get allImportedClasses =>
-      _allImportedClasses[this] ??= UnmodifiableSetView(units
-          .expand((e) =>
-              e.library.importedLibraries.expand((e) => e.exportedClasses))
-          .toSet());
+      _allImportedClasses[this] ??= UnmodifiableSetView(units.expand((e) => e.library.importedLibraries.expand((e) => e.exportedClasses)).toSet());
 
-  static final Expando<Set<ClassElement>> _allUnitsClasses =
-      Expando<Set<ClassElement>>();
+  static final Expando<Set<ClassElement>> _allUnitsClasses = Expando<Set<ClassElement>>();
 
-  Set<ClassElement> get allUnitsClasses =>
-      _allUnitsClasses[this] ??= UnmodifiableSetView(
-          units.expand((e) => e.library.exportedClasses).toSet());
+  Set<ClassElement> get allUnitsClasses => _allUnitsClasses[this] ??= UnmodifiableSetView(units.expand((e) => e.library.exportedClasses).toSet());
 
-  static final Expando<Set<ClassElement>> _allClassesFromExportedClassesUnits =
-      Expando<Set<ClassElement>>();
+  static final Expando<Set<ClassElement>> _allClassesFromExportedClassesUnits = Expando<Set<ClassElement>>();
 
   Set<ClassElement> get allClassesFromExportedClassesUnits =>
-      _allClassesFromExportedClassesUnits[this] ??= UnmodifiableSetView(
-          allExportedClasses.expand((e) => e.library.allUnitsClasses).toSet());
+      _allClassesFromExportedClassesUnits[this] ??= UnmodifiableSetView(allExportedClasses.expand((e) => e.library.allUnitsClasses).toSet());
 
-  static final Expando<Set<ClassElement>>
-      _allImportedClassesFromExportedClasses = Expando<Set<ClassElement>>();
+  static final Expando<Set<ClassElement>> _allImportedClassesFromExportedClasses = Expando<Set<ClassElement>>();
 
   Set<ClassElement> get allImportedClassesFromExportedClasses =>
-      _allImportedClassesFromExportedClasses[this] ??= UnmodifiableSetView(
-          allExportedClasses
-              .expand((e) => e.library.allImportedClasses)
-              .toSet());
+      _allImportedClassesFromExportedClasses[this] ??= UnmodifiableSetView(allExportedClasses.expand((e) => e.library.allImportedClasses).toSet());
 }
 
 extension IterableLibraryElementExtension on Iterable<LibraryElement> {
@@ -976,8 +830,7 @@ class _TypeAliasTable {
   int fReturnFutureOrUseCount = 0;
 
   factory _TypeAliasTable.fromLibraryReader(LibraryReader libraryReader) {
-    var privateNames =
-        libraryReader.elementsNames.where((e) => e.startsWith('_')).toList();
+    var privateNames = libraryReader.elementsNames.where((e) => e.startsWith('_')).toList();
     return _TypeAliasTable(privateNames);
   }
 
@@ -1028,10 +881,7 @@ class _CodeTable {
 
   bool get functionsIsEmpty => _functions.isEmpty;
 
-  bool get isEmpty =>
-      _reflectionClasses.isEmpty &&
-      _reflectionProxies.isEmpty &&
-      _functions.isEmpty;
+  bool get isEmpty => _reflectionClasses.isEmpty && _reflectionProxies.isEmpty && _functions.isEmpty;
 
   Iterable<String> get reflectionClassesKeys => _reflectionClasses.keys;
 
@@ -1052,8 +902,7 @@ class _CodeTable {
     }
   }
 
-  String? get(String key) =>
-      _reflectionClasses[key] ?? _reflectionProxies[key] ?? _functions[key];
+  String? get(String key) => _reflectionClasses[key] ?? _reflectionProxies[key] ?? _functions[key];
 
   void addClass(String key, String code) {
     _checkKey(key);
@@ -1089,9 +938,7 @@ class _CodeTable {
   }
 }
 
-String _buildClassGlobalFunction(
-    String className, String reflectionClassName, String functionName,
-    {String delimiter = '\$'}) {
+String _buildClassGlobalFunction(String className, String reflectionClassName, String functionName, {String delimiter = '\$'}) {
   reflectionClassName = reflectionClassName.trim();
   if (reflectionClassName.isNotEmpty) {
     return '$reflectionClassName$delimiter$functionName';
@@ -1109,8 +956,7 @@ String _buildReflectionClassName(String className, String reflectionClassName) {
   return '$className\$reflection';
 }
 
-String _buildReflectionExtensionName(
-    String className, String reflectionExtensionName) {
+String _buildReflectionExtensionName(String className, String reflectionExtensionName) {
   reflectionExtensionName = reflectionExtensionName.trim();
   if (reflectionExtensionName.isNotEmpty) {
     return reflectionExtensionName;
@@ -1133,12 +979,7 @@ class _EnumTree<T> extends RecursiveElementVisitor<T> {
 
   final String enumName;
 
-  _EnumTree(
-      this._enumElement,
-      this.reflectionClassName,
-      this.reflectionExtensionName,
-      this.optimizeReflectionInstances,
-      this.languageVersion,
+  _EnumTree(this._enumElement, this.reflectionClassName, this.reflectionExtensionName, this.optimizeReflectionInstances, this.languageVersion,
       {this.verbose = false})
       : enumName = _enumElement.name! {
     _enumElement.visitChildren(this);
@@ -1152,14 +993,11 @@ class _EnumTree<T> extends RecursiveElementVisitor<T> {
     return null;
   }
 
-  String classGlobalFunction(String functionName) =>
-      _buildClassGlobalFunction(enumName, reflectionClassName, functionName);
+  String classGlobalFunction(String functionName) => _buildClassGlobalFunction(enumName, reflectionClassName, functionName);
 
-  String get reflectionClass =>
-      _buildReflectionClassName(enumName, reflectionClassName);
+  String get reflectionClass => _buildReflectionClassName(enumName, reflectionClassName);
 
-  String get reflectionExtension =>
-      _buildReflectionExtensionName(enumName, reflectionExtensionName);
+  String get reflectionExtension => _buildReflectionExtensionName(enumName, reflectionExtensionName);
 
   final Set<FieldElement> staticFields = <FieldElement>{};
 
@@ -1190,16 +1028,13 @@ class _EnumTree<T> extends RecursiveElementVisitor<T> {
     return null;
   }
 
-  List<String> get staticFieldsNames =>
-      staticFields.map((e) => e.name).toList();
+  List<String> get staticFieldsNames => staticFields.map((e) => e.name).toList();
 
   List<String> get fieldsNames => fields.map((e) => e.name).toList();
 
-  bool hasStaticField(String filedName) =>
-      staticFields.where((m) => m.name == filedName).isNotEmpty;
+  bool hasStaticField(String filedName) => staticFields.where((m) => m.name == filedName).isNotEmpty;
 
-  bool hasField(String filedName) =>
-      fields.where((m) => m.name == filedName).isNotEmpty;
+  bool hasField(String filedName) => fields.where((m) => m.name == filedName).isNotEmpty;
 
   @override
   String toString() {
@@ -1219,8 +1054,7 @@ class _EnumTree<T> extends RecursiveElementVisitor<T> {
     var from = classGlobalFunction('from');
 
     str.write('// ignore: non_constant_identifier_names\n');
-    str.write(
-        '$enumName? $from(Object? o) => $reflectionClass.staticInstance.from(o);\n');
+    str.write('$enumName? $from(Object? o) => $reflectionClass.staticInstance.from(o);\n');
 
     return str.toString();
   }
@@ -1230,25 +1064,20 @@ class _EnumTree<T> extends RecursiveElementVisitor<T> {
 
     var reflectionClass = this.reflectionClass;
 
-    str.write(
-        'class $reflectionClass extends EnumReflection<$enumName> with ${typeAliasTable.reflectionMixinName} {\n\n');
+    str.write('class $reflectionClass extends EnumReflection<$enumName> with ${typeAliasTable.reflectionMixinName} {\n\n');
 
     if (optimizeReflectionInstances) {
-      str.write(
-          '  static final Expando<$reflectionClass> _objectReflections = Expando();\n\n');
+      str.write('  static final Expando<$reflectionClass> _objectReflections = Expando();\n\n');
 
       str.write('  factory $reflectionClass([$enumName? object]) {\n');
       str.write('  if (object == null) return staticInstance;\n');
-      str.write(
-          '  return _objectReflections[object] ??= $reflectionClass._(object);\n');
+      str.write('  return _objectReflections[object] ??= $reflectionClass._(object);\n');
       str.write('}\n\n');
     } else {
-      str.write(
-          '  $reflectionClass([$enumName? object]) : this._(object);\n\n');
+      str.write('  $reflectionClass([$enumName? object]) : this._(object);\n\n');
     }
 
-    str.write(
-        '  $reflectionClass._([$enumName? object]) : super($enumName, \'$enumName\', object);\n\n');
+    str.write('  $reflectionClass._([$enumName? object]) : super($enumName, \'$enumName\', object);\n\n');
 
     str.write('  static bool _registered = false;\n');
     str.write('  @override\n');
@@ -1261,24 +1090,19 @@ class _EnumTree<T> extends RecursiveElementVisitor<T> {
     str.write('  }\n\n');
 
     str.write('  @override\n');
-    str.write(
-        "  Version get languageVersion => Version.parse('$languageVersion');\n\n");
+    str.write("  Version get languageVersion => Version.parse('$languageVersion');\n\n");
 
     str.write('  @override\n');
-    str.write(
-        '  $reflectionClass withObject([$enumName? obj]) => $reflectionClass(obj);\n\n');
+    str.write('  $reflectionClass withObject([$enumName? obj]) => $reflectionClass(obj);\n\n');
 
     str.write('  static $reflectionClass? _withoutObjectInstance;\n');
     str.write('  @override\n');
-    str.write(
-        '  $reflectionClass withoutObjectInstance() => staticInstance;\n\n');
+    str.write('  $reflectionClass withoutObjectInstance() => staticInstance;\n\n');
 
-    str.write(
-        '  static $reflectionClass get staticInstance => _withoutObjectInstance ??= $reflectionClass._();\n\n');
+    str.write('  static $reflectionClass get staticInstance => _withoutObjectInstance ??= $reflectionClass._();\n\n');
 
     str.write('  @override\n');
-    str.write(
-        '   $reflectionClass getStaticInstance() => staticInstance ;\n\n');
+    str.write('   $reflectionClass getStaticInstance() => staticInstance ;\n\n');
 
     str.write('  static bool _boot = false;'
         '  static void boot() {\n'
@@ -1294,8 +1118,7 @@ class _EnumTree<T> extends RecursiveElementVisitor<T> {
       classAnnotationListCode = '<Object>[]';
     }
 
-    str.write(
-        '  static const List<Object> _classAnnotations = $classAnnotationListCode; \n\n');
+    str.write('  static const List<Object> _classAnnotations = $classAnnotationListCode; \n\n');
 
     str.write('  @override\n');
     str.write('  List<Object> get classAnnotations => _classAnnotations;\n\n');
@@ -1315,18 +1138,13 @@ class _EnumTree<T> extends RecursiveElementVisitor<T> {
     str.write('  static const List<String> _staticFieldsNames = $names;\n\n');
 
     str.write('  @override\n');
-    str.write(
-        '  List<String> get staticFieldsNames => _staticFieldsNames;\n\n');
+    str.write('  List<String> get staticFieldsNames => _staticFieldsNames;\n\n');
 
-    str.write(
-        '  static const Map<String,$enumName> _valuesByName = const <String,$enumName>{\n');
+    str.write('  static const Map<String,$enumName> _valuesByName = const <String,$enumName>{\n');
 
     final enumType = this.thisType;
 
-    var enumsEntries = entries.entries
-        .where((e) => e.value.thisType == enumType)
-        .sortedBy((e) => e.key)
-        .toList();
+    var enumsEntries = entries.entries.where((e) => e.value.thisType == enumType).sortedBy((e) => e.key).toList();
 
     for (var e in enumsEntries) {
       var name = e.key;
@@ -1372,40 +1190,32 @@ class _EnumTree<T> extends RecursiveElementVisitor<T> {
     var entriesCount = 0;
 
     if (!hasField('reflection')) {
-      str.write(
-          '  /// Returns a [EnumReflection] for type [$enumName]. (Generated by [ReflectionFactory])\n');
-      str.write(
-          '  EnumReflection<$enumName> get reflection => $reflectionClass(this);\n');
+      str.write('  /// Returns a [EnumReflection] for type [$enumName]. (Generated by [ReflectionFactory])\n');
+      str.write('  EnumReflection<$enumName> get reflection => $reflectionClass(this);\n');
       entriesCount++;
     }
 
     if (!hasField('enumName')) {
-      str.write(
-          '  /// Returns the name of the [$enumName] instance. (Generated by [ReflectionFactory])\n');
+      str.write('  /// Returns the name of the [$enumName] instance. (Generated by [ReflectionFactory])\n');
       str.write('  String get enumName => $reflectionClass(this).name()!;\n');
       entriesCount++;
     }
 
     if (!hasField('toJson')) {
-      str.write(
-          '\n  /// Returns a JSON for type [$enumName]. (Generated by [ReflectionFactory])\n');
+      str.write('\n  /// Returns a JSON for type [$enumName]. (Generated by [ReflectionFactory])\n');
       str.write('  String? toJson() => reflection.toJson();\n');
       entriesCount++;
     }
 
     if (!hasField('toJsonMap')) {
-      str.write(
-          '\n  /// Returns a JSON [Map] for type [$enumName]. (Generated by [ReflectionFactory])\n');
-      str.write(
-          '  Map<String,Object>? toJsonMap() => reflection.toJsonMap();\n');
+      str.write('\n  /// Returns a JSON [Map] for type [$enumName]. (Generated by [ReflectionFactory])\n');
+      str.write('  Map<String,Object>? toJsonMap() => reflection.toJsonMap();\n');
       entriesCount++;
     }
 
     if (!hasField('toJsonEncoded')) {
-      str.write(
-          '\n  /// Returns an encoded JSON [String] for type [$enumName]. (Generated by [ReflectionFactory])\n');
-      str.write(
-          '  String toJsonEncoded({bool pretty = false}) => reflection.toJsonEncoded(pretty: pretty);\n');
+      str.write('\n  /// Returns an encoded JSON [String] for type [$enumName]. (Generated by [ReflectionFactory])\n');
+      str.write('  String toJsonEncoded({bool pretty = false}) => reflection.toJsonEncoded(pretty: pretty);\n');
       entriesCount++;
     }
 
@@ -1434,14 +1244,8 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
 
   final String className;
 
-  _ClassTree(
-      this.typeAliasTable,
-      this._classElement,
-      this.reflectionClassName,
-      this.reflectionExtensionName,
-      this.reflectionProxyName,
-      this.optimizeReflectionInstances,
-      this.languageVersion,
+  _ClassTree(this.typeAliasTable, this._classElement, this.reflectionClassName, this.reflectionExtensionName, this.reflectionProxyName,
+      this.optimizeReflectionInstances, this.languageVersion,
       {this.verbose = false})
       : className = _classElement.name {
     scan(_classElement);
@@ -1494,27 +1298,20 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
         '}';
   }
 
-  String classGlobalFunction(String functionName) =>
-      _buildClassGlobalFunction(className, reflectionClassName, functionName);
+  String classGlobalFunction(String functionName) => _buildClassGlobalFunction(className, reflectionClassName, functionName);
 
-  String get reflectionClass =>
-      _buildReflectionClassName(className, reflectionClassName);
+  String get reflectionClass => _buildReflectionClassName(className, reflectionClassName);
 
-  String get reflectionExtension =>
-      _buildReflectionExtensionName(className, reflectionExtensionName);
+  String get reflectionExtension => _buildReflectionExtensionName(className, reflectionExtensionName);
 
-  String get reflectionProxyExtension =>
-      '$reflectionProxyName\$reflectionProxy';
+  String get reflectionProxyExtension => '$reflectionProxyName\$reflectionProxy';
 
   final Set<ConstructorElement> constructors = <ConstructorElement>{};
 
-  ConstructorElement? get defaultConstructor =>
-      constructors.firstWhereOrNull((e) => e.isDefaultConstructor);
+  ConstructorElement? get defaultConstructor => constructors.firstWhereOrNull((e) => e.isDefaultConstructor);
 
   ConstructorElement? get emptyConstructor {
-    var noArgsConstructors = constructors
-        .where((e) => e.name.isNotEmpty && e.parameters.isEmpty)
-        .toList();
+    var noArgsConstructors = constructors.where((e) => e.name.isNotEmpty && e.parameters.isEmpty).toList();
 
     if (noArgsConstructors.isEmpty) {
       return null;
@@ -1576,18 +1373,15 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
 
   final Set<MethodElement> staticMethods = <MethodElement>{};
 
-  List<String> get staticMethodsNames =>
-      staticMethods.map((e) => e.name).toList();
+  List<String> get staticMethodsNames => staticMethods.map((e) => e.name).toList();
 
   final Set<MethodElement> methods = <MethodElement>{};
 
   List<String> get methodsNames => methods.map((e) => e.name).toList();
 
-  bool hasMethod(String methodName) =>
-      methods.where((m) => m.name == methodName).isNotEmpty;
+  bool hasMethod(String methodName) => methods.where((m) => m.name == methodName).isNotEmpty;
 
-  bool hasStaticMethod(String methodName) =>
-      staticMethods.where((m) => m.name == methodName).isNotEmpty;
+  bool hasStaticMethod(String methodName) => staticMethods.where((m) => m.name == methodName).isNotEmpty;
 
   bool isValidMethodName(String name) =>
       name != '==' &&
@@ -1629,24 +1423,17 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
 
   final Set<FieldElement> staticFields = <FieldElement>{};
 
-  List<String> get staticFieldsNames =>
-      staticFields.map((e) => e.name).toList();
+  List<String> get staticFieldsNames => staticFields.map((e) => e.name).toList();
 
   final Set<FieldElement> fields = <FieldElement>{};
 
   List<String> get fieldsNames => fields.map((e) => e.name).toList();
 
-  bool hasField(String filedName) =>
-      fields.where((m) => m.name == filedName).isNotEmpty;
+  bool hasField(String filedName) => fields.where((m) => m.name == filedName).isNotEmpty;
 
-  bool hasStaticField(String filedName) =>
-      staticFields.where((m) => m.name == filedName).isNotEmpty;
+  bool hasStaticField(String filedName) => staticFields.where((m) => m.name == filedName).isNotEmpty;
 
-  bool hasEntry(String name) =>
-      hasMethod(name) ||
-      hasStaticMethod(name) ||
-      hasField(name) ||
-      hasStaticField(name);
+  bool hasEntry(String name) => hasMethod(name) || hasStaticMethod(name) || hasField(name) || hasStaticField(name);
 
   @override
   T? visitFieldElement(FieldElement element) {
@@ -1673,14 +1460,12 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
     var fromJsonName = classGlobalFunction('fromJson');
 
     str.write('// ignore: non_constant_identifier_names\n');
-    str.write(
-        '$className $fromJsonName(Map<String,Object?> map) => $reflectionClass.staticInstance.fromJson(map);\n');
+    str.write('$className $fromJsonName(Map<String,Object?> map) => $reflectionClass.staticInstance.fromJson(map);\n');
 
     var fromJsonEncodedName = classGlobalFunction('fromJsonEncoded');
 
     str.write('// ignore: non_constant_identifier_names\n');
-    str.write(
-        '$className $fromJsonEncodedName(String jsonEncoded) => $reflectionClass.staticInstance.fromJsonEncoded(jsonEncoded);\n');
+    str.write('$className $fromJsonEncodedName(String jsonEncoded) => $reflectionClass.staticInstance.fromJsonEncoded(jsonEncoded);\n');
 
     return str.toString();
   }
@@ -1690,25 +1475,20 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
 
     var reflectionClass = this.reflectionClass;
 
-    str.write(
-        'class $reflectionClass extends ClassReflection<$className> with ${typeAliasTable.reflectionMixinName} {\n\n');
+    str.write('class $reflectionClass extends ClassReflection<$className> with ${typeAliasTable.reflectionMixinName} {\n\n');
 
     if (optimizeReflectionInstances) {
-      str.write(
-          '  static final Expando<$reflectionClass> _objectReflections = Expando();\n\n');
+      str.write('  static final Expando<$reflectionClass> _objectReflections = Expando();\n\n');
 
       str.write('  factory $reflectionClass([$className? object]) {\n');
       str.write('  if (object == null) return staticInstance;\n');
-      str.write(
-          '  return _objectReflections[object] ??= $reflectionClass._(object);\n');
+      str.write('  return _objectReflections[object] ??= $reflectionClass._(object);\n');
       str.write('}\n\n');
     } else {
-      str.write(
-          '  $reflectionClass([$className? object]) : this._(object);\n\n');
+      str.write('  $reflectionClass([$className? object]) : this._(object);\n\n');
     }
 
-    str.write(
-        '  $reflectionClass._([$className? object]) : super($className, \'$className\', object);\n\n');
+    str.write('  $reflectionClass._([$className? object]) : super($className, \'$className\', object);\n\n');
 
     str.write('  static bool _registered = false;\n');
     str.write('  @override\n');
@@ -1721,24 +1501,19 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
     str.write('  }\n\n');
 
     str.write('  @override\n');
-    str.write(
-        "  Version get languageVersion => Version.parse('$languageVersion');\n\n");
+    str.write("  Version get languageVersion => Version.parse('$languageVersion');\n\n");
 
     str.write('  @override\n');
-    str.write(
-        '  $reflectionClass withObject([$className? obj]) => $reflectionClass(obj)..setupInternalsWith(this);\n\n');
+    str.write('  $reflectionClass withObject([$className? obj]) => $reflectionClass(obj)..setupInternalsWith(this);\n\n');
 
     str.write('  static $reflectionClass? _withoutObjectInstance;\n');
     str.write('  @override\n');
-    str.write(
-        '  $reflectionClass withoutObjectInstance() => staticInstance;\n\n');
+    str.write('  $reflectionClass withoutObjectInstance() => staticInstance;\n\n');
 
-    str.write(
-        '  static $reflectionClass get staticInstance => _withoutObjectInstance ??= $reflectionClass._();\n\n');
+    str.write('  static $reflectionClass get staticInstance => _withoutObjectInstance ??= $reflectionClass._();\n\n');
 
     str.write('  @override\n');
-    str.write(
-        '   $reflectionClass getStaticInstance() => staticInstance ;\n\n');
+    str.write('   $reflectionClass getStaticInstance() => staticInstance ;\n\n');
 
     str.write('  static bool _boot = false;'
         '  static void boot() {\n'
@@ -1756,14 +1531,12 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
       classAnnotationListCode = '<Object>[]';
     }
 
-    str.write(
-        '  static const List<Object> _classAnnotations = $classAnnotationListCode; \n\n');
+    str.write('  static const List<Object> _classAnnotations = $classAnnotationListCode; \n\n');
 
     str.write('  @override\n');
     str.write('  List<Object> get classAnnotations => _classAnnotations;\n\n');
 
-    str.write(
-        '  static const List<Type> _supperTypes = const <Type>[${supperTypes.map((e) => e.name).join(', ')}];\n\n');
+    str.write('  static const List<Type> _supperTypes = const <Type>[${supperTypes.map((e) => e.name).join(', ')}];\n\n');
 
     str.write('\n  @override\n');
     str.write('  List<Type> get supperTypes => _supperTypes;\n\n');
@@ -1784,22 +1557,18 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
   void _buildConstructors(StringBuffer str) {
     _buildDefaultConstructor(str);
 
-    var entries =
-        _toConstructorEntries(this, constructors.where(_canConstruct).toSet());
+    var entries = _toConstructorEntries(this, constructors.where(_canConstruct).toSet());
     var names = _buildStringListCode(entries.keys, sorted: true);
 
     str.write('  static const List<String> _constructorsNames = $names;\n\n');
 
     str.write('  @override\n');
-    str.write(
-        '  List<String> get constructorsNames => _constructorsNames;\n\n');
+    str.write('  List<String> get constructorsNames => _constructorsNames;\n\n');
 
-    str.write(
-        '  static final Map<String,ConstructorReflection<$className>> _constructors = <String,ConstructorReflection<$className>>{};\n\n');
+    str.write('  static final Map<String,ConstructorReflection<$className>> _constructors = <String,ConstructorReflection<$className>>{};\n\n');
 
     str.write('  @override\n');
-    str.write(
-        '  ConstructorReflection<$className>? constructor(String constructorName) {\n');
+    str.write('  ConstructorReflection<$className>? constructor(String constructorName) {\n');
 
     //str.write('    return _constructorImpl(constructorName);\n');
 
@@ -1812,8 +1581,7 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
 
     str.write('  }\n\n');
 
-    str.write(
-        '  ConstructorReflection<$className>? _constructorImpl(String constructorName) {\n');
+    str.write('  ConstructorReflection<$className>? _constructorImpl(String constructorName) {\n');
 
     _buildSwitches(str, 'constructorName', entries.keys, (name) {
       var constructor = entries[name]!;
@@ -1850,15 +1618,13 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
       str.write('  bool get hasDefaultConstructor => true;\n');
 
       str.write('  @override\n');
-      str.write(
-          '  $className? createInstanceWithDefaultConstructor() => $className();\n');
+      str.write('  $className? createInstanceWithDefaultConstructor() => $className();\n');
     } else {
       str.write('  @override\n');
       str.write('  bool get hasDefaultConstructor => false;\n');
 
       str.write('  @override\n');
-      str.write(
-          '  $className? createInstanceWithDefaultConstructor() => null;\n');
+      str.write('  $className? createInstanceWithDefaultConstructor() => null;\n');
     }
     str.write('\n');
 
@@ -1870,15 +1636,13 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
 
       str.write('  @override\n');
       var name = emptyConstructor!.name;
-      str.write(
-          '  $className? createInstanceWithEmptyConstructor() => $className.$name();\n');
+      str.write('  $className? createInstanceWithEmptyConstructor() => $className.$name();\n');
     } else {
       str.write('  @override\n');
       str.write('  bool get hasEmptyConstructor => false;\n');
 
       str.write('  @override\n');
-      str.write(
-          '  $className? createInstanceWithEmptyConstructor() => null;\n');
+      str.write('  $className? createInstanceWithEmptyConstructor() => null;\n');
     }
 
     var noRequiredArgsConstructor = this.noRequiredArgsConstructor;
@@ -1889,15 +1653,13 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
 
       str.write('  @override\n');
       var name = noRequiredArgsConstructor!.name;
-      str.write(
-          '  $className? createInstanceWithNoRequiredArgsConstructor() => $className.$name();\n');
+      str.write('  $className? createInstanceWithNoRequiredArgsConstructor() => $className.$name();\n');
     } else {
       str.write('  @override\n');
       str.write('  bool get hasNoRequiredArgsConstructor => false;\n');
 
       str.write('  @override\n');
-      str.write(
-          '  $className? createInstanceWithNoRequiredArgsConstructor() => null;\n');
+      str.write('  $className? createInstanceWithNoRequiredArgsConstructor() => null;\n');
     }
 
     str.write('\n');
@@ -1914,20 +1676,16 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
 
     if (entries.isEmpty) {
       str.write('  @override\n');
-      str.write(
-          '  FieldReflection<$className,T>? field<T>(String fieldName, [$className? obj]) => null;\n');
+      str.write('  FieldReflection<$className,T>? field<T>(String fieldName, [$className? obj]) => null;\n');
       return;
     }
 
-    str.write(
-        '  static final Map<String,FieldReflection<$className,dynamic>> _fieldsNoObject = <String,FieldReflection<$className,dynamic>>{};\n\n');
+    str.write('  static final Map<String,FieldReflection<$className,dynamic>> _fieldsNoObject = <String,FieldReflection<$className,dynamic>>{};\n\n');
 
-    str.write(
-        '  final Map<String,FieldReflection<$className,dynamic>> _fieldsObject = <String,FieldReflection<$className,dynamic>>{};\n\n');
+    str.write('  final Map<String,FieldReflection<$className,dynamic>> _fieldsObject = <String,FieldReflection<$className,dynamic>>{};\n\n');
 
     str.write('  @override\n');
-    str.write(
-        '  FieldReflection<$className,T>? field<T>(String fieldName, [$className? obj]) {\n');
+    str.write('  FieldReflection<$className,T>? field<T>(String fieldName, [$className? obj]) {\n');
 
     //str.write('    return _fieldImpl<T>(fieldName, obj);\n');
 
@@ -1940,27 +1698,22 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
     str.write('    } else if (identical(obj, object)) {\n');
     str.write('        return _fieldObjectImpl<T>(fieldName);\n');
     str.write('    }\n');
-    str.write(
-        '    return _fieldNoObjectImpl<T>(fieldName)?.withObject(obj);\n');
+    str.write('    return _fieldNoObjectImpl<T>(fieldName)?.withObject(obj);\n');
 
     str.write('  }\n\n');
 
-    str.write(
-        '  FieldReflection<$className,T>? _fieldNoObjectImpl<T>(String fieldName) {\n');
+    str.write('  FieldReflection<$className,T>? _fieldNoObjectImpl<T>(String fieldName) {\n');
     str.write('      final f = _fieldsNoObject[fieldName];\n');
-    str.write(
-        '      if (f != null) {return f as FieldReflection<$className, T>;}\n');
+    str.write('      if (f != null) {return f as FieldReflection<$className, T>;}\n');
     str.write('      final f2 = _fieldImpl(fieldName, null);\n');
     str.write('      if (f2 == null) return null;\n');
     str.write('      _fieldsNoObject[fieldName] = f2;\n');
     str.write('      return f2 as FieldReflection<$className, T>;\n');
     str.write('  }\n\n');
 
-    str.write(
-        '  FieldReflection<$className,T>? _fieldObjectImpl<T>(String fieldName) {\n');
+    str.write('  FieldReflection<$className,T>? _fieldObjectImpl<T>(String fieldName) {\n');
     str.write('      final f = _fieldsObject[fieldName];\n');
-    str.write(
-        '      if (f != null) {return f as FieldReflection<$className, T>;}\n');
+    str.write('      if (f != null) {return f as FieldReflection<$className, T>;}\n');
     str.write('      var f2 = _fieldNoObjectImpl<T>(fieldName);\n');
     str.write('      if (f2 == null) return null;\n');
     str.write('      f2 = f2.withObject(object!);\n');
@@ -1968,8 +1721,7 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
     str.write('      return f2 ;\n');
     str.write('  }\n\n');
 
-    str.write(
-        '  FieldReflection<$className,dynamic>? _fieldImpl(String fieldName, $className? obj) {\n');
+    str.write('  FieldReflection<$className,dynamic>? _fieldImpl(String fieldName, $className? obj) {\n');
     str.write('    obj ??= object;\n\n');
 
     _buildSwitches(str, 'fieldName', entries.keys, (name) {
@@ -1982,8 +1734,7 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
       var fieldDeclaringType = field.declaringType;
 
       if (fieldDeclaringType == null) {
-        throw StateError(
-            "Can't determine `declaringType` for field `$name`: $field");
+        throw StateError("Can't determine `declaringType` for field `$name`: $field");
       }
 
       var declaringType = fieldDeclaringType.typeNameResolvable;
@@ -2014,26 +1765,21 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
     str.write('  static const List<String> _staticFieldsNames = $names;\n\n');
 
     str.write('  @override\n');
-    str.write(
-        '  List<String> get staticFieldsNames => _staticFieldsNames;\n\n');
+    str.write('  List<String> get staticFieldsNames => _staticFieldsNames;\n\n');
 
     if (entries.isEmpty) {
       str.write('  @override\n');
-      str.write(
-          '  FieldReflection<$className,T>? staticField<T>(String fieldName) => null;\n\n');
+      str.write('  FieldReflection<$className,T>? staticField<T>(String fieldName) => null;\n\n');
       return;
     }
 
-    str.write(
-        '  static final Map<String,FieldReflection<$className,dynamic>> _staticFields = <String,FieldReflection<$className,dynamic>>{};\n\n');
+    str.write('  static final Map<String,FieldReflection<$className,dynamic>> _staticFields = <String,FieldReflection<$className,dynamic>>{};\n\n');
 
     str.write('  @override\n');
-    str.write(
-        '  FieldReflection<$className,T>? staticField<T>(String fieldName) {\n');
+    str.write('  FieldReflection<$className,T>? staticField<T>(String fieldName) {\n');
 
     str.write('    var f = _staticFields[fieldName];\n');
-    str.write(
-        '    if (f != null) {return f as FieldReflection<$className,T>;}\n');
+    str.write('    if (f != null) {return f as FieldReflection<$className,T>;}\n');
     str.write('    f = _staticFieldImpl(fieldName);\n');
     str.write('    if (f == null) return null;\n');
     str.write('    _staticFields[fieldName] = f;\n');
@@ -2041,8 +1787,7 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
 
     str.write('  }\n\n');
 
-    str.write(
-        '  FieldReflection<$className,dynamic>? _staticFieldImpl(String fieldName) {\n');
+    str.write('  FieldReflection<$className,dynamic>? _staticFieldImpl(String fieldName) {\n');
 
     _buildSwitches(str, 'fieldName', entries.keys, (name) {
       var field = entries[name]!;
@@ -2056,8 +1801,7 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
       var nullable = field.nullable ? 'true' : 'false';
       var isFinal = field.isFinal ? 'true' : 'false';
       var getter = '(o) => () => $className.$name';
-      var setter =
-          !field.allowSetter ? 'null' : '(o) => (v) => $className.$name = v';
+      var setter = !field.allowSetter ? 'null' : '(o) => (v) => $className.$name = v';
 
       return "FieldReflection<$className,$fullType>(this, $declaringType, "
           "$typeCode, '$name', $nullable, "
@@ -2077,18 +1821,13 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
   void _buildCallMethodToJson(StringBuffer str) {
     var entries = _toMethodsEntries(methods);
 
-    var toJsonMethod = entries.values
-        .where((m) => m.name.toLowerCase() == 'tojson')
-        .firstOrNull;
+    var toJsonMethod = entries.values.where((m) => m.name.toLowerCase() == 'tojson').firstOrNull;
 
-    if (toJsonMethod != null &&
-        toJsonMethod.normalParameters.isEmpty &&
-        !toJsonMethod.hasRequiredNamedParameter) {
+    if (toJsonMethod != null && toJsonMethod.normalParameters.isEmpty && !toJsonMethod.hasRequiredNamedParameter) {
       str.write('  @override\n');
       str.write('  bool get hasMethodToJson => true;\n\n');
       str.write('  @override\n');
-      str.write(
-          '  Object? callMethodToJson([$className? obj]) { obj ??= object ; return obj?.${toJsonMethod.name}();}\n\n');
+      str.write('  Object? callMethodToJson([$className? obj]) { obj ??= object ; return obj?.${toJsonMethod.name}();}\n\n');
     } else {
       str.write('  @override\n');
       str.write('  bool get hasMethodToJson => false;\n\n');
@@ -2108,20 +1847,16 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
 
     if (entries.isEmpty) {
       str.write('  @override\n');
-      str.write(
-          '  MethodReflection<$className,R>? method<R>(String methodName, [$className? obj]) => null;\n');
+      str.write('  MethodReflection<$className,R>? method<R>(String methodName, [$className? obj]) => null;\n');
       return;
     }
 
-    str.write(
-        '  static final Map<String,MethodReflection<$className,dynamic>> _methodsNoObject = <String,MethodReflection<$className,dynamic>>{};\n\n');
+    str.write('  static final Map<String,MethodReflection<$className,dynamic>> _methodsNoObject = <String,MethodReflection<$className,dynamic>>{};\n\n');
 
-    str.write(
-        '  final Map<String,MethodReflection<$className,dynamic>> _methodsObject = <String,MethodReflection<$className,dynamic>>{};\n\n');
+    str.write('  final Map<String,MethodReflection<$className,dynamic>> _methodsObject = <String,MethodReflection<$className,dynamic>>{};\n\n');
 
     str.write('  @override\n');
-    str.write(
-        '  MethodReflection<$className,R>? method<R>(String methodName, [$className? obj]) {\n');
+    str.write('  MethodReflection<$className,R>? method<R>(String methodName, [$className? obj]) {\n');
 
     //str.write('    return _methodImpl<R>(methodName, obj);\n');
 
@@ -2134,27 +1869,22 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
     str.write('    } else if (identical(obj, object)) {\n');
     str.write('      return _methodObjectImpl<R>(methodName);\n');
     str.write('    }\n');
-    str.write(
-        '    return _methodNoObjectImpl<R>(methodName)?.withObject(obj);\n');
+    str.write('    return _methodNoObjectImpl<R>(methodName)?.withObject(obj);\n');
 
     str.write('  }\n\n');
 
-    str.write(
-        '  MethodReflection<$className,R>? _methodNoObjectImpl<R>(String methodName) {\n');
+    str.write('  MethodReflection<$className,R>? _methodNoObjectImpl<R>(String methodName) {\n');
     str.write('    final m = _methodsNoObject[methodName];\n');
-    str.write(
-        '    if (m != null) {return m as MethodReflection<$className, R>;}\n');
+    str.write('    if (m != null) {return m as MethodReflection<$className, R>;}\n');
     str.write('    final m2 = _methodImpl(methodName, null);\n');
     str.write('    if (m2 == null) return null;\n');
     str.write('    _methodsNoObject[methodName] = m2;\n');
     str.write('    return m2 as MethodReflection<$className, R>;\n');
     str.write('  }\n\n');
 
-    str.write(
-        '  MethodReflection<$className,R>? _methodObjectImpl<R>(String methodName) {\n');
+    str.write('  MethodReflection<$className,R>? _methodObjectImpl<R>(String methodName) {\n');
     str.write('    final m = _methodsObject[methodName];\n');
-    str.write(
-        '    if (m != null) {return m as MethodReflection<$className, R>;}\n');
+    str.write('    if (m != null) {return m as MethodReflection<$className, R>;}\n');
     str.write('    var m2 = _methodNoObjectImpl<R>(methodName);\n');
     str.write('    if (m2 == null) return null;\n');
     str.write('    m2 = m2.withObject(object!);\n');
@@ -2162,8 +1892,7 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
     str.write('    return m2;\n');
     str.write('  }\n\n');
 
-    str.write(
-        '  MethodReflection<$className,dynamic>? _methodImpl(String methodName, $className? obj) {\n');
+    str.write('  MethodReflection<$className,dynamic>? _methodImpl(String methodName, $className? obj) {\n');
     str.write('    obj ??= object;\n\n');
 
     _buildSwitches(str, 'methodName', entries.keys, (name) {
@@ -2196,26 +1925,21 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
     str.write('  static const List<String> _staticMethodsNames = $names;\n\n');
 
     str.write('  @override\n');
-    str.write(
-        '  List<String> get staticMethodsNames => _staticMethodsNames;\n\n');
+    str.write('  List<String> get staticMethodsNames => _staticMethodsNames;\n\n');
 
     if (entries.isEmpty) {
       str.write('  @override\n');
-      str.write(
-          '  MethodReflection<$className,R>? staticMethod<R>(String methodName) => null;\n\n');
+      str.write('  MethodReflection<$className,R>? staticMethod<R>(String methodName) => null;\n\n');
       return;
     }
 
-    str.write(
-        '  static final Map<String,MethodReflection<$className,dynamic>> _staticMethods = <String,MethodReflection<$className,dynamic>>{};\n\n');
+    str.write('  static final Map<String,MethodReflection<$className,dynamic>> _staticMethods = <String,MethodReflection<$className,dynamic>>{};\n\n');
 
     str.write('  @override\n');
-    str.write(
-        '  MethodReflection<$className,R>? staticMethod<R>(String methodName) {\n');
+    str.write('  MethodReflection<$className,R>? staticMethod<R>(String methodName) {\n');
 
     str.write('    var m = _staticMethods[methodName];\n');
-    str.write(
-        '    if (m != null) {return m as MethodReflection<$className,R>;}\n');
+    str.write('    if (m != null) {return m as MethodReflection<$className,R>;}\n');
     str.write('    m = _staticMethodImpl(methodName);\n');
     str.write('    if (m == null) return null;\n');
     str.write('    _staticMethods[methodName] = m;\n');
@@ -2223,8 +1947,7 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
 
     str.write('  }\n\n');
 
-    str.write(
-        '  MethodReflection<$className,dynamic>? _staticMethodImpl(String methodName) {\n');
+    str.write('  MethodReflection<$className,dynamic>? _staticMethodImpl(String methodName) {\n');
 
     _buildSwitches(str, 'methodName', entries.keys, (name) {
       var method = entries[name]!;
@@ -2249,8 +1972,7 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
     str.write('  }\n\n');
   }
 
-  Map<String, _Constructor> _toConstructorEntries(
-      _ClassTree<T> classTree, Set<ConstructorElement> elements) {
+  Map<String, _Constructor> _toConstructorEntries(_ClassTree<T> classTree, Set<ConstructorElement> elements) {
     return Map.fromEntries(elements.map((c) {
       return MapEntry(c.name, _Constructor(classTree, c));
     }));
@@ -2262,8 +1984,7 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
     }));
   }
 
-  void _buildSwitches(StringBuffer str, String argName,
-      Iterable<String> entriesNames, String Function(String name) caseReturn) {
+  void _buildSwitches(StringBuffer str, String argName, Iterable<String> entriesNames, String Function(String name) caseReturn) {
     var namesLcConflicts = <String>{};
 
     var namesLC = <String, String>{};
@@ -2326,40 +2047,33 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
     var entriesCount = 0;
 
     if (!hasEntry('reflection')) {
-      str.write(
-          '  /// Returns a [ClassReflection] for type [$className]. (Generated by [ReflectionFactory])\n');
-      str.write(
-          '  ClassReflection<$className> get reflection => $reflectionClass(this);\n');
+      str.write('  /// Returns a [ClassReflection] for type [$className]. (Generated by [ReflectionFactory])\n');
+      str.write('  ClassReflection<$className> get reflection => $reflectionClass(this);\n');
       entriesCount++;
     }
 
     if (!hasEntry('toJson')) {
-      str.write(
-          '\n  /// Returns a JSON for type [$className]. (Generated by [ReflectionFactory])\n');
-      str.write(
-          '  Object? toJson({bool duplicatedEntitiesAsID = false}) => reflection.toJson(null, null, duplicatedEntitiesAsID);\n');
+      str.write('\n  /// Returns a JSON for type [$className]. (Generated by [ReflectionFactory])\n');
+      str.write('  Object? toJson({bool duplicatedEntitiesAsID = false}) => reflection.toJson(null, null, duplicatedEntitiesAsID);\n');
       entriesCount++;
     }
 
     if (!hasEntry('toJsonMap')) {
-      str.write(
-          '\n  /// Returns a JSON [Map] for type [$className]. (Generated by [ReflectionFactory])\n');
+      str.write('\n  /// Returns a JSON [Map] for type [$className]. (Generated by [ReflectionFactory])\n');
       str.write(
           '  Map<String,dynamic>? toJsonMap({bool duplicatedEntitiesAsID = false}) => reflection.toJsonMap(duplicatedEntitiesAsID: duplicatedEntitiesAsID);\n');
       entriesCount++;
     }
 
     if (!hasEntry('toJsonEncoded')) {
-      str.write(
-          '\n  /// Returns an encoded JSON [String] for type [$className]. (Generated by [ReflectionFactory])\n');
+      str.write('\n  /// Returns an encoded JSON [String] for type [$className]. (Generated by [ReflectionFactory])\n');
       str.write(
           '  String toJsonEncoded({bool pretty = false, bool duplicatedEntitiesAsID = false}) => reflection.toJsonEncoded(pretty: pretty, duplicatedEntitiesAsID: duplicatedEntitiesAsID);\n');
       entriesCount++;
     }
 
     if (!hasEntry('toJsonFromFields')) {
-      str.write(
-          '\n  /// Returns a JSON for type [$className] using the class fields. (Generated by [ReflectionFactory])\n');
+      str.write('\n  /// Returns a JSON for type [$className] using the class fields. (Generated by [ReflectionFactory])\n');
       str.write(
           '  Object? toJsonFromFields({bool duplicatedEntitiesAsID = false}) => reflection.toJsonFromFields(duplicatedEntitiesAsID: duplicatedEntitiesAsID);\n');
       entriesCount++;
@@ -2372,16 +2086,10 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
     }
   }
 
-  String buildReflectionProxyClass(
-      ClassElement proxyClass,
-      bool alwaysReturnFuture,
-      Set<DartObject> traverseReturnTypes,
-      Set<DartObject> ignoreParametersTypes,
-      Set<DartObject> ignoreMethods,
-      _TypeAliasTable typeAliasTable) {
+  String buildReflectionProxyClass(ClassElement proxyClass, bool alwaysReturnFuture, Set<DartObject> traverseReturnTypes, Set<DartObject> ignoreParametersTypes,
+      Set<DartObject> ignoreMethods, _TypeAliasTable typeAliasTable) {
     if (!_implementsType(proxyClass, 'ClassProxyListener')) {
-      throw StateError(
-          "`ClassProxy` is being used in a class that is not implementing `ClassProxyListener`: ${proxyClass.name}");
+      throw StateError("`ClassProxy` is being used in a class that is not implementing `ClassProxyListener`: ${proxyClass.name}");
     }
 
     var str = StringBuffer();
@@ -2390,36 +2098,23 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
 
     var typeProvider = proxyClass.library.typeProvider;
 
-    _buildClassProxyMethods(
-        str,
-        alwaysReturnFuture,
-        traverseReturnTypes.map((e) => e.toTypeValue()!).toSet(),
-        ignoreParametersTypes.map((e) => e.toTypeValue()!).toSet(),
-        ignoreMethods.map((e) => e.toStringValue()!).toSet(),
-        typeProvider,
-        typeAliasTable);
+    _buildClassProxyMethods(str, alwaysReturnFuture, traverseReturnTypes.map((e) => e.toTypeValue()!).toSet(),
+        ignoreParametersTypes.map((e) => e.toTypeValue()!).toSet(), ignoreMethods.map((e) => e.toStringValue()!).toSet(), typeProvider, typeAliasTable);
 
     str.write('}\n\n');
 
     return str.toString();
   }
 
-  void _buildClassProxyMethods(
-      StringBuffer codeBuffer,
-      bool alwaysReturnFuture,
-      Set<DartType> traverseReturnTypes,
-      Set<DartType> ignoreParametersTypes,
-      Set<String> ignoreMethods,
-      TypeProvider typeProvider,
-      _TypeAliasTable typeAliasTable) {
+  void _buildClassProxyMethods(StringBuffer codeBuffer, bool alwaysReturnFuture, Set<DartType> traverseReturnTypes, Set<DartType> ignoreParametersTypes,
+      Set<String> ignoreMethods, TypeProvider typeProvider, _TypeAliasTable typeAliasTable) {
     final fReturnValue = typeAliasTable.fReturnValue;
     final fReturnFuture = typeAliasTable.fReturnFuture;
     final fReturnFutureOr = typeAliasTable.fReturnFutureOr;
 
     var str = StringBuffer();
 
-    var traverseReturnInterfaceTypes =
-        traverseReturnTypes.map((e) => e.interfaceType).whereNotNull().toSet();
+    var traverseReturnInterfaceTypes = traverseReturnTypes.map((e) => e.interfaceType).whereNotNull().toSet();
 
     var entriesCount = 0;
 
@@ -2436,35 +2131,22 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
       if (proxyMethod.isReturningFuture) {
         var arg = proxyMethod.returnTypeArgument;
 
-        if (arg != null &&
-            (traverseReturnTypes.contains(arg) ||
-                traverseReturnInterfaceTypes.contains(arg.interfaceType))) {
-          proxyMethod = proxyMethod
-              .traverseReturnType()
-              .traverseReturnType()
-              .returningFuture(typeProvider);
+        if (arg != null && (traverseReturnTypes.contains(arg) || traverseReturnInterfaceTypes.contains(arg.interfaceType))) {
+          proxyMethod = proxyMethod.traverseReturnType().traverseReturnType().returningFuture(typeProvider);
         }
       } else if (proxyMethod.isReturningFutureOr) {
         var arg = proxyMethod.returnTypeArgument;
 
-        if (arg != null &&
-            (traverseReturnTypes.contains(arg) ||
-                traverseReturnInterfaceTypes.contains(arg.interfaceType))) {
-          proxyMethod = proxyMethod
-              .traverseReturnType()
-              .traverseReturnType()
-              .returningFutureOr(typeProvider);
+        if (arg != null && (traverseReturnTypes.contains(arg) || traverseReturnInterfaceTypes.contains(arg.interfaceType))) {
+          proxyMethod = proxyMethod.traverseReturnType().traverseReturnType().returningFutureOr(typeProvider);
         }
-      } else if (traverseReturnTypes.contains(proxyMethod.returnType) ||
-          traverseReturnInterfaceTypes
-              .contains(proxyMethod.returnType.interfaceType)) {
+      } else if (traverseReturnTypes.contains(proxyMethod.returnType) || traverseReturnInterfaceTypes.contains(proxyMethod.returnType.interfaceType)) {
         proxyMethod = proxyMethod.traverseReturnType();
       }
 
       if (alwaysReturnFuture && !proxyMethod.isReturningFuture) {
         if (proxyMethod.isReturningFutureOr) {
-          proxyMethod =
-              proxyMethod.traverseReturnType().returningFuture(typeProvider);
+          proxyMethod = proxyMethod.traverseReturnType().returningFuture(typeProvider);
         } else {
           proxyMethod = proxyMethod.returningFuture(typeProvider);
         }
@@ -2474,8 +2156,7 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
 
       str.write(' {\n');
 
-      var returnTypeAsCode =
-          proxyMethod.returnType.asTypeReflectionCode(typeAliasTable);
+      var returnTypeAsCode = proxyMethod.returnType.asTypeReflectionCode(typeAliasTable);
 
       var call = StringBuffer();
 
@@ -2496,9 +2177,7 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
         if (proxyMethod.isReturningFuture || proxyMethod.isReturningFutureOr) {
           var futureType = proxyMethod.returnTypeArgument;
 
-          var futureTypeStr = futureType != null && futureType is VoidType
-              ? 'dynamic'
-              : (futureType?.fullTypeNameResolvable() ?? 'dynamic');
+          var futureTypeStr = futureType != null && futureType is VoidType ? 'dynamic' : (futureType?.fullTypeNameResolvable() ?? 'dynamic');
 
           if (acceptsNull) {
             str.write('  if (ret == null) return null;\n');
@@ -2562,26 +2241,19 @@ class _ProxyMethod {
   final List<ParameterElement> parameters;
   final List<TypeParameterElement> typeParameters;
 
-  _ProxyMethod(
-      this.name, this.returnType, this.parameters, this.typeParameters);
+  _ProxyMethod(this.name, this.returnType, this.parameters, this.typeParameters);
 
   factory _ProxyMethod.fromMethodElement(MethodElement method) {
-    return _ProxyMethod(method.name, method.returnType,
-        method.parameters.toList(), method.typeParameters.toList());
+    return _ProxyMethod(method.name, method.returnType, method.parameters.toList(), method.typeParameters.toList());
   }
 
-  List<String> get typeParametersNames =>
-      typeParameters.map((e) => e.name).toList();
+  List<String> get typeParametersNames => typeParameters.map((e) => e.name).toList();
 
-  List<ParameterElement> get positionalParameters => parameters
-      .where((p) => p.isPositional && !p.isOptionalPositional)
-      .toList();
+  List<ParameterElement> get positionalParameters => parameters.where((p) => p.isPositional && !p.isOptionalPositional).toList();
 
-  List<ParameterElement> get positionalOptionalParameters =>
-      parameters.where((p) => p.isOptionalPositional).toList();
+  List<ParameterElement> get positionalOptionalParameters => parameters.where((p) => p.isOptionalPositional).toList();
 
-  List<ParameterElement> get namedParameters =>
-      parameters.where((p) => p.isNamed).toList();
+  List<ParameterElement> get namedParameters => parameters.where((p) => p.isNamed).toList();
 
   bool get returnAcceptsNull => returnType.isNullable;
 
@@ -2591,13 +2263,10 @@ class _ProxyMethod {
 
   bool get isReturningFutureOr => returnType.isDartAsyncFutureOr;
 
-  String get returnTypeAsString =>
-      returnType.getDisplayString(withNullability: true);
+  String get returnTypeAsString => returnType.getDisplayString(withNullability: true);
 
   String returnTypeNameResolvable({bool withNullability = true}) =>
-      returnType.fullTypeNameResolvable(
-          withNullability: withNullability,
-          typeParameters: typeParametersNames);
+      returnType.fullTypeNameResolvable(withNullability: withNullability, typeParameters: typeParametersNames);
 
   DartType? get returnTypeArgument {
     if (!returnType.hasTypeArguments) return null;
@@ -2642,8 +2311,7 @@ class _ProxyMethod {
     var parametersStr = StringBuffer();
 
     if (positionalParameters.isNotEmpty) {
-      _writeParameters(
-          parametersStr, positionalParameters, ignoreParametersTypes);
+      _writeParameters(parametersStr, positionalParameters, ignoreParametersTypes);
     }
 
     if (positionalOptionalParameters.isNotEmpty) {
@@ -2652,8 +2320,7 @@ class _ProxyMethod {
       }
 
       parametersStr.write('[ ');
-      _writeParameters(
-          parametersStr, positionalOptionalParameters, ignoreParametersTypes);
+      _writeParameters(parametersStr, positionalOptionalParameters, ignoreParametersTypes);
       parametersStr.write(' ]');
     }
 
@@ -2670,8 +2337,7 @@ class _ProxyMethod {
     return parametersStr.toString();
   }
 
-  void _writeParameters(StringBuffer parametersStr,
-      List<ParameterElement> parameters, Set<DartType> ignoreParametersTypes) {
+  void _writeParameters(StringBuffer parametersStr, List<ParameterElement> parameters, Set<DartType> ignoreParametersTypes) {
     for (int i = 0; i < parameters.length; i++) {
       var e = parameters[i];
 
@@ -2762,12 +2428,7 @@ class _Element {
       }
     }
 
-    return metadata
-        .map((e) => e.toSource())
-        .where((src) =>
-            !src.startsWith('@EnableReflection(') &&
-            !src.startsWith('@ReflectionBridge('))
-        .map((src) {
+    return metadata.map((e) => e.toSource()).where((src) => !src.startsWith('@EnableReflection(') && !src.startsWith('@ReflectionBridge(')).map((src) {
       if (src.startsWith('@')) {
         src = src.substring(1);
       }
@@ -2792,9 +2453,7 @@ class _Parameter extends _Element {
 
   final bool required;
 
-  _Parameter(this.parameterElement, this.parameterIndex, this.type, this.name,
-      this.nullable, this.required)
-      : super(parameterElement);
+  _Parameter(this.parameterElement, this.parameterIndex, this.type, this.name, this.nullable, this.required) : super(parameterElement);
 
   bool get isNullable => nullable || type is DynamicType;
 
@@ -2816,8 +2475,7 @@ class _Constructor<T> extends _Element {
 
   final ConstructorElement constructorElement;
 
-  _Constructor(this.classTree, this.constructorElement)
-      : super(constructorElement);
+  _Constructor(this.classTree, this.constructorElement) : super(constructorElement);
 
   _TypeAliasTable get typeAliasTable => classTree.typeAliasTable;
 
@@ -2827,32 +2485,21 @@ class _Constructor<T> extends _Element {
 
   bool get isStatic => constructorElement.isStatic;
 
-  String get returnTypeNameAsCode =>
-      constructorElement.returnType.typeNameAsNullableCode;
+  String get returnTypeNameAsCode => constructorElement.returnType.typeNameAsNullableCode;
 
-  String get returnTypeAsCode =>
-      constructorElement.returnType.asTypeReflectionCode(typeAliasTable);
+  String get returnTypeAsCode => constructorElement.returnType.asTypeReflectionCode(typeAliasTable);
 
-  List<_Parameter> get normalParameters =>
-      constructorElement.type.normalParameters;
+  List<_Parameter> get normalParameters => constructorElement.type.normalParameters;
 
-  List<_Parameter> get optionalParameters =>
-      constructorElement.type.optionalParameters;
+  List<_Parameter> get optionalParameters => constructorElement.type.optionalParameters;
 
-  Map<String, _Parameter> get namedParameters =>
-      constructorElement.type.namedParameters;
+  Map<String, _Parameter> get namedParameters => constructorElement.type.namedParameters;
 
-  String get normalParametersAsCode =>
-      _buildParameterReflectionList(typeAliasTable, normalParameters,
-          nullOnEmpty: true, required: true);
+  String get normalParametersAsCode => _buildParameterReflectionList(typeAliasTable, normalParameters, nullOnEmpty: true, required: true);
 
-  String get optionalParametersAsCode =>
-      _buildParameterReflectionList(typeAliasTable, optionalParameters,
-          nullOnEmpty: true, required: false);
+  String get optionalParametersAsCode => _buildParameterReflectionList(typeAliasTable, optionalParameters, nullOnEmpty: true, required: false);
 
-  String get namedParametersAsCode =>
-      _buildNamedParameterReflectionMap(typeAliasTable, namedParameters,
-          nullOnEmpty: true);
+  String get namedParametersAsCode => _buildNamedParameterReflectionMap(typeAliasTable, namedParameters, nullOnEmpty: true);
 
   String get asCallerCode {
     var s = StringBuffer();
@@ -2988,35 +2635,23 @@ class _Method extends _Element {
 
   bool get isStatic => methodElement.isStatic;
 
-  String get returnTypeNameAsCode =>
-      methodElement.returnType.typeNameAsNullableCode;
+  String get returnTypeNameAsCode => methodElement.returnType.typeNameAsNullableCode;
 
-  String get returnTypeAsCode =>
-      methodElement.returnType.asTypeReflectionCode(typeAliasTable);
+  String get returnTypeAsCode => methodElement.returnType.asTypeReflectionCode(typeAliasTable);
 
   List<_Parameter> get normalParameters => methodElement.type.normalParameters;
 
-  List<_Parameter> get optionalParameters =>
-      methodElement.type.optionalParameters;
+  List<_Parameter> get optionalParameters => methodElement.type.optionalParameters;
 
-  Map<String, _Parameter> get namedParameters =>
-      methodElement.type.namedParameters;
+  Map<String, _Parameter> get namedParameters => methodElement.type.namedParameters;
 
-  bool get hasRequiredNamedParameter => namedParameters.values
-      .where((m) => m.required || (!m.isNullable && !m.hasDefaultValue))
-      .isNotEmpty;
+  bool get hasRequiredNamedParameter => namedParameters.values.where((m) => m.required || (!m.isNullable && !m.hasDefaultValue)).isNotEmpty;
 
-  String get normalParametersAsCode =>
-      _buildParameterReflectionList(typeAliasTable, normalParameters,
-          nullOnEmpty: true, required: true);
+  String get normalParametersAsCode => _buildParameterReflectionList(typeAliasTable, normalParameters, nullOnEmpty: true, required: true);
 
-  String get optionalParametersAsCode =>
-      _buildParameterReflectionList(typeAliasTable, optionalParameters,
-          nullOnEmpty: true, required: false);
+  String get optionalParametersAsCode => _buildParameterReflectionList(typeAliasTable, optionalParameters, nullOnEmpty: true, required: false);
 
-  String get namedParametersAsCode =>
-      _buildNamedParameterReflectionMap(typeAliasTable, namedParameters,
-          nullOnEmpty: true);
+  String get namedParametersAsCode => _buildNamedParameterReflectionMap(typeAliasTable, namedParameters, nullOnEmpty: true);
 
   @override
   String toString() {
@@ -3053,8 +2688,7 @@ class _Field extends _Element {
 
   String get typeNameAsNullableCode => fieldElement.type.typeNameAsNullableCode;
 
-  String typeAsCode(_TypeAliasTable typeAliasTable) =>
-      fieldElement.type.asTypeReflectionCode(typeAliasTable);
+  String typeAsCode(_TypeAliasTable typeAliasTable) => fieldElement.type.asTypeReflectionCode(typeAliasTable);
 
   @override
   String toString() {
@@ -3085,33 +2719,27 @@ extension _IterableExtension on Iterable<DartType> {
 }
 
 extension _ListDartTypeExtension on List<DartType> {
-  List<String> get typesNamesResolvable =>
-      map((a) => a.typeNameResolvable).toList();
+  List<String> get typesNamesResolvable => map((a) => a.typeNameResolvable).toList();
 
   String toListOfConstTypeCode(_TypeAliasTable typeAliasTable) {
     final tr = typeAliasTable.trName;
     final ti = typeAliasTable.tiName;
 
-    var listConstTypeReflection =
-        map((e) => e.asConstTypeReflectionCode(typeAliasTable))
-            .toList(growable: false);
+    var listConstTypeReflection = map((e) => e.asConstTypeReflectionCode(typeAliasTable)).toList(growable: false);
     if (listConstTypeReflection.every((e) => e != null)) {
       return '<$tr>[${listConstTypeReflection.join(',')}]';
     }
 
-    var listConstTypeInfo = map((e) => e.asConstTypeInfoCode(typeAliasTable))
-        .toList(growable: false);
+    var listConstTypeInfo = map((e) => e.asConstTypeInfoCode(typeAliasTable)).toList(growable: false);
     if (listConstTypeInfo.every((e) => e != null)) {
       return '<$ti>[${listConstTypeInfo.join(',')}]';
     }
 
-    var listTypeReflection = map((e) => e.asTypeReflectionCode(typeAliasTable))
-        .toList(growable: false);
+    var listTypeReflection = map((e) => e.asTypeReflectionCode(typeAliasTable)).toList(growable: false);
     return '<$tr>[${listTypeReflection.join(',')}]';
   }
 
-  String get typesNames =>
-      map((e) => e.fullTypeNameResolvable(withNullability: true)).join(', ');
+  String get typesNames => map((e) => e.fullTypeNameResolvable(withNullability: true)).join(', ');
 }
 
 extension _DartTypeExtension on DartType {
@@ -3124,9 +2752,7 @@ extension _DartTypeExtension on DartType {
   String get typeNameResolvable => resolveTypeName();
 
   String resolveTypeName({Iterable<String>? typeParameters}) {
-    if (typeParameters != null &&
-        isParameterType &&
-        typeParameters.isNotEmpty) {
+    if (typeParameters != null && isParameterType && typeParameters.isNotEmpty) {
       var name = typeName;
       var nameResolved = typeParameters.contains(name) ? name : 'dynamic';
       return nameResolved;
@@ -3136,18 +2762,14 @@ extension _DartTypeExtension on DartType {
     return name;
   }
 
-  String fullTypeNameResolvable(
-      {bool withNullability = true, Iterable<String>? typeParameters}) {
+  String fullTypeNameResolvable({bool withNullability = true, Iterable<String>? typeParameters}) {
     var name = resolveTypeName(typeParameters: typeParameters);
 
     if (!hasTypeArguments) {
       return withNullability && isNullable ? '$name?' : name;
     }
 
-    var args = resolvedTypeArguments
-        .map((e) => e.fullTypeNameResolvable(
-            withNullability: withNullability, typeParameters: typeParameters))
-        .join(',');
+    var args = resolvedTypeArguments.map((e) => e.fullTypeNameResolvable(withNullability: withNullability, typeParameters: typeParameters)).join(',');
 
     return withNullability && isNullable ? '$name<$args>?' : '$name<$args>';
   }
@@ -3160,8 +2782,7 @@ extension _DartTypeExtension on DartType {
 
       var idx = name.indexOf('Function(');
 
-      if (idx == 0 ||
-          (idx > 0 && name.substring(idx - 1, idx).trim().isEmpty)) {
+      if (idx == 0 || (idx > 0 && name.substring(idx - 1, idx).trim().isEmpty)) {
         name = 'Function';
       } else {
         idx = name.indexOf('<');
@@ -3195,8 +2816,7 @@ extension _DartTypeExtension on DartType {
     var self = this;
 
     if (self is ParameterizedType && self.typeArguments.isNotEmpty) {
-      return self.typeArguments.where((e) => !e.hasTypeArguments).length ==
-          self.typeArguments.length;
+      return self.typeArguments.where((e) => !e.hasTypeArguments).length == self.typeArguments.length;
     }
 
     return false;
@@ -3381,8 +3001,7 @@ extension _ConstructorElementExtension on ConstructorElement {
     var i = 0;
     for (var p in parameters) {
       if (filter(p)) {
-        var param = _Parameter(
-            p, i, p.type, p.name, p.type.isNullable, p.isRequiredNamed);
+        var param = _Parameter(p, i, p.type, p.name, p.type.isNullable, p.isRequiredNamed);
         list.add(param);
       }
       i++;
@@ -3390,15 +3009,11 @@ extension _ConstructorElementExtension on ConstructorElement {
     return list;
   }
 
-  List<_Parameter> get normalParameters =>
-      parametersWhere((p) => !p.isOptionalPositional && !p.isNamed);
+  List<_Parameter> get normalParameters => parametersWhere((p) => !p.isOptionalPositional && !p.isNamed);
 
-  List<_Parameter> get optionalParameters =>
-      parametersWhere((p) => p.isOptionalPositional);
+  List<_Parameter> get optionalParameters => parametersWhere((p) => p.isOptionalPositional);
 
-  Map<String, _Parameter> get namedParameters =>
-      Map<String, _Parameter>.fromEntries(
-          parametersWhere((p) => p.isNamed).map((e) => MapEntry(e.name, e)));
+  Map<String, _Parameter> get namedParameters => Map<String, _Parameter>.fromEntries(parametersWhere((p) => p.isNamed).map((e) => MapEntry(e.name, e)));
 }
 
 extension _FunctionTypeExtension on FunctionType {
@@ -3449,8 +3064,7 @@ bool _addWithUniqueName(Set<Element> set, Element element) {
   return false;
 }
 
-String _buildStringListCode(Iterable? o,
-    {bool sorted = false, bool nullOnEmpty = false}) {
+String _buildStringListCode(Iterable? o, {bool sorted = false, bool nullOnEmpty = false}) {
   if (o == null || o.isEmpty) {
     return nullOnEmpty ? 'null' : 'const <String>[]';
   } else {
@@ -3463,9 +3077,7 @@ String _buildStringListCode(Iterable? o,
   }
 }
 
-String _buildParameterReflectionList(
-    _TypeAliasTable typeAliasTable, Iterable<_Parameter>? o,
-    {required bool nullOnEmpty, required bool required}) {
+String _buildParameterReflectionList(_TypeAliasTable typeAliasTable, Iterable<_Parameter>? o, {required bool nullOnEmpty, required bool required}) {
   final pr = typeAliasTable.prName;
 
   if (o == null || o.isEmpty) {
@@ -3489,9 +3101,7 @@ String _buildParameterReflectionList(
   }
 }
 
-String _buildNamedParameterReflectionMap(
-    _TypeAliasTable typeAliasTable, Map<String, _Parameter>? o,
-    {bool nullOnEmpty = false}) {
+String _buildNamedParameterReflectionMap(_TypeAliasTable typeAliasTable, Map<String, _Parameter>? o, {bool nullOnEmpty = false}) {
   final pr = typeAliasTable.prName;
 
   if (o == null || o.isEmpty) {

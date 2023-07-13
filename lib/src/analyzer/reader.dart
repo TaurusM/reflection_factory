@@ -13,8 +13,7 @@ import 'utils.dart';
 /// Unlike [DartObject.getField], the [read] method attempts to access super
 /// classes for the field value if not found.
 abstract class ConstantReader {
-  factory ConstantReader(DartObject? object) =>
-      isNullLike(object) ? const _NullConstant() : _DartObjectConstant(object!);
+  factory ConstantReader(DartObject? object) => isNullLike(object) ? const _NullConstant() : _DartObjectConstant(object!);
 
   const ConstantReader._();
 
@@ -163,20 +162,10 @@ class _DartObjectConstant extends ConstantReader {
       Symbol(_check(objectValue.toSymbolValue(), 'literal'));
 
   @override
-  bool get isLiteral =>
-      isBool ||
-      isString ||
-      isInt ||
-      isDouble ||
-      isList ||
-      isMap ||
-      isSymbol ||
-      isSet ||
-      isNull;
+  bool get isLiteral => isBool || isString || isInt || isDouble || isList || isMap || isSymbol || isSet || isNull;
 
   @override
-  bool instanceOf(TypeChecker checker) =>
-      checker.isAssignableFromType(objectValue.type);
+  bool instanceOf(TypeChecker checker) => checker.isAssignableFromType(objectValue.type);
 
   @override
   bool get isNull => isNullLike(objectValue);
@@ -215,8 +204,7 @@ class _DartObjectConstant extends ConstantReader {
   bool get isMap => objectValue.toMapValue() != null;
 
   @override
-  Map<DartObject?, DartObject?> get mapValue =>
-      _check(objectValue.toMapValue(), 'Map');
+  Map<DartObject?, DartObject?> get mapValue => _check(objectValue.toMapValue(), 'Map');
 
   @override
   bool get isString => objectValue.toStringValue() != null;
@@ -228,8 +216,7 @@ class _DartObjectConstant extends ConstantReader {
   bool get isSymbol => objectValue.toSymbolValue() != null;
 
   @override
-  Symbol get symbolValue =>
-      Symbol(_check(objectValue.toSymbolValue(), 'Symbol'));
+  Symbol get symbolValue => Symbol(_check(objectValue.toSymbolValue(), 'Symbol'));
 
   @override
   bool get isType => objectValue.toTypeValue() != null;

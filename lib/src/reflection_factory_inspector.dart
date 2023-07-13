@@ -13,8 +13,7 @@ class ReflectionInspector {
 
   late final List<File> generatedDartFiles;
 
-  ReflectionInspector(this.rootDirectory, {this.includeTestFiles = false})
-      : rootDirectoryName = _getDirName(rootDirectory) {
+  ReflectionInspector(this.rootDirectory, {this.includeTestFiles = false}) : rootDirectoryName = _getDirName(rootDirectory) {
     _listFiles();
   }
 
@@ -26,11 +25,9 @@ class ReflectionInspector {
   void _listFiles() {
     var files = _listDartFiles();
 
-    var generatedFiles =
-        files.where((f) => f.path.endsWith('.g.dart')).where((f) {
+    var generatedFiles = files.where((f) => f.path.endsWith('.g.dart')).where((f) {
       var ps = pack_path.split(f.path);
-      return ps.last.endsWith('.reflection.g.dart') ||
-          (ps.length > 1 && ps[ps.length - 2] == 'reflection');
+      return ps.last.endsWith('.reflection.g.dart') || (ps.length > 1 && ps[ps.length - 2] == 'reflection');
     }).toList();
 
     files.removeWhere((f) => generatedFiles.contains(f));
@@ -54,9 +51,7 @@ class ReflectionInspector {
 
       if (!includeTestFiles) {
         var rootIdx = fParts.lastIndexOf(rootDirectoryName);
-        var dir = rootIdx >= 0 && rootIdx + 1 < fParts.length
-            ? fParts[rootIdx + 1]
-            : '';
+        var dir = rootIdx >= 0 && rootIdx + 1 < fParts.length ? fParts[rootIdx + 1] : '';
         if (dir == 'test') {
           return false;
         }
@@ -68,53 +63,39 @@ class ReflectionInspector {
     return files;
   }
 
-  List<File> _toFilesList(List<FileSystemEntity> files) =>
-      files.map((e) => File(e.path).absolute).toList();
+  List<File> _toFilesList(List<FileSystemEntity> files) => files.map((e) => File(e.path).absolute).toList();
 
   List<String>? _dartFilesPaths;
 
-  List<String> get dartFilesPaths => _dartFilesPaths ??=
-      List<String>.unmodifiable(dartFiles.map((f) => f.path).toList());
+  List<String> get dartFilesPaths => _dartFilesPaths ??= List<String>.unmodifiable(dartFiles.map((f) => f.path).toList());
 
   List<String>? _generatedDartFilesPaths;
 
-  List<String> get generatedDartFilesPaths => _generatedDartFilesPaths ??=
-      List<String>.unmodifiable(generatedDartFiles.map((f) => f.path).toList());
+  List<String> get generatedDartFilesPaths => _generatedDartFilesPaths ??= List<String>.unmodifiable(generatedDartFiles.map((f) => f.path).toList());
 
   List<File>? _dartFilesUsingReflection;
 
-  List<File> get dartFilesUsingReflection =>
-      _dartFilesUsingReflection ??= List<File>.unmodifiable(
-          dartFiles.where(_dartFileUsesReflection).toList());
+  List<File> get dartFilesUsingReflection => _dartFilesUsingReflection ??= List<File>.unmodifiable(dartFiles.where(_dartFileUsesReflection).toList());
 
   bool _dartFileUsesReflection(File e) {
     var data = e.readAsStringSync();
-    var usesReflection = data.contains('@EnableReflection(') ||
-        data.contains('@ReflectionBridge(');
+    var usesReflection = data.contains('@EnableReflection(') || data.contains('@ReflectionBridge(');
     return usesReflection;
   }
 
   List<File>? _dartFilesWithGeneratedReflection;
 
-  List<File> get dartFilesWithGeneratedReflection =>
-      _dartFilesWithGeneratedReflection ??= List<File>.unmodifiable(dartFiles
-          .where((f) =>
-              generatedDartFilesPaths.contains(f.toReflectionDartFile()?.path))
-          .toList());
+  List<File> get dartFilesWithGeneratedReflection => _dartFilesWithGeneratedReflection ??=
+      List<File>.unmodifiable(dartFiles.where((f) => generatedDartFilesPaths.contains(f.toReflectionDartFile()?.path)).toList());
 
   List<File>? _dartFilesMissingGeneratedReflection;
 
-  List<File> get dartFilesMissingGeneratedReflection =>
-      _dartFilesMissingGeneratedReflection ??= List<File>.unmodifiable(
-          dartFilesUsingReflection
-              .where((f) => !generatedDartFilesPaths
-                  .contains(f.toReflectionDartFile()?.path))
-              .toList());
+  List<File> get dartFilesMissingGeneratedReflection => _dartFilesMissingGeneratedReflection ??=
+      List<File>.unmodifiable(dartFilesUsingReflection.where((f) => !generatedDartFilesPaths.contains(f.toReflectionDartFile()?.path)).toList());
 
   List<File>? _dartFilesWithExpiredReflection;
 
-  List<File> get dartFilesWithExpiredReflection =>
-      _dartFilesWithExpiredReflection ??= dartFilesUsingReflection.where((f) {
+  List<File> get dartFilesWithExpiredReflection => _dartFilesWithExpiredReflection ??= dartFilesUsingReflection.where((f) {
         var fGen = f.toReflectionDartFile()!;
         if (generatedDartFilesPaths.contains(fGen.path)) {
           return _isExpiredByTime(f, fGen) || _isExpiredByVersion(fGen);
@@ -126,8 +107,7 @@ class ReflectionInspector {
     var fTime = f.lastModifiedSync();
     var fTimeGen = fGen.lastModifiedSync();
 
-    var expiredByTime =
-        fTime.millisecondsSinceEpoch > fTimeGen.millisecondsSinceEpoch;
+    var expiredByTime = fTime.millisecondsSinceEpoch > fTimeGen.millisecondsSinceEpoch;
     return expiredByTime;
   }
 
@@ -137,8 +117,7 @@ class ReflectionInspector {
     return expiredByVer;
   }
 
-  static final RegExp _regExpReflectionFactoryVersion =
-      RegExp(r'//+\s+BUILDER:\s+reflection_factory/(\d+\S+)');
+  static final RegExp _regExpReflectionFactoryVersion = RegExp(r'//+\s+BUILDER:\s+reflection_factory/(\d+\S+)');
 
   String? _generatedFileReflectionFactoryVersion(File e) {
     var data = e.readAsStringSync();
@@ -170,9 +149,7 @@ extension _FileExtension on File {
     if (path.endsWith('.reflection.g.dart')) return true;
 
     var ps = pack_path.split(path);
-    return ps.length >= 2 &&
-        ps[ps.length - 2] == 'reflection' &&
-        ps.last.endsWith('.g.dart');
+    return ps.length >= 2 && ps[ps.length - 2] == 'reflection' && ps.last.endsWith('.g.dart');
   }
 
   static final RegExp _regExpDartExtension = RegExp(r'\.dart$');
@@ -191,15 +168,13 @@ extension _FileExtension on File {
     var parts = pack_path.split(path);
     var fileName = parts.removeLast();
 
-    var fileName2 =
-        fileName.replaceFirst(_regExpDartExtension, '.reflection.g.dart');
+    var fileName2 = fileName.replaceFirst(_regExpDartExtension, '.reflection.g.dart');
     parts.add(fileName2);
 
     return File(pack_path.joinAll(parts));
   }
 
-  static final _regExpReflectionPart = RegExp(
-      r'''\n[ \t]*part\s+['"](?:\./)?(reflection/\w+\.g\.dart|/\w+\.reflection\.g\.dart)['"]\s*;''');
+  static final _regExpReflectionPart = RegExp(r'''\n[ \t]*part\s+['"](?:\./)?(reflection/\w+\.g\.dart|/\w+\.reflection\.g\.dart)['"]\s*;''');
 
   String? _dartFileReflectionPart(File e) {
     var data = e.readAsStringSync();

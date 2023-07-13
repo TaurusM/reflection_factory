@@ -139,16 +139,14 @@ class ClassProxy {
 class ClassProxyCallError extends StateError {
   ClassProxyCallError(super.message) : super();
 
-  ClassProxyCallError.returnedValueError(Type t, Object? value)
-      : this("Can't cast returned value to `$t`: $value");
+  ClassProxyCallError.returnedValueError(Type t, Object? value) : this("Can't cast returned value to `$t`: $value");
 }
 
 /// Interface that a proxy class (annotated with [ClassProxy]) should implement
 /// to list for proxy calls.
 abstract class ClassProxyListener<T> {
   /// Calls made through a [ClassProxy] will be intercepted by [onCall] implementation.
-  Object? onCall(T instance, String methodName, Map<String, dynamic> parameters,
-      TypeReflection? returnType);
+  Object? onCall(T instance, String methodName, Map<String, dynamic> parameters, TypeReflection? returnType);
 }
 
 /// A [ClassProxyListener] that delegates to [targetListener].
@@ -159,8 +157,7 @@ class ClassProxyDelegateListener<T> extends ClassProxyListener<T> {
   ClassProxyDelegateListener(this.targetListener);
 
   @override
-  Object? onCall(T instance, String methodName, Map<String, dynamic> parameters,
-      TypeReflection? returnType) {
+  Object? onCall(T instance, String methodName, Map<String, dynamic> parameters, TypeReflection? returnType) {
     return targetListener.onCall(instance, methodName, parameters, returnType);
   }
 }

@@ -61,8 +61,7 @@ class ListSortedByUsage<E> extends UnmodifiableListView<E> {
   UnmodifiableListView<E>? _sortedByUsage;
 
   /// Returns this list sorted by usage count.
-  UnmodifiableListView<E> sortedByUsage() =>
-      _sortedByUsage ??= _sortedByUsageIml();
+  UnmodifiableListView<E> sortedByUsage() => _sortedByUsage ??= _sortedByUsageIml();
 
   UnmodifiableListView<E> _sortedByUsageIml() {
     var usageCounter = _usageCounter;

@@ -12,8 +12,7 @@ extension IterableTypeReflectionExtension on Iterable<TypeReflection> {
 }
 
 /// [FieldReflection] extension.
-extension IterableParameterReflectionExtension<O, T>
-    on Iterable<ParameterReflection> {
+extension IterableParameterReflectionExtension<O, T> on Iterable<ParameterReflection> {
   /// Maps to [TypeReflection].
   Iterable<TypeReflection> toTypeReflections() => map((e) => e.type);
 
@@ -31,8 +30,7 @@ extension IterableParameterReflectionExtension<O, T>
 }
 
 /// [FieldReflection] extension.
-extension IterableFieldReflectionExtension<O, T>
-    on Iterable<FieldReflection<O, T>> {
+extension IterableFieldReflectionExtension<O, T> on Iterable<FieldReflection<O, T>> {
   /// Maps to [TypeReflection].
   Iterable<TypeReflection> toTypeReflections() => map((e) => e.type);
 
@@ -53,11 +51,9 @@ extension IterableFieldReflectionExtension<O, T>
 }
 
 /// [MethodReflection] extension.
-extension IterableMethodReflectionExtension<O, R>
-    on Iterable<MethodReflection<O, R>> {
+extension IterableMethodReflectionExtension<O, R> on Iterable<MethodReflection<O, R>> {
   /// Maps to returned [TypeReflection].
-  Iterable<TypeReflection?> toReturnTypeReflections() =>
-      map((e) => e.returnType);
+  Iterable<TypeReflection?> toReturnTypeReflections() => map((e) => e.returnType);
 
   /// Maps to returned [Type].
   Iterable<Type?> toReturnTypes() => map((e) => e.returnType?.type);
@@ -69,8 +65,7 @@ extension IterableMethodReflectionExtension<O, R>
   Iterable<MethodReflection<O, R>> whereStatic() => where((e) => e.isStatic);
 
   /// Returns the [MethodReflection] without parameters.
-  Iterable<MethodReflection<O, R>> whereNoParameters() =>
-      where((m) => m.hasNoParameters);
+  Iterable<MethodReflection<O, R>> whereNoParameters() => where((m) => m.hasNoParameters);
 
   /// Returns the [MethodReflection] that matches the parameters:
   /// [normalParameters], [optionalParameters] and [namedParameters].
@@ -81,38 +76,31 @@ extension IterableMethodReflectionExtension<O, R>
   }) {
     var ret = this;
 
-    if (normalParameters == null &&
-        optionalParameters == null &&
-        namedParameters == null) {
+    if (normalParameters == null && optionalParameters == null && namedParameters == null) {
       return ret;
     }
 
     if (normalParameters != null) {
-      ret = ret.where((m) =>
-          _listEqualityType.equals(m.normalParametersTypes, normalParameters));
+      ret = ret.where((m) => _listEqualityType.equals(m.normalParametersTypes, normalParameters));
     }
 
     if (optionalParameters != null) {
-      ret = ret.where((m) => _listEqualityType.equals(
-          m.optionalParametersTypes, optionalParameters));
+      ret = ret.where((m) => _listEqualityType.equals(m.optionalParametersTypes, optionalParameters));
     }
 
     if (namedParameters != null) {
-      ret = ret.where((m) =>
-          _mapEqualityType.equals(m.namedParametersTypes, namedParameters));
+      ret = ret.where((m) => _mapEqualityType.equals(m.namedParametersTypes, namedParameters));
     }
 
     return ret;
   }
 
   /// Returns the [MethodReflection] without annotations.
-  Iterable<MethodReflection<O, R>> whereNotAnnotated() =>
-      where((m) => m.annotations.isEmpty);
+  Iterable<MethodReflection<O, R>> whereNotAnnotated() => where((m) => m.annotations.isEmpty);
 
   /// Returns the [MethodReflection] that matches annotations [test].
   /// If [test] is `null`, will match methods with any annotation.
-  Iterable<MethodReflection<O, R>> whereAnnotated(
-      [bool Function(List<Object> annotations)? test]) {
+  Iterable<MethodReflection<O, R>> whereAnnotated([bool Function(List<Object> annotations)? test]) {
     if (test != null) {
       return where((m) {
         return test(m.annotations);
@@ -122,8 +110,7 @@ extension IterableMethodReflectionExtension<O, R>
   }
 
   /// Returns the [MethodReflection] that matches [annotations].
-  Iterable<MethodReflection<O, R>> whereAnnotatedWith(
-      List<Object> annotations) {
+  Iterable<MethodReflection<O, R>> whereAnnotatedWith(List<Object> annotations) {
     if (annotations.isEmpty) {
       return whereNotAnnotated();
     }
@@ -131,8 +118,7 @@ extension IterableMethodReflectionExtension<O, R>
   }
 
   /// Returns the [MethodReflection] that matches any [annotations].
-  Iterable<MethodReflection<O, R>> whereAnnotatedWithAnyOf(
-      List<Object> annotations) {
+  Iterable<MethodReflection<O, R>> whereAnnotatedWithAnyOf(List<Object> annotations) {
     if (annotations.isEmpty) {
       return <MethodReflection<O, R>>[];
     }
@@ -140,8 +126,7 @@ extension IterableMethodReflectionExtension<O, R>
   }
 
   /// Returns the [MethodReflection] that has an annotation of type [T].
-  Iterable<MethodReflection<O, R>> whereAnnotatedWithType<T>() =>
-      where((m) => m.annotations.any((o) => o is T));
+  Iterable<MethodReflection<O, R>> whereAnnotatedWithType<T>() => where((m) => m.annotations.any((o) => o is T));
 }
 
 final ListEquality<Type> _listEqualityType = ListEquality<Type>();
@@ -159,16 +144,13 @@ extension ReflectionDurationExtension on Duration {
 
   static const int hoursPerDay = 24;
 
-  static const int microsecondsPerSecond =
-      microsecondsPerMillisecond * millisecondsPerSecond;
+  static const int microsecondsPerSecond = microsecondsPerMillisecond * millisecondsPerSecond;
 
-  static const int microsecondsPerMinute =
-      microsecondsPerSecond * secondsPerMinute;
+  static const int microsecondsPerMinute = microsecondsPerSecond * secondsPerMinute;
 
   static const int microsecondsPerHour = microsecondsPerMinute * minutesPerHour;
 
-  static const int millisecondsPerMinute =
-      millisecondsPerSecond * secondsPerMinute;
+  static const int millisecondsPerMinute = millisecondsPerSecond * secondsPerMinute;
 
   static const int millisecondsPerHour = millisecondsPerMinute * minutesPerHour;
 
@@ -222,24 +204,13 @@ Duration? tryParseDuration(String? v, [Duration? def]) {
   if (n == null) return def;
   if (n == 0) return Duration();
 
-  if (s.endsWith("h") ||
-      s.endsWith("hr") ||
-      s.endsWith("hs") ||
-      s.endsWith("hour") ||
-      s.endsWith("hours")) {
+  if (s.endsWith("h") || s.endsWith("hr") || s.endsWith("hs") || s.endsWith("hour") || s.endsWith("hours")) {
     return Duration(hours: n);
-  } else if (s.endsWith("ms") ||
-      s.endsWith("milliseconds") ||
-      s.endsWith("millisecond")) {
+  } else if (s.endsWith("ms") || s.endsWith("milliseconds") || s.endsWith("millisecond")) {
     return Duration(milliseconds: n);
-  } else if (s.endsWith("min") ||
-      s.endsWith("minutes") ||
-      s.endsWith("minute")) {
+  } else if (s.endsWith("min") || s.endsWith("minutes") || s.endsWith("minute")) {
     return Duration(minutes: n);
-  } else if (s.endsWith("sec") ||
-      s.endsWith("seconds") ||
-      s.endsWith("second") ||
-      s.endsWith("s")) {
+  } else if (s.endsWith("sec") || s.endsWith("seconds") || s.endsWith("second") || s.endsWith("s")) {
     return Duration(seconds: n);
   } else {
     return def;

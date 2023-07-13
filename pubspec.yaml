@@ -19,7 +19,7 @@ dependencies:
   collection: ^1.17.0
   yaml: ^3.1.2
   source_span: ^1.10.0
-
+  get: ^4.6.5
 dev_dependencies:
   build_runner: ^2.3.3
   build_test: ^2.1.6

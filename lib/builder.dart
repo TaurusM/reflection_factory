@@ -8,19 +8,12 @@ import 'src/reflection_factory_builder.dart';
 
 export 'src/reflection_factory_base.dart';
 
-ReflectionBuilder reflectionFactory(
-    [BuilderOptions options = BuilderOptions.empty]) {
+ReflectionBuilder reflectionFactory([BuilderOptions options = BuilderOptions.empty]) {
   var verbose = options.getAsBool(['verbose']);
-  var sequential =
-      options.getAsBool(['sequential', 'sequencial', 'serial'], true);
-  var buildStepTimeout = options.getAsDuration(
-      ['buildStepTimeout', 'build_step_timeout', 'timeout'],
-      Duration(seconds: 30));
+  var sequential = options.getAsBool(['sequential', 'sequencial', 'serial'], true);
+  var buildStepTimeout = options.getAsDuration(['buildStepTimeout', 'build_step_timeout', 'timeout'], Duration(seconds: 30));
 
-  var reflectionFactory = ReflectionBuilder(
-      verbose: verbose,
-      sequential: sequential,
-      buildStepTimeout: buildStepTimeout);
+  var reflectionFactory = ReflectionBuilder(verbose: verbose, sequential: sequential, buildStepTimeout: buildStepTimeout);
 
   log.info('Builder:\n\n${reflectionFactory.toString(indent: '  ')}');
 
@@ -55,16 +48,10 @@ extension _BuilderOptionsExtension on BuilderOptions {
 
   bool getAsBool(List<String> keys, [bool def = false]) {
     var v = getAny(keys, '$def');
-    return v != '' &&
-        v != '0' &&
-        v != 'f' &&
-        v != 'n' &&
-        v != 'false' &&
-        v != 'null';
+    return v != '' && v != '0' && v != 'f' && v != 'n' && v != 'false' && v != 'null';
   }
 
-  Duration getAsDuration(List<String> keys,
-      [Duration def = const Duration(seconds: 30)]) {
+  Duration getAsDuration(List<String> keys, [Duration def = const Duration(seconds: 30)]) {
     var v = getAny(keys, '$def');
     return tryParseDuration(v, def)!;
   }

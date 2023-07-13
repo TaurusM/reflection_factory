@@ -28,8 +28,7 @@ class LibraryReader {
   Iterable<Element> get allElements => element.topLevelElements;
 
   /// All of the declarations in this library annotated with [checker].
-  Iterable<AnnotatedElement> annotatedWith(TypeChecker checker,
-      {bool throwOnUnresolved = true}) sync* {
+  Iterable<AnnotatedElement> annotatedWith(TypeChecker checker, {bool throwOnUnresolved = true}) sync* {
     for (final element in allElements) {
       final annotation = checker.firstAnnotationOf(
         element,
@@ -56,8 +55,7 @@ class LibraryReader {
       .whereNotNull();
 
   /// All of the elements representing classes in this library.
-  Iterable<ClassElement> get classes =>
-      element.units.expand((CompilationUnitElement cu) => cu.classes);
+  Iterable<ClassElement> get classes => element.units.expand((CompilationUnitElement cu) => cu.classes);
 
   /// All of the elements representing enums in this library.
   Iterable<EnumElement> get enums => element.units.expand((cu) => cu.enums);

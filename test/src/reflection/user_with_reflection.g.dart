@@ -1373,7 +1373,7 @@ class TestDomainWithReflection$reflection
             TestDomainWithReflection,
             '',
             () => (String name, String suffix,
-                    [DomainFunction? domainFunction,
+                    [bool Function(int x)? domainFunction,
                     bool Function()? extraFunction]) =>
                 TestDomainWithReflection(
                     name, suffix, domainFunction, extraFunction),
@@ -1396,7 +1396,7 @@ class TestDomainWithReflection$reflection
             () => (
                     {required String name,
                     String suffix = 'net',
-                    DomainFunction? domainFunction,
+                    bool Function(int x)? domainFunction,
                     bool Function()? extraFunction}) =>
                 TestDomainWithReflection.named(
                     name: name,
@@ -1541,7 +1541,7 @@ class TestDomainWithReflection$reflection
           true,
         );
       case 'domainfunction':
-        return FieldReflection<TestDomainWithReflection, DomainFunction?>(
+        return FieldReflection<TestDomainWithReflection, bool Function(int x)?>(
           this,
           TestDomainWithReflection,
           __TR<DomainFunction>(DomainFunction),
