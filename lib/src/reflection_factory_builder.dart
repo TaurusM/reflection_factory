@@ -3220,11 +3220,11 @@ extension _DartTypeExtension on DartType {
     if (self is FunctionType) {
       var alias = self.alias;
       if (alias != null && alias.typeArguments.isEmpty) {
-        var name = alias.element.name;
-        return name;
+        var name = alias.element.toString();
+        var nameSub = name.substring(name.indexOf('=') + 1);
+        return nameSub;
       } else {
-        var functionType = self.getDisplayString(withNullability: false);
-        return functionType;
+        return self.toString();
       }
     }
 
@@ -3238,10 +3238,14 @@ extension _DartTypeExtension on DartType {
     }
   }
 
-  String get typeNameAsNullableCode =>
-      isNullable && this is! DynamicType && isResolvableType
-          ? '$typeNameAsCode?'
-          : typeNameAsCode;
+  String get typeNameAsNullableCode {
+    var self = this;
+    if (self is FunctionType && (self.alias == null || (self.alias != null && self.alias!.typeArguments.isNotEmpty))) {
+      return typeNameAsCode;
+    } else {
+      return isNullable && this is! DynamicType && isResolvableType ? '$typeNameAsCode?' : typeNameAsCode;
+    }
+  }
 
   String? asConstTypeReflectionCode(_TypeAliasTable typeAliasTable) {
     var self = this;

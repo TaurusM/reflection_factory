@@ -550,6 +550,7 @@ enum BasicDartType {
   future,
   futureOr,
   voidType,
+  function,
 }
 
 class _TypeWrapper {
@@ -644,6 +645,8 @@ class _TypeWrapper {
 
       case BasicDartType.voidType:
         return _TypeWrapper.twVoid;
+      case BasicDartType.function:
+        return _TypeWrapper.twFunction;
 
       case BasicDartType.none:
         {
@@ -673,6 +676,7 @@ class _TypeWrapper {
   static const _TypeWrapper twObject = _TypeWrapperObject._const();
   static const _TypeWrapper twDynamic = _TypeWrapperDynamic._const();
   static final _TypeWrapper twVoid = _TypeWrapperVoid._const();
+  static const _TypeWrapper twFunction = _TypeWrapperFunction._const();
 
   static const Type tString = String;
   static const Type tInt = int;
@@ -692,6 +696,7 @@ class _TypeWrapper {
   static const Type tObject = Object;
   static const Type tDynamic = dynamic;
   static final Type tVoid = <void>[].listType; // Is there a better way?
+  static const Type tFunction = Function;
 
   static Type detectType(Type type, [Object? object]) {
     if (type == tString || object is String) return tString;
@@ -1069,6 +1074,11 @@ class _TypeWrapperVoid extends _TypeWrapper {
   bool get isVoid => true;
 }
 
+class _TypeWrapperFunction extends _TypeWrapper {
+  const _TypeWrapperFunction._const()
+      : super._const(_TypeWrapper.tFunction, BasicDartType.function);
+}
+
 class TypeInfoEquality implements Equality<TypeInfo> {
   const TypeInfoEquality();
 
@@ -1211,6 +1221,7 @@ class TypeInfo<T> {
   static const TypeInfo<dynamic> tDynamic =
       TypeInfo._const(_TypeWrapper.twDynamic);
   static final TypeInfo<void> tVoid = TypeInfo._wrapper(_TypeWrapper.twVoid);
+  static const TypeInfo<Function> tFunction = TypeInfo._wrapper(_TypeWrapper.twFunction);
 
   final _TypeWrapper _typeWrapper;
 

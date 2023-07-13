@@ -4,18 +4,19 @@ version: 2.1.6
 homepage: https://github.com/gmpassos/reflection_factory
 
 environment:
-  sdk: '>=2.19.0 <4.0.0'
+  sdk: '>=2.19.0 <3.0.0'
 
 dependencies:
-  build: ^2.4.0
+  flutter: { sdk: flutter }
+  build: ^2.3.0
   analyzer: ^5.13.0
   dart_style: ^2.3.1
-  meta: ^1.9.1
+  meta: ^1.8.0
   mime: ^1.0.4
   base_codecs: ^1.0.1
   pub_semver: ^2.1.4
   path: ^1.8.3
-  collection: ^1.17.1
+  collection: ^1.17.0
   yaml: ^3.1.2
   source_span: ^1.10.0
 
