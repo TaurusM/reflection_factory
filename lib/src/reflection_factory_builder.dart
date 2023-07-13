@@ -77,10 +77,10 @@ class ReflectionBuilder implements Builder {
       return _buildImpl(buildStep);
     }
 
-    var buildChaing = _buildChain;
+    var buildChain = _buildChain;
 
-    var buildTimeouted = Completer<void>();
-    void complete(_) => buildTimeouted.complete();
+    var buildTimeOuted = Completer<void>();
+    void complete(_) => buildTimeOuted.complete();
 
     Future<void> callBuildImpl(_) {
       var future = _buildImpl(buildStep);
@@ -90,11 +90,11 @@ class ReflectionBuilder implements Builder {
       return future;
     }
 
-    var build = buildChaing.then(callBuildImpl, onError: callBuildImpl);
+    var build = buildChain.then(callBuildImpl, onError: callBuildImpl);
 
-    // The chain wil have a schedulled timeout only
+    // The chain wil have a scheduled timeout only
     // for the last running [BuildStep].
-    _buildChain = buildTimeouted.future;
+    _buildChain = buildTimeOuted.future;
 
     // Return the call without timeout for the `build_runner`.
     return build;
