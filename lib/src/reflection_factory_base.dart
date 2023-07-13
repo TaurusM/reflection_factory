@@ -2172,8 +2172,10 @@ class TypeReflection<T> {
     }
 
     var typeStr = type.toString();
-    var idx = typeStr.indexOf('<');
-    if (idx > 0) typeStr = typeStr.substring(0, idx);
+    if (!typeStr.contains('=>')) {
+      var idx = typeStr.indexOf('<');
+      if (idx > 0) typeStr = typeStr.substring(0, idx);
+    }
     return typeStr;
   }
 
@@ -2393,7 +2395,12 @@ class TypeReflection<T> {
 
   @override
   String toString() {
-    return hasArguments ? '$typeName<${arguments.join(',')}>' : typeName;
+    String str = hasArguments ? '$typeName<${arguments.join(',')}>' : typeName;
+    if (str.contains('=>')) {
+      List<String> splits = str.split('=>');
+      str = '${splits[1].trim()} Function${splits[0].trim()}';
+    }
+    return str;
   }
 }
 

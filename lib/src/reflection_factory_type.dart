@@ -1176,8 +1176,10 @@ class TypeInfo<T> {
     }
 
     var typeStr = type.toString();
-    var idx = typeStr.indexOf('<');
-    if (idx > 0) typeStr = typeStr.substring(0, idx);
+    if (!typeStr.contains('=>')) {
+      var idx = typeStr.indexOf('<');
+      if (idx > 0) typeStr = typeStr.substring(0, idx);
+    }
     return typeStr;
   }
 
@@ -1573,6 +1575,11 @@ class TypeInfo<T> {
   String toString({bool withT = true}) {
     var typeName = this.typeName;
     if (withT) typeName = '<T:$T> $typeName';
+
+    if (typeName.contains('=>')) {
+      List<String> splits = typeName.split('=>');
+      typeName = '${splits[1].trim()} Function${splits[0].trim()}';
+    }
 
     return hasArguments ? '$typeName<${_arguments.map((e) => e.toString(withT: withT)).join(',')}>' : typeName;
   }

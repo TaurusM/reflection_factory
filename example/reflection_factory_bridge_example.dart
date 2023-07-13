@@ -7,3 +7,10 @@ part 'reflection_factory_bridge_example.reflection.g.dart';
 
 @ReflectionBridge([GetMaterialApp])
 class ReflectionBridge1 {}
+
+main() {
+  List<ParameterReflection>? fields = GetMaterialApp$reflection().constructor('')!.allParameters;
+  for (var element in fields) {
+    print('${element.type}${element.nullable ? '?' : ''} ${element.name}');
+  }
+}
