@@ -60,7 +60,7 @@ class ReflectionBuilder implements Builder {
 
   static const TypeChecker typeClassProxy = TypeChecker.fromRuntime(ClassProxy);
 
-  Future<void> _buildChaing = Future<void>.value();
+  Future<void> _buildChain = Future<void>.value();
 
   /// If [sequential] is `true` every [BuildStep] is processed sequentially (only one at a time):
   /// - The default timeout to process a [BuildStep] is 30 sec ([buildStepTimeout]).
@@ -77,7 +77,7 @@ class ReflectionBuilder implements Builder {
       return _buildImpl(buildStep);
     }
 
-    var buildChaing = _buildChaing;
+    var buildChaing = _buildChain;
 
     var buildTimeouted = Completer<void>();
     void complete(_) => buildTimeouted.complete();
@@ -94,7 +94,7 @@ class ReflectionBuilder implements Builder {
 
     // The chain wil have a schedulled timeout only
     // for the last running [BuildStep].
-    _buildChaing = buildTimeouted.future;
+    _buildChain = buildTimeouted.future;
 
     // Return the call without timeout for the `build_runner`.
     return build;
