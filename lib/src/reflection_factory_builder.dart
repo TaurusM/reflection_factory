@@ -1133,7 +1133,7 @@ class _EnumTree<T> extends RecursiveElementVisitor<T> {
 
   void _buildStaticFields(StringBuffer str) {
     var entries = _toFieldEntries(staticFields);
-    var names = _buildStringListCode(entries.keys, sorted: true);
+    var names = _buildStringListCode(entries.keys, sorted: false);
 
     str.write('  static const List<String> _staticFieldsNames = $names;\n\n');
 
@@ -1162,7 +1162,7 @@ class _EnumTree<T> extends RecursiveElementVisitor<T> {
 
   void _buildFields(StringBuffer str) {
     var entries = _toFieldEntries(fields);
-    var names = _buildStringListCode(entries.keys, sorted: true);
+    var names = _buildStringListCode(entries.keys, sorted: false);
 
     str.write('  static const List<String> _fieldsNames = $names;\n\n');
 
@@ -1558,7 +1558,7 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
     _buildDefaultConstructor(str);
 
     var entries = _toConstructorEntries(this, constructors.where(_canConstruct).toSet());
-    var names = _buildStringListCode(entries.keys, sorted: true);
+    var names = _buildStringListCode(entries.keys, sorted: false);
 
     str.write('  static const List<String> _constructorsNames = $names;\n\n');
 
@@ -1667,7 +1667,7 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
 
   void _buildField(StringBuffer str) {
     var entries = _toFieldEntries(fields);
-    var names = _buildStringListCode(entries.keys, sorted: true);
+    var names = _buildStringListCode(entries.keys, sorted: false);
 
     str.write('  static const List<String> _fieldsNames = $names;\n\n');
 
@@ -1742,6 +1742,7 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
       var fullType = field.typeNameAsNullableCode;
       var nullable = field.nullable ? 'true' : 'false';
       var isFinal = field.isFinal ? 'true' : 'false';
+      var documentComment = field.fieldElement.documentationComment ?? 'null';
       var getter = '(o) => () => o!.$name';
       var setter = !field.allowSetter ? 'null' : '(o) => (v) => o!.$name = v';
 
@@ -1751,8 +1752,11 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
           "$typeCode, '$name', $nullable, "
           "$getter , $setter , "
           "obj, false, $isFinal, "
-          "${annotations != 'null' ? '$annotations, ' : ''} "
-          ")";
+          "${annotations != 'null' ? annotations : 'null'}, "
+          "documentCommentOfEn: '''$documentComment''', "
+          "documentCommentOfCn: null, "
+          "isGenerated: null"
+      ")";
     });
 
     str.write('  }\n\n');
@@ -1760,7 +1764,7 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
 
   void _buildStaticField(StringBuffer str) {
     var entries = _toFieldEntries(staticFields);
-    var names = _buildStringListCode(entries.keys, sorted: true);
+    var names = _buildStringListCode(entries.keys, sorted: false);
 
     str.write('  static const List<String> _staticFieldsNames = $names;\n\n');
 
@@ -1800,6 +1804,7 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
       var fullType = field.typeNameAsNullableCode;
       var nullable = field.nullable ? 'true' : 'false';
       var isFinal = field.isFinal ? 'true' : 'false';
+      var documentComment = field.fieldElement.documentationComment ?? 'null';
       var getter = '(o) => () => $className.$name';
       var setter = !field.allowSetter ? 'null' : '(o) => (v) => $className.$name = v';
 
@@ -1808,6 +1813,9 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
           "$getter , $setter , "
           "null, true, $isFinal, "
           "${field.annotationsAsListCode}, "
+          "documentCommentOfEn: '''$documentComment''', "
+          "documentCommentOfCn: null, "
+          "isGenerated: null"
           ")";
     });
 
@@ -1838,7 +1846,7 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
 
   void _buildMethod(StringBuffer str) {
     var entries = _toMethodsEntries(methods);
-    var names = _buildStringListCode(entries.keys, sorted: true);
+    var names = _buildStringListCode(entries.keys, sorted: false);
 
     str.write('  static const List<String> _methodsNames = $names;\n\n');
 
@@ -1920,7 +1928,7 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
 
   void _buildStaticMethod(StringBuffer str) {
     var entries = _toMethodsEntries(staticMethods);
-    var names = _buildStringListCode(entries.keys, sorted: true);
+    var names = _buildStringListCode(entries.keys, sorted: false);
 
     str.write('  static const List<String> _staticMethodsNames = $names;\n\n');
 
@@ -2438,7 +2446,7 @@ class _Element {
 
   String get annotationsAsListCode {
     var codes = annotationsAsCode;
-    return codes.isEmpty ? 'null' : 'const [${codes.join(',')}]';
+    return codes.isEmpty ? 'null' : 'const [${codes.join(', ')}]';
   }
 }
 
@@ -2727,16 +2735,16 @@ extension _ListDartTypeExtension on List<DartType> {
 
     var listConstTypeReflection = map((e) => e.asConstTypeReflectionCode(typeAliasTable)).toList(growable: false);
     if (listConstTypeReflection.every((e) => e != null)) {
-      return '<$tr>[${listConstTypeReflection.join(',')}]';
+      return '<$tr>[${listConstTypeReflection.join(', ')}]';
     }
 
     var listConstTypeInfo = map((e) => e.asConstTypeInfoCode(typeAliasTable)).toList(growable: false);
     if (listConstTypeInfo.every((e) => e != null)) {
-      return '<$ti>[${listConstTypeInfo.join(',')}]';
+      return '<$ti>[${listConstTypeInfo.join(', ')}]';
     }
 
     var listTypeReflection = map((e) => e.asTypeReflectionCode(typeAliasTable)).toList(growable: false);
-    return '<$tr>[${listTypeReflection.join(',')}]';
+    return '<$tr>[${listTypeReflection.join(', ')}]';
   }
 
   String get typesNames => map((e) => e.fullTypeNameResolvable(withNullability: true)).join(', ');
@@ -2769,7 +2777,7 @@ extension _DartTypeExtension on DartType {
       return withNullability && isNullable ? '$name?' : name;
     }
 
-    var args = resolvedTypeArguments.map((e) => e.fullTypeNameResolvable(withNullability: withNullability, typeParameters: typeParameters)).join(',');
+    var args = resolvedTypeArguments.map((e) => e.fullTypeNameResolvable(withNullability: withNullability, typeParameters: typeParameters)).join(', ');
 
     return withNullability && isNullable ? '$name<$args>?' : '$name<$args>';
   }

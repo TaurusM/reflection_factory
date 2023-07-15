@@ -1581,7 +1581,7 @@ class TypeInfo<T> {
       typeName = '${splits[1].trim()} Function${splits[0].trim()}';
     }
 
-    return hasArguments ? '$typeName<${_arguments.map((e) => e.toString(withT: withT)).join(',')}>' : typeName;
+    return hasArguments ? '$typeName<${_arguments.map((e) => e.toString(withT: withT)).join(', ')}>' : typeName;
   }
 
   Object? fromJson(dynamic json, {JsonDecoder? jsonDecoder, bool duplicatedEntitiesAsID = true, bool? autoResetEntityCache}) {

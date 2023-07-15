@@ -25,24 +25,23 @@ mixin __ReflectionMixin {
 }
 
 // ignore: non_constant_identifier_names
-GetMaterialApp GetMaterialApp$fromJson(Map<String, Object?> map) =>
-    GetMaterialApp$reflection.staticInstance.fromJson(map);
+MaterialApp MaterialApp$fromJson(Map<String, Object?> map) =>
+    MaterialApp$reflection.staticInstance.fromJson(map);
 // ignore: non_constant_identifier_names
-GetMaterialApp GetMaterialApp$fromJsonEncoded(String jsonEncoded) =>
-    GetMaterialApp$reflection.staticInstance.fromJsonEncoded(jsonEncoded);
+MaterialApp MaterialApp$fromJsonEncoded(String jsonEncoded) =>
+    MaterialApp$reflection.staticInstance.fromJsonEncoded(jsonEncoded);
 
-class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
+class MaterialApp$reflection extends ClassReflection<MaterialApp>
     with __ReflectionMixin {
-  static final Expando<GetMaterialApp$reflection> _objectReflections =
-      Expando();
+  static final Expando<MaterialApp$reflection> _objectReflections = Expando();
 
-  factory GetMaterialApp$reflection([GetMaterialApp? object]) {
+  factory MaterialApp$reflection([MaterialApp? object]) {
     if (object == null) return staticInstance;
-    return _objectReflections[object] ??= GetMaterialApp$reflection._(object);
+    return _objectReflections[object] ??= MaterialApp$reflection._(object);
   }
 
-  GetMaterialApp$reflection._([GetMaterialApp? object])
-      : super(GetMaterialApp, 'GetMaterialApp', object);
+  MaterialApp$reflection._([MaterialApp? object])
+      : super(MaterialApp, 'MaterialApp', object);
 
   static bool _registered = false;
   @override
@@ -55,54 +54,54 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
   }
 
   @override
-  Version get languageVersion => Version.parse('2.15.0');
+  Version get languageVersion => Version.parse('2.17.0');
 
   @override
-  GetMaterialApp$reflection withObject([GetMaterialApp? obj]) =>
-      GetMaterialApp$reflection(obj)..setupInternalsWith(this);
+  MaterialApp$reflection withObject([MaterialApp? obj]) =>
+      MaterialApp$reflection(obj)..setupInternalsWith(this);
 
-  static GetMaterialApp$reflection? _withoutObjectInstance;
+  static MaterialApp$reflection? _withoutObjectInstance;
   @override
-  GetMaterialApp$reflection withoutObjectInstance() => staticInstance;
+  MaterialApp$reflection withoutObjectInstance() => staticInstance;
 
-  static GetMaterialApp$reflection get staticInstance =>
-      _withoutObjectInstance ??= GetMaterialApp$reflection._();
+  static MaterialApp$reflection get staticInstance =>
+      _withoutObjectInstance ??= MaterialApp$reflection._();
 
   @override
-  GetMaterialApp$reflection getStaticInstance() => staticInstance;
+  MaterialApp$reflection getStaticInstance() => staticInstance;
 
   static bool _boot = false;
   static void boot() {
     if (_boot) return;
     _boot = true;
-    GetMaterialApp$reflection.staticInstance;
+    MaterialApp$reflection.staticInstance;
   }
 
   @override
   bool get hasDefaultConstructor => true;
   @override
-  GetMaterialApp? createInstanceWithDefaultConstructor() => GetMaterialApp();
+  MaterialApp? createInstanceWithDefaultConstructor() => MaterialApp();
 
   @override
   bool get hasEmptyConstructor => false;
   @override
-  GetMaterialApp? createInstanceWithEmptyConstructor() => null;
+  MaterialApp? createInstanceWithEmptyConstructor() => null;
   @override
   bool get hasNoRequiredArgsConstructor => true;
   @override
-  GetMaterialApp? createInstanceWithNoRequiredArgsConstructor() =>
-      GetMaterialApp.router();
+  MaterialApp? createInstanceWithNoRequiredArgsConstructor() =>
+      MaterialApp.router();
 
   static const List<String> _constructorsNames = const <String>['', 'router'];
 
   @override
   List<String> get constructorsNames => _constructorsNames;
 
-  static final Map<String, ConstructorReflection<GetMaterialApp>>
-      _constructors = <String, ConstructorReflection<GetMaterialApp>>{};
+  static final Map<String, ConstructorReflection<MaterialApp>> _constructors =
+      <String, ConstructorReflection<MaterialApp>>{};
 
   @override
-  ConstructorReflection<GetMaterialApp>? constructor(String constructorName) {
+  ConstructorReflection<MaterialApp>? constructor(String constructorName) {
     var c = _constructors[constructorName];
     if (c != null) return c;
     c = _constructorImpl(constructorName);
@@ -111,22 +110,21 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
     return c;
   }
 
-  ConstructorReflection<GetMaterialApp>? _constructorImpl(
-      String constructorName) {
+  ConstructorReflection<MaterialApp>? _constructorImpl(String constructorName) {
     var lc = constructorName.trim().toLowerCase();
 
     switch (lc) {
       case '':
-        return ConstructorReflection<GetMaterialApp>(
+        return ConstructorReflection<MaterialApp>(
             this,
-            GetMaterialApp,
+            MaterialApp,
             '',
             () => (
                     {Key? key,
                     GlobalKey<NavigatorState>? navigatorKey,
                     GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey,
                     Widget? home,
-                    Map<String, Widget Function(BuildContext)> routes =
+                    Map<String, Widget Function(BuildContext context)> routes =
                         const <String, WidgetBuilder>{},
                     String? initialRoute,
                     Route<dynamic>? Function(RouteSettings settings)?
@@ -135,20 +133,21 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
                         onGenerateInitialRoutes,
                     Route<dynamic>? Function(RouteSettings settings)?
                         onUnknownRoute,
-                    bool useInheritedMediaQuery = false,
                     List<NavigatorObserver> navigatorObservers =
                         const <NavigatorObserver>[],
                     Widget Function(BuildContext context, Widget? child)?
                         builder,
-                    TextDirection? textDirection,
                     String title = '',
                     String Function(BuildContext context)? onGenerateTitle,
                     Color? color,
                     ThemeData? theme,
                     ThemeData? darkTheme,
-                    ThemeMode themeMode = ThemeMode.system,
+                    ThemeData? highContrastTheme,
+                    ThemeData? highContrastDarkTheme,
+                    ThemeMode? themeMode = ThemeMode.system,
+                    Duration themeAnimationDuration = kThemeAnimationDuration,
+                    Curve themeAnimationCurve = Curves.linear,
                     Locale? locale,
-                    Locale? fallbackLocale,
                     Iterable<LocalizationsDelegate<dynamic>>?
                         localizationsDelegates,
                     Locale? Function(List<Locale>? locales,
@@ -166,31 +165,12 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
                     bool checkerboardOffscreenLayers = false,
                     bool showSemanticsDebugger = false,
                     bool debugShowCheckedModeBanner = true,
-                    Map<LogicalKeySet, Intent>? shortcuts,
+                    Map<ShortcutActivator, Intent>? shortcuts,
+                    Map<Type, Action<Intent>>? actions,
+                    String? restorationScopeId,
                     ScrollBehavior? scrollBehavior,
-                    CustomTransition? customTransition,
-                    Map<String, Map<String, String>>? translationsKeys,
-                    Translations? translations,
-                    void Function()? onInit,
-                    void Function()? onReady,
-                    void Function()? onDispose,
-                    void Function(Routing?)? routingCallback,
-                    Transition? defaultTransition,
-                    List<GetPage<dynamic>>? getPages,
-                    bool? opaqueRoute,
-                    bool? enableLog = kDebugMode,
-                    void Function(String text, {bool isError})?
-                        logWriterCallback,
-                    bool? popGesture,
-                    Duration? transitionDuration,
-                    bool? defaultGlobalState,
-                    SmartManagement smartManagement = SmartManagement.full,
-                    Bindings? initialBinding,
-                    GetPage<dynamic>? unknownRoute,
-                    ThemeData? highContrastTheme,
-                    ThemeData? highContrastDarkTheme,
-                    Map<Type, Action<Intent>>? actions}) =>
-                GetMaterialApp(
+                    bool useInheritedMediaQuery = false}) =>
+                MaterialApp(
                     key: key,
                     navigatorKey: navigatorKey,
                     scaffoldMessengerKey: scaffoldMessengerKey,
@@ -200,18 +180,19 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
                     onGenerateRoute: onGenerateRoute,
                     onGenerateInitialRoutes: onGenerateInitialRoutes,
                     onUnknownRoute: onUnknownRoute,
-                    useInheritedMediaQuery: useInheritedMediaQuery,
                     navigatorObservers: navigatorObservers,
                     builder: builder,
-                    textDirection: textDirection,
                     title: title,
                     onGenerateTitle: onGenerateTitle,
                     color: color,
                     theme: theme,
                     darkTheme: darkTheme,
+                    highContrastTheme: highContrastTheme,
+                    highContrastDarkTheme: highContrastDarkTheme,
                     themeMode: themeMode,
+                    themeAnimationDuration: themeAnimationDuration,
+                    themeAnimationCurve: themeAnimationCurve,
                     locale: locale,
-                    fallbackLocale: fallbackLocale,
                     localizationsDelegates: localizationsDelegates,
                     localeListResolutionCallback: localeListResolutionCallback,
                     localeResolutionCallback: localeResolutionCallback,
@@ -224,28 +205,10 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
                     showSemanticsDebugger: showSemanticsDebugger,
                     debugShowCheckedModeBanner: debugShowCheckedModeBanner,
                     shortcuts: shortcuts,
+                    actions: actions,
+                    restorationScopeId: restorationScopeId,
                     scrollBehavior: scrollBehavior,
-                    customTransition: customTransition,
-                    translationsKeys: translationsKeys,
-                    translations: translations,
-                    onInit: onInit,
-                    onReady: onReady,
-                    onDispose: onDispose,
-                    routingCallback: routingCallback,
-                    defaultTransition: defaultTransition,
-                    getPages: getPages,
-                    opaqueRoute: opaqueRoute,
-                    enableLog: enableLog,
-                    logWriterCallback: logWriterCallback,
-                    popGesture: popGesture,
-                    transitionDuration: transitionDuration,
-                    defaultGlobalState: defaultGlobalState,
-                    smartManagement: smartManagement,
-                    initialBinding: initialBinding,
-                    unknownRoute: unknownRoute,
-                    highContrastTheme: highContrastTheme,
-                    highContrastDarkTheme: highContrastDarkTheme,
-                    actions: actions),
+                    useInheritedMediaQuery: useInheritedMediaQuery),
             null,
             null,
             const <String, __PR>{
@@ -264,36 +227,17 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
               'checkerboardRasterCacheImages': __PR(__TR.tBool,
                   'checkerboardRasterCacheImages', false, false, false),
               'color': __PR(__TR<Color>(Color), 'color', true, false),
-              'customTransition': __PR(__TR<CustomTransition>(CustomTransition),
-                  'customTransition', true, false),
               'darkTheme':
                   __PR(__TR<ThemeData>(ThemeData), 'darkTheme', true, false),
               'debugShowCheckedModeBanner': __PR(
                   __TR.tBool, 'debugShowCheckedModeBanner', false, false, true),
               'debugShowMaterialGrid': __PR(
                   __TR.tBool, 'debugShowMaterialGrid', false, false, false),
-              'defaultGlobalState':
-                  __PR(__TR.tBool, 'defaultGlobalState', true, false),
-              'defaultTransition': __PR(__TR<Transition>(Transition),
-                  'defaultTransition', true, false),
-              'enableLog':
-                  __PR(__TR.tBool, 'enableLog', true, false, kDebugMode),
-              'fallbackLocale':
-                  __PR(__TR<Locale>(Locale), 'fallbackLocale', true, false),
-              'getPages': __PR(
-                  __TR<List<GetPage<dynamic>>>(List, <__TR>[
-                    __TR<GetPage<dynamic>>(GetPage, <__TR>[__TR.tDynamic])
-                  ]),
-                  'getPages',
-                  true,
-                  false),
               'highContrastDarkTheme': __PR(__TR<ThemeData>(ThemeData),
                   'highContrastDarkTheme', true, false),
               'highContrastTheme': __PR(
                   __TR<ThemeData>(ThemeData), 'highContrastTheme', true, false),
               'home': __PR(__TR<Widget>(Widget), 'home', true, false),
-              'initialBinding':
-                  __PR(__TR<Bindings>(Bindings), 'initialBinding', true, false),
               'initialRoute': __PR(__TR.tString, 'initialRoute', true, false),
               'key': __PR(__TR<Key>(Key), 'key', true, false),
               'locale': __PR(__TR<Locale>(Locale), 'locale', true, false),
@@ -317,11 +261,6 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
                   'localizationsDelegates',
                   true,
                   false),
-              'logWriterCallback': __PR(
-                  __TR<LogWriterCallback>(LogWriterCallback),
-                  'logWriterCallback',
-                  true,
-                  false),
               'navigatorKey': __PR(
                   __TR<GlobalKey<NavigatorState>>(
                       GlobalKey, <__TR>[__TR<NavigatorState>(NavigatorState)]),
@@ -335,8 +274,6 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
                   false,
                   false,
                   const <NavigatorObserver>[]),
-              'onDispose': __PR(
-                  __TR<VoidCallback>(VoidCallback), 'onDispose', true, false),
               'onGenerateInitialRoutes': __PR(
                   __TR<InitialRouteListFactory>(InitialRouteListFactory),
                   'onGenerateInitialRoutes',
@@ -346,27 +283,17 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
                   'onGenerateRoute', true, false),
               'onGenerateTitle': __PR(__TR<GenerateAppTitle>(GenerateAppTitle),
                   'onGenerateTitle', true, false),
-              'onInit':
-                  __PR(__TR<VoidCallback>(VoidCallback), 'onInit', true, false),
-              'onReady': __PR(
-                  __TR<VoidCallback>(VoidCallback), 'onReady', true, false),
               'onUnknownRoute': __PR(__TR<RouteFactory>(RouteFactory),
                   'onUnknownRoute', true, false),
-              'opaqueRoute': __PR(__TR.tBool, 'opaqueRoute', true, false),
-              'popGesture': __PR(__TR.tBool, 'popGesture', true, false),
+              'restorationScopeId':
+                  __PR(__TR.tString, 'restorationScopeId', true, false),
               'routes': __PR(
                   __TR<Map<String, Function>>(
-                      Map, <__TR>[__TR.tString, __TR.tFunction]),
+                      Map, <__TI>[__TI.tString, __TI.tFunction]),
                   'routes',
                   false,
                   false,
                   const <String, WidgetBuilder>{}),
-              'routingCallback': __PR(
-                  __TR<ValueChanged<Routing?>>(
-                      ValueChanged, <__TR>[__TR<Routing>(Routing)]),
-                  'routingCallback',
-                  true,
-                  false),
               'scaffoldMessengerKey': __PR(
                   __TR<GlobalKey<ScaffoldMessengerState>>(GlobalKey, <__TR>[
                     __TR<ScaffoldMessengerState>(ScaffoldMessengerState)
@@ -377,8 +304,8 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
               'scrollBehavior': __PR(__TR<ScrollBehavior>(ScrollBehavior),
                   'scrollBehavior', true, false),
               'shortcuts': __PR(
-                  __TR<Map<LogicalKeySet, Intent>>(Map, <__TR>[
-                    __TR<LogicalKeySet>(LogicalKeySet),
+                  __TR<Map<ShortcutActivator, Intent>>(Map, <__TR>[
+                    __TR<ShortcutActivator>(ShortcutActivator),
                     __TR<Intent>(Intent)
                   ]),
                   'shortcuts',
@@ -388,8 +315,6 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
                   __TR.tBool, 'showPerformanceOverlay', false, false, false),
               'showSemanticsDebugger': __PR(
                   __TR.tBool, 'showSemanticsDebugger', false, false, false),
-              'smartManagement': __PR(__TR<SmartManagement>(SmartManagement),
-                  'smartManagement', false, false, SmartManagement.full),
               'supportedLocales': __PR(
                   __TR<Iterable<Locale>>(
                       Iterable, <__TR>[__TR<Locale>(Locale)]),
@@ -397,42 +322,34 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
                   false,
                   false,
                   const <Locale>[Locale('en', 'US')]),
-              'textDirection': __PR(__TR<TextDirection>(TextDirection),
-                  'textDirection', true, false),
               'theme': __PR(__TR<ThemeData>(ThemeData), 'theme', true, false),
-              'themeMode': __PR(__TR<ThemeMode>(ThemeMode), 'themeMode', false,
+              'themeAnimationCurve': __PR(__TR<Curve>(Curve),
+                  'themeAnimationCurve', false, false, Curves.linear),
+              'themeAnimationDuration': __PR(
+                  __TR<Duration>(Duration),
+                  'themeAnimationDuration',
+                  false,
+                  false,
+                  kThemeAnimationDuration),
+              'themeMode': __PR(__TR<ThemeMode>(ThemeMode), 'themeMode', true,
                   false, ThemeMode.system),
               'title': __PR(__TR.tString, 'title', false, false, ''),
-              'transitionDuration': __PR(
-                  __TR<Duration>(Duration), 'transitionDuration', true, false),
-              'translations': __PR(__TR<Translations>(Translations),
-                  'translations', true, false),
-              'translationsKeys': __PR(
-                  __TR<Map<String, Map<String, String>>>(
-                      Map, <__TR>[__TR.tString, __TR.tMapStringString]),
-                  'translationsKeys',
-                  true,
-                  false),
-              'unknownRoute': __PR(
-                  __TR<GetPage<dynamic>>(GetPage, <__TR>[__TR.tDynamic]),
-                  'unknownRoute',
-                  true,
-                  false),
               'useInheritedMediaQuery': __PR(
                   __TR.tBool, 'useInheritedMediaQuery', false, false, false)
             },
             null);
       case 'router':
-        return ConstructorReflection<GetMaterialApp>(
+        return ConstructorReflection<MaterialApp>(
             this,
-            GetMaterialApp,
+            MaterialApp,
             'router',
             () => (
                     {Key? key,
-                    RouteInformationProvider? routeInformationProvider,
                     GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey,
+                    RouteInformationProvider? routeInformationProvider,
                     RouteInformationParser<Object>? routeInformationParser,
                     RouterDelegate<Object>? routerDelegate,
+                    RouterConfig<Object>? routerConfig,
                     BackButtonDispatcher? backButtonDispatcher,
                     Widget Function(BuildContext context, Widget? child)?
                         builder,
@@ -441,10 +358,11 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
                     Color? color,
                     ThemeData? theme,
                     ThemeData? darkTheme,
-                    bool useInheritedMediaQuery = false,
                     ThemeData? highContrastTheme,
                     ThemeData? highContrastDarkTheme,
-                    ThemeMode themeMode = ThemeMode.system,
+                    ThemeMode? themeMode = ThemeMode.system,
+                    Duration themeAnimationDuration = kThemeAnimationDuration,
+                    Curve themeAnimationCurve = Curves.linear,
                     Locale? locale,
                     Iterable<LocalizationsDelegate<dynamic>>?
                         localizationsDelegates,
@@ -463,37 +381,18 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
                     bool checkerboardOffscreenLayers = false,
                     bool showSemanticsDebugger = false,
                     bool debugShowCheckedModeBanner = true,
-                    Map<LogicalKeySet, Intent>? shortcuts,
-                    ScrollBehavior? scrollBehavior,
+                    Map<ShortcutActivator, Intent>? shortcuts,
                     Map<Type, Action<Intent>>? actions,
-                    CustomTransition? customTransition,
-                    Map<String, Map<String, String>>? translationsKeys,
-                    Translations? translations,
-                    TextDirection? textDirection,
-                    Locale? fallbackLocale,
-                    void Function(Routing?)? routingCallback,
-                    Transition? defaultTransition,
-                    bool? opaqueRoute,
-                    void Function()? onInit,
-                    void Function()? onReady,
-                    void Function()? onDispose,
-                    bool? enableLog = kDebugMode,
-                    void Function(String text, {bool isError})?
-                        logWriterCallback,
-                    bool? popGesture,
-                    SmartManagement smartManagement = SmartManagement.full,
-                    Bindings? initialBinding,
-                    Duration? transitionDuration,
-                    bool? defaultGlobalState,
-                    List<GetPage<dynamic>>? getPages,
-                    List<NavigatorObserver>? navigatorObservers,
-                    GetPage<dynamic>? unknownRoute}) =>
-                GetMaterialApp.router(
+                    String? restorationScopeId,
+                    ScrollBehavior? scrollBehavior,
+                    bool useInheritedMediaQuery = false}) =>
+                MaterialApp.router(
                     key: key,
-                    routeInformationProvider: routeInformationProvider,
                     scaffoldMessengerKey: scaffoldMessengerKey,
+                    routeInformationProvider: routeInformationProvider,
                     routeInformationParser: routeInformationParser,
                     routerDelegate: routerDelegate,
+                    routerConfig: routerConfig,
                     backButtonDispatcher: backButtonDispatcher,
                     builder: builder,
                     title: title,
@@ -501,10 +400,11 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
                     color: color,
                     theme: theme,
                     darkTheme: darkTheme,
-                    useInheritedMediaQuery: useInheritedMediaQuery,
                     highContrastTheme: highContrastTheme,
                     highContrastDarkTheme: highContrastDarkTheme,
                     themeMode: themeMode,
+                    themeAnimationDuration: themeAnimationDuration,
+                    themeAnimationCurve: themeAnimationCurve,
                     locale: locale,
                     localizationsDelegates: localizationsDelegates,
                     localeListResolutionCallback: localeListResolutionCallback,
@@ -518,29 +418,10 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
                     showSemanticsDebugger: showSemanticsDebugger,
                     debugShowCheckedModeBanner: debugShowCheckedModeBanner,
                     shortcuts: shortcuts,
-                    scrollBehavior: scrollBehavior,
                     actions: actions,
-                    customTransition: customTransition,
-                    translationsKeys: translationsKeys,
-                    translations: translations,
-                    textDirection: textDirection,
-                    fallbackLocale: fallbackLocale,
-                    routingCallback: routingCallback,
-                    defaultTransition: defaultTransition,
-                    opaqueRoute: opaqueRoute,
-                    onInit: onInit,
-                    onReady: onReady,
-                    onDispose: onDispose,
-                    enableLog: enableLog,
-                    logWriterCallback: logWriterCallback,
-                    popGesture: popGesture,
-                    smartManagement: smartManagement,
-                    initialBinding: initialBinding,
-                    transitionDuration: transitionDuration,
-                    defaultGlobalState: defaultGlobalState,
-                    getPages: getPages,
-                    navigatorObservers: navigatorObservers,
-                    unknownRoute: unknownRoute),
+                    restorationScopeId: restorationScopeId,
+                    scrollBehavior: scrollBehavior,
+                    useInheritedMediaQuery: useInheritedMediaQuery),
             null,
             null,
             const <String, __PR>{
@@ -564,35 +445,16 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
               'checkerboardRasterCacheImages': __PR(__TR.tBool,
                   'checkerboardRasterCacheImages', false, false, false),
               'color': __PR(__TR<Color>(Color), 'color', true, false),
-              'customTransition': __PR(__TR<CustomTransition>(CustomTransition),
-                  'customTransition', true, false),
               'darkTheme':
                   __PR(__TR<ThemeData>(ThemeData), 'darkTheme', true, false),
               'debugShowCheckedModeBanner': __PR(
                   __TR.tBool, 'debugShowCheckedModeBanner', false, false, true),
               'debugShowMaterialGrid': __PR(
                   __TR.tBool, 'debugShowMaterialGrid', false, false, false),
-              'defaultGlobalState':
-                  __PR(__TR.tBool, 'defaultGlobalState', true, false),
-              'defaultTransition': __PR(__TR<Transition>(Transition),
-                  'defaultTransition', true, false),
-              'enableLog':
-                  __PR(__TR.tBool, 'enableLog', true, false, kDebugMode),
-              'fallbackLocale':
-                  __PR(__TR<Locale>(Locale), 'fallbackLocale', true, false),
-              'getPages': __PR(
-                  __TR<List<GetPage<dynamic>>>(List, <__TR>[
-                    __TR<GetPage<dynamic>>(GetPage, <__TR>[__TR.tDynamic])
-                  ]),
-                  'getPages',
-                  true,
-                  false),
               'highContrastDarkTheme': __PR(__TR<ThemeData>(ThemeData),
                   'highContrastDarkTheme', true, false),
               'highContrastTheme': __PR(
                   __TR<ThemeData>(ThemeData), 'highContrastTheme', true, false),
-              'initialBinding':
-                  __PR(__TR<Bindings>(Bindings), 'initialBinding', true, false),
               'key': __PR(__TR<Key>(Key), 'key', true, false),
               'locale': __PR(__TR<Locale>(Locale), 'locale', true, false),
               'localeListResolutionCallback': __PR(
@@ -615,27 +477,10 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
                   'localizationsDelegates',
                   true,
                   false),
-              'logWriterCallback': __PR(
-                  __TR<LogWriterCallback>(LogWriterCallback),
-                  'logWriterCallback',
-                  true,
-                  false),
-              'navigatorObservers': __PR(
-                  __TR<List<NavigatorObserver>>(
-                      List, <__TR>[__TR<NavigatorObserver>(NavigatorObserver)]),
-                  'navigatorObservers',
-                  true,
-                  false),
-              'onDispose': __PR(
-                  __TR<VoidCallback>(VoidCallback), 'onDispose', true, false),
               'onGenerateTitle': __PR(__TR<GenerateAppTitle>(GenerateAppTitle),
                   'onGenerateTitle', true, false),
-              'onInit':
-                  __PR(__TR<VoidCallback>(VoidCallback), 'onInit', true, false),
-              'onReady': __PR(
-                  __TR<VoidCallback>(VoidCallback), 'onReady', true, false),
-              'opaqueRoute': __PR(__TR.tBool, 'opaqueRoute', true, false),
-              'popGesture': __PR(__TR.tBool, 'popGesture', true, false),
+              'restorationScopeId':
+                  __PR(__TR.tString, 'restorationScopeId', true, false),
               'routeInformationParser': __PR(
                   __TR<RouteInformationParser<Object>>(
                       RouteInformationParser, <__TR>[__TR.tObject]),
@@ -647,16 +492,16 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
                   'routeInformationProvider',
                   true,
                   false),
+              'routerConfig': __PR(
+                  __TR<RouterConfig<Object>>(
+                      RouterConfig, <__TR>[__TR.tObject]),
+                  'routerConfig',
+                  true,
+                  false),
               'routerDelegate': __PR(
                   __TR<RouterDelegate<Object>>(
                       RouterDelegate, <__TR>[__TR.tObject]),
                   'routerDelegate',
-                  true,
-                  false),
-              'routingCallback': __PR(
-                  __TR<ValueChanged<Routing?>>(
-                      ValueChanged, <__TR>[__TR<Routing>(Routing)]),
-                  'routingCallback',
                   true,
                   false),
               'scaffoldMessengerKey': __PR(
@@ -669,8 +514,8 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
               'scrollBehavior': __PR(__TR<ScrollBehavior>(ScrollBehavior),
                   'scrollBehavior', true, false),
               'shortcuts': __PR(
-                  __TR<Map<LogicalKeySet, Intent>>(Map, <__TR>[
-                    __TR<LogicalKeySet>(LogicalKeySet),
+                  __TR<Map<ShortcutActivator, Intent>>(Map, <__TR>[
+                    __TR<ShortcutActivator>(ShortcutActivator),
                     __TR<Intent>(Intent)
                   ]),
                   'shortcuts',
@@ -680,8 +525,6 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
                   __TR.tBool, 'showPerformanceOverlay', false, false, false),
               'showSemanticsDebugger': __PR(
                   __TR.tBool, 'showSemanticsDebugger', false, false, false),
-              'smartManagement': __PR(__TR<SmartManagement>(SmartManagement),
-                  'smartManagement', false, false, SmartManagement.full),
               'supportedLocales': __PR(
                   __TR<Iterable<Locale>>(
                       Iterable, <__TR>[__TR<Locale>(Locale)]),
@@ -689,27 +532,18 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
                   false,
                   false,
                   const <Locale>[Locale('en', 'US')]),
-              'textDirection': __PR(__TR<TextDirection>(TextDirection),
-                  'textDirection', true, false),
               'theme': __PR(__TR<ThemeData>(ThemeData), 'theme', true, false),
-              'themeMode': __PR(__TR<ThemeMode>(ThemeMode), 'themeMode', false,
+              'themeAnimationCurve': __PR(__TR<Curve>(Curve),
+                  'themeAnimationCurve', false, false, Curves.linear),
+              'themeAnimationDuration': __PR(
+                  __TR<Duration>(Duration),
+                  'themeAnimationDuration',
+                  false,
+                  false,
+                  kThemeAnimationDuration),
+              'themeMode': __PR(__TR<ThemeMode>(ThemeMode), 'themeMode', true,
                   false, ThemeMode.system),
               'title': __PR(__TR.tString, 'title', false, false, ''),
-              'transitionDuration': __PR(
-                  __TR<Duration>(Duration), 'transitionDuration', true, false),
-              'translations': __PR(__TR<Translations>(Translations),
-                  'translations', true, false),
-              'translationsKeys': __PR(
-                  __TR<Map<String, Map<String, String>>>(
-                      Map, <__TR>[__TR.tString, __TR.tMapStringString]),
-                  'translationsKeys',
-                  true,
-                  false),
-              'unknownRoute': __PR(
-                  __TR<GetPage<dynamic>>(GetPage, <__TR>[__TR.tDynamic]),
-                  'unknownRoute',
-                  true,
-                  false),
               'useInheritedMediaQuery': __PR(
                   __TR.tBool, 'useInheritedMediaQuery', false, false, false)
             },
@@ -725,7 +559,7 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
   List<Object> get classAnnotations => _classAnnotations;
 
   static const List<Type> _supperTypes = const <Type>[
-    StatelessWidget,
+    StatefulWidget,
     Widget,
     DiagnosticableTree,
     Diagnosticable
@@ -738,82 +572,66 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
   bool get hasMethodToJson => false;
 
   @override
-  Object? callMethodToJson([GetMaterialApp? obj]) => null;
+  Object? callMethodToJson([MaterialApp? obj]) => null;
 
   static const List<String> _fieldsNames = const <String>[
-    'actions',
-    'backButtonDispatcher',
-    'builder',
-    'checkerboardOffscreenLayers',
-    'checkerboardRasterCacheImages',
-    'color',
-    'customTransition',
-    'darkTheme',
-    'debugShowCheckedModeBanner',
-    'debugShowMaterialGrid',
-    'defaultGlobalState',
-    'defaultTransition',
-    'enableLog',
-    'fallbackLocale',
-    'getPages',
-    'hashCode',
-    'highContrastDarkTheme',
-    'highContrastTheme',
+    'navigatorKey',
+    'scaffoldMessengerKey',
     'home',
-    'initialBinding',
+    'routes',
     'initialRoute',
-    'key',
+    'onGenerateRoute',
+    'onGenerateInitialRoutes',
+    'onUnknownRoute',
+    'navigatorObservers',
+    'routeInformationProvider',
+    'routeInformationParser',
+    'routerDelegate',
+    'backButtonDispatcher',
+    'routerConfig',
+    'builder',
+    'title',
+    'onGenerateTitle',
+    'theme',
+    'darkTheme',
+    'highContrastTheme',
+    'highContrastDarkTheme',
+    'themeMode',
+    'themeAnimationDuration',
+    'themeAnimationCurve',
+    'color',
     'locale',
+    'localizationsDelegates',
     'localeListResolutionCallback',
     'localeResolutionCallback',
-    'localizationsDelegates',
-    'logWriterCallback',
-    'navigatorKey',
-    'navigatorObservers',
-    'onDispose',
-    'onGenerateInitialRoutes',
-    'onGenerateRoute',
-    'onGenerateTitle',
-    'onInit',
-    'onReady',
-    'onUnknownRoute',
-    'opaqueRoute',
-    'popGesture',
-    'routeInformationParser',
-    'routeInformationProvider',
-    'routerDelegate',
-    'routes',
-    'routingCallback',
-    'scaffoldMessengerKey',
-    'scrollBehavior',
-    'shortcuts',
-    'showPerformanceOverlay',
-    'showSemanticsDebugger',
-    'smartManagement',
     'supportedLocales',
-    'textDirection',
-    'theme',
-    'themeMode',
-    'title',
-    'transitionDuration',
-    'translations',
-    'translationsKeys',
-    'unknownRoute',
-    'useInheritedMediaQuery'
+    'showPerformanceOverlay',
+    'checkerboardRasterCacheImages',
+    'checkerboardOffscreenLayers',
+    'showSemanticsDebugger',
+    'debugShowCheckedModeBanner',
+    'shortcuts',
+    'actions',
+    'restorationScopeId',
+    'scrollBehavior',
+    'debugShowMaterialGrid',
+    'useInheritedMediaQuery',
+    'key',
+    'hashCode'
   ];
 
   @override
   List<String> get fieldsNames => _fieldsNames;
 
-  static final Map<String, FieldReflection<GetMaterialApp, dynamic>>
-      _fieldsNoObject = <String, FieldReflection<GetMaterialApp, dynamic>>{};
+  static final Map<String, FieldReflection<MaterialApp, dynamic>>
+      _fieldsNoObject = <String, FieldReflection<MaterialApp, dynamic>>{};
 
-  final Map<String, FieldReflection<GetMaterialApp, dynamic>> _fieldsObject =
-      <String, FieldReflection<GetMaterialApp, dynamic>>{};
+  final Map<String, FieldReflection<MaterialApp, dynamic>> _fieldsObject =
+      <String, FieldReflection<MaterialApp, dynamic>>{};
 
   @override
-  FieldReflection<GetMaterialApp, T>? field<T>(String fieldName,
-      [GetMaterialApp? obj]) {
+  FieldReflection<MaterialApp, T>? field<T>(String fieldName,
+      [MaterialApp? obj]) {
     if (obj == null) {
       if (object != null) {
         return _fieldObjectImpl<T>(fieldName);
@@ -826,21 +644,21 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
     return _fieldNoObjectImpl<T>(fieldName)?.withObject(obj);
   }
 
-  FieldReflection<GetMaterialApp, T>? _fieldNoObjectImpl<T>(String fieldName) {
+  FieldReflection<MaterialApp, T>? _fieldNoObjectImpl<T>(String fieldName) {
     final f = _fieldsNoObject[fieldName];
     if (f != null) {
-      return f as FieldReflection<GetMaterialApp, T>;
+      return f as FieldReflection<MaterialApp, T>;
     }
     final f2 = _fieldImpl(fieldName, null);
     if (f2 == null) return null;
     _fieldsNoObject[fieldName] = f2;
-    return f2 as FieldReflection<GetMaterialApp, T>;
+    return f2 as FieldReflection<MaterialApp, T>;
   }
 
-  FieldReflection<GetMaterialApp, T>? _fieldObjectImpl<T>(String fieldName) {
+  FieldReflection<MaterialApp, T>? _fieldObjectImpl<T>(String fieldName) {
     final f = _fieldsObject[fieldName];
     if (f != null) {
-      return f as FieldReflection<GetMaterialApp, T>;
+      return f as FieldReflection<MaterialApp, T>;
     }
     var f2 = _fieldNoObjectImpl<T>(fieldName);
     if (f2 == null) return null;
@@ -849,813 +667,1095 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
     return f2;
   }
 
-  FieldReflection<GetMaterialApp, dynamic>? _fieldImpl(
-      String fieldName, GetMaterialApp? obj) {
+  FieldReflection<MaterialApp, dynamic>? _fieldImpl(
+      String fieldName, MaterialApp? obj) {
     obj ??= object;
 
     var lc = fieldName.trim().toLowerCase();
 
     switch (lc) {
       case 'navigatorkey':
-        return FieldReflection<GetMaterialApp, GlobalKey<NavigatorState>?>(
-          this,
-          GetMaterialApp,
-          __TR<GlobalKey<NavigatorState>>(
-              GlobalKey, <__TR>[__TR<NavigatorState>(NavigatorState)]),
-          'navigatorKey',
-          true,
-          (o) => () => o!.navigatorKey,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, GlobalKey<NavigatorState>?>(
+            this,
+            MaterialApp,
+            __TR<GlobalKey<NavigatorState>>(
+                GlobalKey, <__TR>[__TR<NavigatorState>(NavigatorState)]),
+            'navigatorKey',
+            true,
+            (o) => () => o!.navigatorKey,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.navigatorKey}''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'scaffoldmessengerkey':
-        return FieldReflection<GetMaterialApp,
-            GlobalKey<ScaffoldMessengerState>?>(
-          this,
-          GetMaterialApp,
-          __TR<GlobalKey<ScaffoldMessengerState>>(GlobalKey,
-              <__TR>[__TR<ScaffoldMessengerState>(ScaffoldMessengerState)]),
-          'scaffoldMessengerKey',
-          true,
-          (o) => () => o!.scaffoldMessengerKey,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, GlobalKey<ScaffoldMessengerState>?>(
+            this,
+            MaterialApp,
+            __TR<GlobalKey<ScaffoldMessengerState>>(GlobalKey,
+                <__TR>[__TR<ScaffoldMessengerState>(ScaffoldMessengerState)]),
+            'scaffoldMessengerKey',
+            true,
+            (o) => () => o!.scaffoldMessengerKey,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// A key to use when building the [ScaffoldMessenger].
+///
+/// If a [scaffoldMessengerKey] is specified, the [ScaffoldMessenger] can be
+/// directly manipulated without first obtaining it from a [BuildContext] via
+/// [ScaffoldMessenger.of]: from the [scaffoldMessengerKey], use the
+/// [GlobalKey.currentState] getter.''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'home':
-        return FieldReflection<GetMaterialApp, Widget?>(
-          this,
-          GetMaterialApp,
-          __TR<Widget>(Widget),
-          'home',
-          true,
-          (o) => () => o!.home,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, Widget?>(
+            this,
+            MaterialApp,
+            __TR<Widget>(Widget),
+            'home',
+            true,
+            (o) => () => o!.home,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.home}''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'routes':
-        return FieldReflection<GetMaterialApp,
-            Map<String, Widget Function(BuildContext context)>?>(
-          this,
-          GetMaterialApp,
-          __TR<Map<String, Function>>(
-              Map, <__TI>[__TI.tString, __TI.tFunction]),
-          'routes',
-          true,
-          (o) => () => o!.routes,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp,
+                Map<String, Widget Function(BuildContext context)>?>(
+            this,
+            MaterialApp,
+            __TR<Map<String, Function>>(
+                Map, <__TI>[__TI.tString, __TI.tFunction]),
+            'routes',
+            true,
+            (o) => () => o!.routes,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// The application's top-level routing table.
+///
+/// When a named route is pushed with [Navigator.pushNamed], the route name is
+/// looked up in this map. If the name is present, the associated
+/// [widgets.WidgetBuilder] is used to construct a [MaterialPageRoute] that
+/// performs an appropriate transition, including [Hero] animations, to the
+/// new route.
+///
+/// {@macro flutter.widgets.widgetsApp.routes}''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'initialroute':
-        return FieldReflection<GetMaterialApp, String?>(
-          this,
-          GetMaterialApp,
-          __TR.tString,
-          'initialRoute',
-          true,
-          (o) => () => o!.initialRoute,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, String?>(
+            this,
+            MaterialApp,
+            __TR.tString,
+            'initialRoute',
+            true,
+            (o) => () => o!.initialRoute,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.initialRoute}''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'ongenerateroute':
-        return FieldReflection<GetMaterialApp,
-            Route<dynamic>? Function(RouteSettings settings)?>(
-          this,
-          GetMaterialApp,
-          __TR<RouteFactory>(RouteFactory),
-          'onGenerateRoute',
-          true,
-          (o) => () => o!.onGenerateRoute,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp,
+                Route<dynamic>? Function(RouteSettings settings)?>(
+            this,
+            MaterialApp,
+            __TR<RouteFactory>(RouteFactory),
+            'onGenerateRoute',
+            true,
+            (o) => () => o!.onGenerateRoute,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.onGenerateRoute}''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'ongenerateinitialroutes':
-        return FieldReflection<GetMaterialApp,
-            List<Route<dynamic>> Function(String initialRoute)?>(
-          this,
-          GetMaterialApp,
-          __TR<InitialRouteListFactory>(InitialRouteListFactory),
-          'onGenerateInitialRoutes',
-          true,
-          (o) => () => o!.onGenerateInitialRoutes,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp,
+                List<Route<dynamic>> Function(String initialRoute)?>(
+            this,
+            MaterialApp,
+            __TR<InitialRouteListFactory>(InitialRouteListFactory),
+            'onGenerateInitialRoutes',
+            true,
+            (o) => () => o!.onGenerateInitialRoutes,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.onGenerateInitialRoutes}''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'onunknownroute':
-        return FieldReflection<GetMaterialApp,
-            Route<dynamic>? Function(RouteSettings settings)?>(
-          this,
-          GetMaterialApp,
-          __TR<RouteFactory>(RouteFactory),
-          'onUnknownRoute',
-          true,
-          (o) => () => o!.onUnknownRoute,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp,
+                Route<dynamic>? Function(RouteSettings settings)?>(
+            this,
+            MaterialApp,
+            __TR<RouteFactory>(RouteFactory),
+            'onUnknownRoute',
+            true,
+            (o) => () => o!.onUnknownRoute,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.onUnknownRoute}''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'navigatorobservers':
-        return FieldReflection<GetMaterialApp, List<NavigatorObserver>?>(
-          this,
-          GetMaterialApp,
-          __TR<List<NavigatorObserver>>(
-              List, <__TR>[__TR<NavigatorObserver>(NavigatorObserver)]),
-          'navigatorObservers',
-          true,
-          (o) => () => o!.navigatorObservers,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, List<NavigatorObserver>?>(
+            this,
+            MaterialApp,
+            __TR<List<NavigatorObserver>>(
+                List, <__TR>[__TR<NavigatorObserver>(NavigatorObserver)]),
+            'navigatorObservers',
+            true,
+            (o) => () => o!.navigatorObservers,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.navigatorObservers}''',
+            documentCommentOfCn: null,
+            isGenerated: null);
+      case 'routeinformationprovider':
+        return FieldReflection<MaterialApp, RouteInformationProvider?>(
+            this,
+            MaterialApp,
+            __TR<RouteInformationProvider>(RouteInformationProvider),
+            'routeInformationProvider',
+            true,
+            (o) => () => o!.routeInformationProvider,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.routeInformationProvider}''',
+            documentCommentOfCn: null,
+            isGenerated: null);
+      case 'routeinformationparser':
+        return FieldReflection<MaterialApp, RouteInformationParser<Object>?>(
+            this,
+            MaterialApp,
+            __TR<RouteInformationParser<Object>>(
+                RouteInformationParser, <__TR>[__TR.tObject]),
+            'routeInformationParser',
+            true,
+            (o) => () => o!.routeInformationParser,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.routeInformationParser}''',
+            documentCommentOfCn: null,
+            isGenerated: null);
+      case 'routerdelegate':
+        return FieldReflection<MaterialApp, RouterDelegate<Object>?>(
+            this,
+            MaterialApp,
+            __TR<RouterDelegate<Object>>(RouterDelegate, <__TR>[__TR.tObject]),
+            'routerDelegate',
+            true,
+            (o) => () => o!.routerDelegate,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.routerDelegate}''',
+            documentCommentOfCn: null,
+            isGenerated: null);
+      case 'backbuttondispatcher':
+        return FieldReflection<MaterialApp, BackButtonDispatcher?>(
+            this,
+            MaterialApp,
+            __TR<BackButtonDispatcher>(BackButtonDispatcher),
+            'backButtonDispatcher',
+            true,
+            (o) => () => o!.backButtonDispatcher,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.backButtonDispatcher}''',
+            documentCommentOfCn: null,
+            isGenerated: null);
+      case 'routerconfig':
+        return FieldReflection<MaterialApp, RouterConfig<Object>?>(
+            this,
+            MaterialApp,
+            __TR<RouterConfig<Object>>(RouterConfig, <__TR>[__TR.tObject]),
+            'routerConfig',
+            true,
+            (o) => () => o!.routerConfig,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.routerConfig}''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'builder':
-        return FieldReflection<GetMaterialApp,
-            Widget Function(BuildContext context, Widget? child)?>(
-          this,
-          GetMaterialApp,
-          __TR<TransitionBuilder>(TransitionBuilder),
-          'builder',
-          true,
-          (o) => () => o!.builder,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp,
+                Widget Function(BuildContext context, Widget? child)?>(
+            this,
+            MaterialApp,
+            __TR<TransitionBuilder>(TransitionBuilder),
+            'builder',
+            true,
+            (o) => () => o!.builder,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.builder}
+///
+/// Material specific features such as [showDialog] and [showMenu], and widgets
+/// such as [Tooltip], [PopupMenuButton], also require a [Navigator] to properly
+/// function.''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'title':
-        return FieldReflection<GetMaterialApp, String>(
-          this,
-          GetMaterialApp,
-          __TR.tString,
-          'title',
-          false,
-          (o) => () => o!.title,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, String>(
+            this,
+            MaterialApp,
+            __TR.tString,
+            'title',
+            false,
+            (o) => () => o!.title,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.title}
+///
+/// This value is passed unmodified to [WidgetsApp.title].''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'ongeneratetitle':
-        return FieldReflection<GetMaterialApp,
-            String Function(BuildContext context)?>(
-          this,
-          GetMaterialApp,
-          __TR<GenerateAppTitle>(GenerateAppTitle),
-          'onGenerateTitle',
-          true,
-          (o) => () => o!.onGenerateTitle,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp,
+                String Function(BuildContext context)?>(
+            this,
+            MaterialApp,
+            __TR<GenerateAppTitle>(GenerateAppTitle),
+            'onGenerateTitle',
+            true,
+            (o) => () => o!.onGenerateTitle,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.onGenerateTitle}
+///
+/// This value is passed unmodified to [WidgetsApp.onGenerateTitle].''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'theme':
-        return FieldReflection<GetMaterialApp, ThemeData?>(
-          this,
-          GetMaterialApp,
-          __TR<ThemeData>(ThemeData),
-          'theme',
-          true,
-          (o) => () => o!.theme,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, ThemeData?>(
+            this,
+            MaterialApp,
+            __TR<ThemeData>(ThemeData),
+            'theme',
+            true,
+            (o) => () => o!.theme,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// Default visual properties, like colors fonts and shapes, for this app's
+/// material widgets.
+///
+/// A second [darkTheme] [ThemeData] value, which is used to provide a dark
+/// version of the user interface can also be specified. [themeMode] will
+/// control which theme will be used if a [darkTheme] is provided.
+///
+/// The default value of this property is the value of [ThemeData.light()].
+///
+/// See also:
+///
+///  * [themeMode], which controls which theme to use.
+///  * [MediaQueryData.platformBrightness], which indicates the platform's
+///    desired brightness and is used to automatically toggle between [theme]
+///    and [darkTheme] in [MaterialApp].
+///  * [ThemeData.brightness], which indicates the [Brightness] of a theme's
+///    colors.''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'darktheme':
-        return FieldReflection<GetMaterialApp, ThemeData?>(
-          this,
-          GetMaterialApp,
-          __TR<ThemeData>(ThemeData),
-          'darkTheme',
-          true,
-          (o) => () => o!.darkTheme,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, ThemeData?>(
+            this,
+            MaterialApp,
+            __TR<ThemeData>(ThemeData),
+            'darkTheme',
+            true,
+            (o) => () => o!.darkTheme,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// The [ThemeData] to use when a 'dark mode' is requested by the system.
+///
+/// Some host platforms allow the users to select a system-wide 'dark mode',
+/// or the application may want to offer the user the ability to choose a
+/// dark theme just for this application. This is theme that will be used for
+/// such cases. [themeMode] will control which theme will be used.
+///
+/// This theme should have a [ThemeData.brightness] set to [Brightness.dark].
+///
+/// Uses [theme] instead when null. Defaults to the value of
+/// [ThemeData.light()] when both [darkTheme] and [theme] are null.
+///
+/// See also:
+///
+///  * [themeMode], which controls which theme to use.
+///  * [MediaQueryData.platformBrightness], which indicates the platform's
+///    desired brightness and is used to automatically toggle between [theme]
+///    and [darkTheme] in [MaterialApp].
+///  * [ThemeData.brightness], which is typically set to the value of
+///    [MediaQueryData.platformBrightness].''',
+            documentCommentOfCn: null,
+            isGenerated: null);
+      case 'highcontrasttheme':
+        return FieldReflection<MaterialApp, ThemeData?>(
+            this,
+            MaterialApp,
+            __TR<ThemeData>(ThemeData),
+            'highContrastTheme',
+            true,
+            (o) => () => o!.highContrastTheme,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// The [ThemeData] to use when 'high contrast' is requested by the system.
+///
+/// Some host platforms (for example, iOS) allow the users to increase
+/// contrast through an accessibility setting.
+///
+/// Uses [theme] instead when null.
+///
+/// See also:
+///
+///  * [MediaQueryData.highContrast], which indicates the platform's
+///    desire to increase contrast.''',
+            documentCommentOfCn: null,
+            isGenerated: null);
+      case 'highcontrastdarktheme':
+        return FieldReflection<MaterialApp, ThemeData?>(
+            this,
+            MaterialApp,
+            __TR<ThemeData>(ThemeData),
+            'highContrastDarkTheme',
+            true,
+            (o) => () => o!.highContrastDarkTheme,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// The [ThemeData] to use when a 'dark mode' and 'high contrast' is requested
+/// by the system.
+///
+/// Some host platforms (for example, iOS) allow the users to increase
+/// contrast through an accessibility setting.
+///
+/// This theme should have a [ThemeData.brightness] set to [Brightness.dark].
+///
+/// Uses [darkTheme] instead when null.
+///
+/// See also:
+///
+///  * [MediaQueryData.highContrast], which indicates the platform's
+///    desire to increase contrast.''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'thememode':
-        return FieldReflection<GetMaterialApp, ThemeMode>(
-          this,
-          GetMaterialApp,
-          __TR<ThemeMode>(ThemeMode),
-          'themeMode',
-          false,
-          (o) => () => o!.themeMode,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'customtransition':
-        return FieldReflection<GetMaterialApp, CustomTransition?>(
-          this,
-          GetMaterialApp,
-          __TR<CustomTransition>(CustomTransition),
-          'customTransition',
-          true,
-          (o) => () => o!.customTransition,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, ThemeMode?>(
+            this,
+            MaterialApp,
+            __TR<ThemeMode>(ThemeMode),
+            'themeMode',
+            true,
+            (o) => () => o!.themeMode,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// Determines which theme will be used by the application if both [theme]
+/// and [darkTheme] are provided.
+///
+/// If set to [ThemeMode.system], the choice of which theme to use will
+/// be based on the user's system preferences. If the [MediaQuery.platformBrightnessOf]
+/// is [Brightness.light], [theme] will be used. If it is [Brightness.dark],
+/// [darkTheme] will be used (unless it is null, in which case [theme]
+/// will be used.
+///
+/// If set to [ThemeMode.light] the [theme] will always be used,
+/// regardless of the user's system preference.
+///
+/// If set to [ThemeMode.dark] the [darkTheme] will be used
+/// regardless of the user's system preference. If [darkTheme] is null
+/// then it will fallback to using [theme].
+///
+/// The default value is [ThemeMode.system].
+///
+/// See also:
+///
+///  * [theme], which is used when a light mode is selected.
+///  * [darkTheme], which is used when a dark mode is selected.
+///  * [ThemeData.brightness], which indicates to various parts of the
+///    system what kind of theme is being used.''',
+            documentCommentOfCn: null,
+            isGenerated: null);
+      case 'themeanimationduration':
+        return FieldReflection<MaterialApp, Duration>(
+            this,
+            MaterialApp,
+            __TR<Duration>(Duration),
+            'themeAnimationDuration',
+            false,
+            (o) => () => o!.themeAnimationDuration,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn: '''/// The duration of animated theme changes.
+///
+/// When the theme changes (either by the [theme], [darkTheme] or [themeMode]
+/// parameters changing) it is animated to the new theme over time.
+/// The [themeAnimationDuration] determines how long this animation takes.
+///
+/// To have the theme change immediately, you can set this to [Duration.zero].
+///
+/// The default is [kThemeAnimationDuration].
+///
+/// See also:
+///   [themeAnimationCurve], which defines the curve used for the animation.''',
+            documentCommentOfCn: null,
+            isGenerated: null);
+      case 'themeanimationcurve':
+        return FieldReflection<MaterialApp, Curve>(
+            this,
+            MaterialApp,
+            __TR<Curve>(Curve),
+            'themeAnimationCurve',
+            false,
+            (o) => () => o!.themeAnimationCurve,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// The curve to apply when animating theme changes.
+///
+/// The default is [Curves.linear].
+///
+/// This is ignored if [themeAnimationDuration] is [Duration.zero].
+///
+/// See also:
+///   [themeAnimationDuration], which defines how long the animation is.''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'color':
-        return FieldReflection<GetMaterialApp, Color?>(
-          this,
-          GetMaterialApp,
-          __TR<Color>(Color),
-          'color',
-          true,
-          (o) => () => o!.color,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'translationskeys':
-        return FieldReflection<GetMaterialApp,
-            Map<String, Map<String, String>>?>(
-          this,
-          GetMaterialApp,
-          __TR<Map<String, Map<String, String>>>(
-              Map, <__TR>[__TR.tString, __TR.tMapStringString]),
-          'translationsKeys',
-          true,
-          (o) => () => o!.translationsKeys,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'translations':
-        return FieldReflection<GetMaterialApp, Translations?>(
-          this,
-          GetMaterialApp,
-          __TR<Translations>(Translations),
-          'translations',
-          true,
-          (o) => () => o!.translations,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'textdirection':
-        return FieldReflection<GetMaterialApp, TextDirection?>(
-          this,
-          GetMaterialApp,
-          __TR<TextDirection>(TextDirection),
-          'textDirection',
-          true,
-          (o) => () => o!.textDirection,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, Color?>(
+            this,
+            MaterialApp,
+            __TR<Color>(Color),
+            'color',
+            true,
+            (o) => () => o!.color,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.color}''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'locale':
-        return FieldReflection<GetMaterialApp, Locale?>(
-          this,
-          GetMaterialApp,
-          __TR<Locale>(Locale),
-          'locale',
-          true,
-          (o) => () => o!.locale,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'fallbacklocale':
-        return FieldReflection<GetMaterialApp, Locale?>(
-          this,
-          GetMaterialApp,
-          __TR<Locale>(Locale),
-          'fallbackLocale',
-          true,
-          (o) => () => o!.fallbackLocale,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, Locale?>(
+            this,
+            MaterialApp,
+            __TR<Locale>(Locale),
+            'locale',
+            true,
+            (o) => () => o!.locale,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.locale}''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'localizationsdelegates':
-        return FieldReflection<GetMaterialApp,
-            Iterable<LocalizationsDelegate<dynamic>>?>(
-          this,
-          GetMaterialApp,
-          __TR<Iterable<LocalizationsDelegate<dynamic>>>(Iterable, <__TR>[
-            __TR<LocalizationsDelegate<dynamic>>(
-                LocalizationsDelegate, <__TR>[__TR.tDynamic])
-          ]),
-          'localizationsDelegates',
-          true,
-          (o) => () => o!.localizationsDelegates,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp,
+                Iterable<LocalizationsDelegate<dynamic>>?>(
+            this,
+            MaterialApp,
+            __TR<Iterable<LocalizationsDelegate<dynamic>>>(Iterable, <__TR>[
+              __TR<LocalizationsDelegate<dynamic>>(
+                  LocalizationsDelegate, <__TR>[__TR.tDynamic])
+            ]),
+            'localizationsDelegates',
+            true,
+            (o) => () => o!.localizationsDelegates,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.localizationsDelegates}
+///
+/// Internationalized apps that require translations for one of the locales
+/// listed in [GlobalMaterialLocalizations] should specify this parameter
+/// and list the [supportedLocales] that the application can handle.
+///
+/// ```dart
+/// // The GlobalMaterialLocalizations and GlobalWidgetsLocalizations
+/// // classes require the following import:
+/// // import 'package:flutter_localizations/flutter_localizations.dart';
+///
+/// const MaterialApp(
+///   localizationsDelegates: <LocalizationsDelegate<Object>>[
+///     // ... app-specific localization delegate(s) here
+///     GlobalMaterialLocalizations.delegate,
+///     GlobalWidgetsLocalizations.delegate,
+///   ],
+///   supportedLocales: <Locale>[
+///     Locale('en', 'US'), // English
+///     Locale('he', 'IL'), // Hebrew
+///     // ... other locales the app supports
+///   ],
+///   // ...
+/// )
+/// ```
+///
+/// ## Adding localizations for a new locale
+///
+/// The information that follows applies to the unusual case of an app
+/// adding translations for a language not already supported by
+/// [GlobalMaterialLocalizations].
+///
+/// Delegates that produce [WidgetsLocalizations] and [MaterialLocalizations]
+/// are included automatically. Apps can provide their own versions of these
+/// localizations by creating implementations of
+/// [LocalizationsDelegate<WidgetsLocalizations>] or
+/// [LocalizationsDelegate<MaterialLocalizations>] whose load methods return
+/// custom versions of [WidgetsLocalizations] or [MaterialLocalizations].
+///
+/// For example: to add support to [MaterialLocalizations] for a locale it
+/// doesn't already support, say `const Locale('foo', 'BR')`, one first
+/// creates a subclass of [MaterialLocalizations] that provides the
+/// translations:
+///
+/// ```dart
+/// class FooLocalizations extends MaterialLocalizations {
+///   FooLocalizations();
+///   @override
+///   String get okButtonLabel => 'foo';
+///   // ...
+///   // lots of other getters and methods to override!
+/// }
+/// ```
+///
+/// One must then create a [LocalizationsDelegate] subclass that can provide
+/// an instance of the [MaterialLocalizations] subclass. In this case, this is
+/// essentially just a method that constructs a `FooLocalizations` object. A
+/// [SynchronousFuture] is used here because no asynchronous work takes place
+/// upon "loading" the localizations object.
+///
+/// ```dart
+/// // continuing from previous example...
+/// class FooLocalizationsDelegate extends LocalizationsDelegate<MaterialLocalizations> {
+///   const FooLocalizationsDelegate();
+///   @override
+///   bool isSupported(Locale locale) {
+///     return locale == const Locale('foo', 'BR');
+///   }
+///   @override
+///   Future<FooLocalizations> load(Locale locale) {
+///     assert(locale == const Locale('foo', 'BR'));
+///     return SynchronousFuture<FooLocalizations>(FooLocalizations());
+///   }
+///   @override
+///   bool shouldReload(FooLocalizationsDelegate old) => false;
+/// }
+/// ```
+///
+/// Constructing a [MaterialApp] with a `FooLocalizationsDelegate` overrides
+/// the automatically included delegate for [MaterialLocalizations] because
+/// only the first delegate of each [LocalizationsDelegate.type] is used and
+/// the automatically included delegates are added to the end of the app's
+/// [localizationsDelegates] list.
+///
+/// ```dart
+/// // continuing from previous example...
+/// const MaterialApp(
+///   localizationsDelegates: <LocalizationsDelegate<Object>>[
+///     FooLocalizationsDelegate(),
+///   ],
+///   // ...
+/// )
+/// ```
+/// See also:
+///
+///  * [supportedLocales], which must be specified along with
+///    [localizationsDelegates].
+///  * [GlobalMaterialLocalizations], a [localizationsDelegates] value
+///    which provides material localizations for many languages.
+///  * The Flutter Internationalization Tutorial,
+///    <https://flutter.dev/tutorials/internationalization/>.''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'localelistresolutioncallback':
         return FieldReflection<
-            GetMaterialApp,
-            Locale? Function(
-                List<Locale>? locales, Iterable<Locale> supportedLocales)?>(
-          this,
-          GetMaterialApp,
-          __TR<LocaleListResolutionCallback>(LocaleListResolutionCallback),
-          'localeListResolutionCallback',
-          true,
-          (o) => () => o!.localeListResolutionCallback,
-          null,
-          obj,
-          false,
-          true,
-        );
+                MaterialApp,
+                Locale? Function(
+                    List<Locale>? locales, Iterable<Locale> supportedLocales)?>(
+            this,
+            MaterialApp,
+            __TR<LocaleListResolutionCallback>(LocaleListResolutionCallback),
+            'localeListResolutionCallback',
+            true,
+            (o) => () => o!.localeListResolutionCallback,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.localeListResolutionCallback}
+///
+/// This callback is passed along to the [WidgetsApp] built by this widget.''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'localeresolutioncallback':
         return FieldReflection<
-            GetMaterialApp,
-            Locale? Function(
-                Locale? locale, Iterable<Locale> supportedLocales)?>(
-          this,
-          GetMaterialApp,
-          __TR<LocaleResolutionCallback>(LocaleResolutionCallback),
-          'localeResolutionCallback',
-          true,
-          (o) => () => o!.localeResolutionCallback,
-          null,
-          obj,
-          false,
-          true,
-        );
+                MaterialApp,
+                Locale? Function(
+                    Locale? locale, Iterable<Locale> supportedLocales)?>(
+            this,
+            MaterialApp,
+            __TR<LocaleResolutionCallback>(LocaleResolutionCallback),
+            'localeResolutionCallback',
+            true,
+            (o) => () => o!.localeResolutionCallback,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.LocaleResolutionCallback}
+///
+/// This callback is passed along to the [WidgetsApp] built by this widget.''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'supportedlocales':
-        return FieldReflection<GetMaterialApp, Iterable<Locale>>(
-          this,
-          GetMaterialApp,
-          __TR<Iterable<Locale>>(Iterable, <__TR>[__TR<Locale>(Locale)]),
-          'supportedLocales',
-          false,
-          (o) => () => o!.supportedLocales,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, Iterable<Locale>>(
+            this,
+            MaterialApp,
+            __TR<Iterable<Locale>>(Iterable, <__TR>[__TR<Locale>(Locale)]),
+            'supportedLocales',
+            false,
+            (o) => () => o!.supportedLocales,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.supportedLocales}
+///
+/// It is passed along unmodified to the [WidgetsApp] built by this widget.
+///
+/// See also:
+///
+///  * [localizationsDelegates], which must be specified for localized
+///    applications.
+///  * [GlobalMaterialLocalizations], a [localizationsDelegates] value
+///    which provides material localizations for many languages.
+///  * The Flutter Internationalization Tutorial,
+///    <https://flutter.dev/tutorials/internationalization/>.''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'showperformanceoverlay':
-        return FieldReflection<GetMaterialApp, bool>(
-          this,
-          GetMaterialApp,
-          __TR.tBool,
-          'showPerformanceOverlay',
-          false,
-          (o) => () => o!.showPerformanceOverlay,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, bool>(
+            this,
+            MaterialApp,
+            __TR.tBool,
+            'showPerformanceOverlay',
+            false,
+            (o) => () => o!.showPerformanceOverlay,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn: '''/// Turns on a performance overlay.
+///
+/// See also:
+///
+///  * <https://flutter.dev/debugging/#performance-overlay>''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'checkerboardrastercacheimages':
-        return FieldReflection<GetMaterialApp, bool>(
-          this,
-          GetMaterialApp,
-          __TR.tBool,
-          'checkerboardRasterCacheImages',
-          false,
-          (o) => () => o!.checkerboardRasterCacheImages,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, bool>(
+            this,
+            MaterialApp,
+            __TR.tBool,
+            'checkerboardRasterCacheImages',
+            false,
+            (o) => () => o!.checkerboardRasterCacheImages,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// Turns on checkerboarding of raster cache images.''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'checkerboardoffscreenlayers':
-        return FieldReflection<GetMaterialApp, bool>(
-          this,
-          GetMaterialApp,
-          __TR.tBool,
-          'checkerboardOffscreenLayers',
-          false,
-          (o) => () => o!.checkerboardOffscreenLayers,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, bool>(
+            this,
+            MaterialApp,
+            __TR.tBool,
+            'checkerboardOffscreenLayers',
+            false,
+            (o) => () => o!.checkerboardOffscreenLayers,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// Turns on checkerboarding of layers rendered to offscreen bitmaps.''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'showsemanticsdebugger':
-        return FieldReflection<GetMaterialApp, bool>(
-          this,
-          GetMaterialApp,
-          __TR.tBool,
-          'showSemanticsDebugger',
-          false,
-          (o) => () => o!.showSemanticsDebugger,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, bool>(
+            this,
+            MaterialApp,
+            __TR.tBool,
+            'showSemanticsDebugger',
+            false,
+            (o) => () => o!.showSemanticsDebugger,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// Turns on an overlay that shows the accessibility information
+/// reported by the framework.''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'debugshowcheckedmodebanner':
-        return FieldReflection<GetMaterialApp, bool>(
-          this,
-          GetMaterialApp,
-          __TR.tBool,
-          'debugShowCheckedModeBanner',
-          false,
-          (o) => () => o!.debugShowCheckedModeBanner,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, bool>(
+            this,
+            MaterialApp,
+            __TR.tBool,
+            'debugShowCheckedModeBanner',
+            false,
+            (o) => () => o!.debugShowCheckedModeBanner,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.debugShowCheckedModeBanner}''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'shortcuts':
-        return FieldReflection<GetMaterialApp, Map<LogicalKeySet, Intent>?>(
-          this,
-          GetMaterialApp,
-          __TR<Map<LogicalKeySet, Intent>>(Map,
-              <__TR>[__TR<LogicalKeySet>(LogicalKeySet), __TR<Intent>(Intent)]),
-          'shortcuts',
-          true,
-          (o) => () => o!.shortcuts,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'scrollbehavior':
-        return FieldReflection<GetMaterialApp, ScrollBehavior?>(
-          this,
-          GetMaterialApp,
-          __TR<ScrollBehavior>(ScrollBehavior),
-          'scrollBehavior',
-          true,
-          (o) => () => o!.scrollBehavior,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'highcontrasttheme':
-        return FieldReflection<GetMaterialApp, ThemeData?>(
-          this,
-          GetMaterialApp,
-          __TR<ThemeData>(ThemeData),
-          'highContrastTheme',
-          true,
-          (o) => () => o!.highContrastTheme,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'highcontrastdarktheme':
-        return FieldReflection<GetMaterialApp, ThemeData?>(
-          this,
-          GetMaterialApp,
-          __TR<ThemeData>(ThemeData),
-          'highContrastDarkTheme',
-          true,
-          (o) => () => o!.highContrastDarkTheme,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, Map<ShortcutActivator, Intent>?>(
+            this,
+            MaterialApp,
+            __TR<Map<ShortcutActivator, Intent>>(Map, <__TR>[
+              __TR<ShortcutActivator>(ShortcutActivator),
+              __TR<Intent>(Intent)
+            ]),
+            'shortcuts',
+            true,
+            (o) => () => o!.shortcuts,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.shortcuts}
+/// {@tool snippet}
+/// This example shows how to add a single shortcut for
+/// [LogicalKeyboardKey.select] to the default shortcuts without needing to
+/// add your own [Shortcuts] widget.
+///
+/// Alternatively, you could insert a [Shortcuts] widget with just the mapping
+/// you want to add between the [WidgetsApp] and its child and get the same
+/// effect.
+///
+/// ```dart
+/// Widget build(BuildContext context) {
+///   return WidgetsApp(
+///     shortcuts: <ShortcutActivator, Intent>{
+///       ... WidgetsApp.defaultShortcuts,
+///       const SingleActivator(LogicalKeyboardKey.select): const ActivateIntent(),
+///     },
+///     color: const Color(0xFFFF0000),
+///     builder: (BuildContext context, Widget? child) {
+///       return const Placeholder();
+///     },
+///   );
+/// }
+/// ```
+/// {@end-tool}
+/// {@macro flutter.widgets.widgetsApp.shortcuts.seeAlso}''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'actions':
-        return FieldReflection<GetMaterialApp, Map<Type, Action<Intent>>?>(
-          this,
-          GetMaterialApp,
-          __TR<Map<Type, Action<Intent>>>(Map, <__TR>[
-            __TR<Type>(Type),
-            __TR<Action<Intent>>(Action, <__TR>[__TR<Intent>(Intent)])
-          ]),
-          'actions',
-          true,
-          (o) => () => o!.actions,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, Map<Type, Action<Intent>>?>(
+            this,
+            MaterialApp,
+            __TR<Map<Type, Action<Intent>>>(Map, <__TR>[
+              __TR<Type>(Type),
+              __TR<Action<Intent>>(Action, <__TR>[__TR<Intent>(Intent)])
+            ]),
+            'actions',
+            true,
+            (o) => () => o!.actions,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.actions}
+/// {@tool snippet}
+/// This example shows how to add a single action handling an
+/// [ActivateAction] to the default actions without needing to
+/// add your own [Actions] widget.
+///
+/// Alternatively, you could insert a [Actions] widget with just the mapping
+/// you want to add between the [WidgetsApp] and its child and get the same
+/// effect.
+///
+/// ```dart
+/// Widget build(BuildContext context) {
+///   return WidgetsApp(
+///     actions: <Type, Action<Intent>>{
+///       ... WidgetsApp.defaultActions,
+///       ActivateAction: CallbackAction<Intent>(
+///         onInvoke: (Intent intent) {
+///           // Do something here...
+///           return null;
+///         },
+///       ),
+///     },
+///     color: const Color(0xFFFF0000),
+///     builder: (BuildContext context, Widget? child) {
+///       return const Placeholder();
+///     },
+///   );
+/// }
+/// ```
+/// {@end-tool}
+/// {@macro flutter.widgets.widgetsApp.actions.seeAlso}''',
+            documentCommentOfCn: null,
+            isGenerated: null);
+      case 'restorationscopeid':
+        return FieldReflection<MaterialApp, String?>(
+            this,
+            MaterialApp,
+            __TR.tString,
+            'restorationScopeId',
+            true,
+            (o) => () => o!.restorationScopeId,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.restorationScopeId}''',
+            documentCommentOfCn: null,
+            isGenerated: null);
+      case 'scrollbehavior':
+        return FieldReflection<MaterialApp, ScrollBehavior?>(
+            this,
+            MaterialApp,
+            __TR<ScrollBehavior>(ScrollBehavior),
+            'scrollBehavior',
+            true,
+            (o) => () => o!.scrollBehavior,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@template flutter.material.materialApp.scrollBehavior}
+/// The default [ScrollBehavior] for the application.
+///
+/// [ScrollBehavior]s describe how [Scrollable] widgets behave. Providing
+/// a [ScrollBehavior] can set the default [ScrollPhysics] across
+/// an application, and manage [Scrollable] decorations like [Scrollbar]s and
+/// [GlowingOverscrollIndicator]s.
+/// {@endtemplate}
+///
+/// When null, defaults to [MaterialScrollBehavior].
+///
+/// See also:
+///
+///  * [ScrollConfiguration], which controls how [Scrollable] widgets behave
+///    in a subtree.''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'debugshowmaterialgrid':
-        return FieldReflection<GetMaterialApp, bool>(
-          this,
-          GetMaterialApp,
-          __TR.tBool,
-          'debugShowMaterialGrid',
-          false,
-          (o) => () => o!.debugShowMaterialGrid,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'routingcallback':
-        return FieldReflection<GetMaterialApp, void Function(Routing?)?>(
-          this,
-          GetMaterialApp,
-          __TR<ValueChanged<Routing?>>(
-              ValueChanged, <__TR>[__TR<Routing>(Routing)]),
-          'routingCallback',
-          true,
-          (o) => () => o!.routingCallback,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'defaulttransition':
-        return FieldReflection<GetMaterialApp, Transition?>(
-          this,
-          GetMaterialApp,
-          __TR<Transition>(Transition),
-          'defaultTransition',
-          true,
-          (o) => () => o!.defaultTransition,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'opaqueroute':
-        return FieldReflection<GetMaterialApp, bool?>(
-          this,
-          GetMaterialApp,
-          __TR.tBool,
-          'opaqueRoute',
-          true,
-          (o) => () => o!.opaqueRoute,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'oninit':
-        return FieldReflection<GetMaterialApp, void Function()?>(
-          this,
-          GetMaterialApp,
-          __TR<VoidCallback>(VoidCallback),
-          'onInit',
-          true,
-          (o) => () => o!.onInit,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'onready':
-        return FieldReflection<GetMaterialApp, void Function()?>(
-          this,
-          GetMaterialApp,
-          __TR<VoidCallback>(VoidCallback),
-          'onReady',
-          true,
-          (o) => () => o!.onReady,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'ondispose':
-        return FieldReflection<GetMaterialApp, void Function()?>(
-          this,
-          GetMaterialApp,
-          __TR<VoidCallback>(VoidCallback),
-          'onDispose',
-          true,
-          (o) => () => o!.onDispose,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'enablelog':
-        return FieldReflection<GetMaterialApp, bool?>(
-          this,
-          GetMaterialApp,
-          __TR.tBool,
-          'enableLog',
-          true,
-          (o) => () => o!.enableLog,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'logwritercallback':
-        return FieldReflection<GetMaterialApp,
-            void Function(String text, {bool isError})?>(
-          this,
-          GetMaterialApp,
-          __TR<LogWriterCallback>(LogWriterCallback),
-          'logWriterCallback',
-          true,
-          (o) => () => o!.logWriterCallback,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'popgesture':
-        return FieldReflection<GetMaterialApp, bool?>(
-          this,
-          GetMaterialApp,
-          __TR.tBool,
-          'popGesture',
-          true,
-          (o) => () => o!.popGesture,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'smartmanagement':
-        return FieldReflection<GetMaterialApp, SmartManagement>(
-          this,
-          GetMaterialApp,
-          __TR<SmartManagement>(SmartManagement),
-          'smartManagement',
-          false,
-          (o) => () => o!.smartManagement,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'initialbinding':
-        return FieldReflection<GetMaterialApp, Bindings?>(
-          this,
-          GetMaterialApp,
-          __TR<Bindings>(Bindings),
-          'initialBinding',
-          true,
-          (o) => () => o!.initialBinding,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'transitionduration':
-        return FieldReflection<GetMaterialApp, Duration?>(
-          this,
-          GetMaterialApp,
-          __TR<Duration>(Duration),
-          'transitionDuration',
-          true,
-          (o) => () => o!.transitionDuration,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'defaultglobalstate':
-        return FieldReflection<GetMaterialApp, bool?>(
-          this,
-          GetMaterialApp,
-          __TR.tBool,
-          'defaultGlobalState',
-          true,
-          (o) => () => o!.defaultGlobalState,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'getpages':
-        return FieldReflection<GetMaterialApp, List<GetPage<dynamic>>?>(
-          this,
-          GetMaterialApp,
-          __TR<List<GetPage<dynamic>>>(List, <__TR>[
-            __TR<GetPage<dynamic>>(GetPage, <__TR>[__TR.tDynamic])
-          ]),
-          'getPages',
-          true,
-          (o) => () => o!.getPages,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'unknownroute':
-        return FieldReflection<GetMaterialApp, GetPage<dynamic>?>(
-          this,
-          GetMaterialApp,
-          __TR<GetPage<dynamic>>(GetPage, <__TR>[__TR.tDynamic]),
-          'unknownRoute',
-          true,
-          (o) => () => o!.unknownRoute,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'routeinformationprovider':
-        return FieldReflection<GetMaterialApp, RouteInformationProvider?>(
-          this,
-          GetMaterialApp,
-          __TR<RouteInformationProvider>(RouteInformationProvider),
-          'routeInformationProvider',
-          true,
-          (o) => () => o!.routeInformationProvider,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'routeinformationparser':
-        return FieldReflection<GetMaterialApp, RouteInformationParser<Object>?>(
-          this,
-          GetMaterialApp,
-          __TR<RouteInformationParser<Object>>(
-              RouteInformationParser, <__TR>[__TR.tObject]),
-          'routeInformationParser',
-          true,
-          (o) => () => o!.routeInformationParser,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'routerdelegate':
-        return FieldReflection<GetMaterialApp, RouterDelegate<Object>?>(
-          this,
-          GetMaterialApp,
-          __TR<RouterDelegate<Object>>(RouterDelegate, <__TR>[__TR.tObject]),
-          'routerDelegate',
-          true,
-          (o) => () => o!.routerDelegate,
-          null,
-          obj,
-          false,
-          true,
-        );
-      case 'backbuttondispatcher':
-        return FieldReflection<GetMaterialApp, BackButtonDispatcher?>(
-          this,
-          GetMaterialApp,
-          __TR<BackButtonDispatcher>(BackButtonDispatcher),
-          'backButtonDispatcher',
-          true,
-          (o) => () => o!.backButtonDispatcher,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, bool>(
+            this,
+            MaterialApp,
+            __TR.tBool,
+            'debugShowMaterialGrid',
+            false,
+            (o) => () => o!.debugShowMaterialGrid,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// Turns on a [GridPaper] overlay that paints a baseline grid
+/// Material apps.
+///
+/// Only available in debug mode.
+///
+/// See also:
+///
+///  * <https://material.io/design/layout/spacing-methods.html>''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'useinheritedmediaquery':
-        return FieldReflection<GetMaterialApp, bool>(
-          this,
-          GetMaterialApp,
-          __TR.tBool,
-          'useInheritedMediaQuery',
-          false,
-          (o) => () => o!.useInheritedMediaQuery,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, bool>(
+            this,
+            MaterialApp,
+            __TR.tBool,
+            'useInheritedMediaQuery',
+            false,
+            (o) => () => o!.useInheritedMediaQuery,
+            null,
+            obj,
+            false,
+            true,
+            null,
+            documentCommentOfEn:
+                '''/// {@macro flutter.widgets.widgetsApp.useInheritedMediaQuery}''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'key':
-        return FieldReflection<GetMaterialApp, Key?>(
-          this,
-          Widget,
-          __TR<Key>(Key),
-          'key',
-          true,
-          (o) => () => o!.key,
-          null,
-          obj,
-          false,
-          true,
-        );
+        return FieldReflection<MaterialApp, Key?>(this, Widget, __TR<Key>(Key),
+            'key', true, (o) => () => o!.key, null, obj, false, true, null,
+            documentCommentOfEn:
+                '''/// Controls how one widget replaces another widget in the tree.
+///
+/// If the [runtimeType] and [key] properties of the two widgets are
+/// [operator==], respectively, then the new widget replaces the old widget by
+/// updating the underlying element (i.e., by calling [Element.update] with the
+/// new widget). Otherwise, the old element is removed from the tree, the new
+/// widget is inflated into an element, and the new element is inserted into the
+/// tree.
+///
+/// In addition, using a [GlobalKey] as the widget's [key] allows the element
+/// to be moved around the tree (changing parent) without losing state. When a
+/// new widget is found (its key and type do not match a previous widget in
+/// the same location), but there was a widget with that same global key
+/// elsewhere in the tree in the previous frame, then that widget's element is
+/// moved to the new location.
+///
+/// Generally, a widget that is the only child of another widget does not need
+/// an explicit key.
+///
+/// See also:
+///
+///  * The discussions at [Key] and [GlobalKey].''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       case 'hashcode':
-        return FieldReflection<GetMaterialApp, int>(
-          this,
-          Widget,
-          __TR.tInt,
-          'hashCode',
-          false,
-          (o) => () => o!.hashCode,
-          null,
-          obj,
-          false,
-          false,
-          const [override, nonVirtual],
-        );
+        return FieldReflection<MaterialApp, int>(
+            this,
+            Widget,
+            __TR.tInt,
+            'hashCode',
+            false,
+            (o) => () => o!.hashCode,
+            null,
+            obj,
+            false,
+            false,
+            const [override, nonVirtual],
+            documentCommentOfEn: '''null''',
+            documentCommentOfCn: null,
+            isGenerated: null);
       default:
         return null;
     }
@@ -1667,35 +1767,32 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
   List<String> get staticFieldsNames => _staticFieldsNames;
 
   @override
-  FieldReflection<GetMaterialApp, T>? staticField<T>(String fieldName) => null;
+  FieldReflection<MaterialApp, T>? staticField<T>(String fieldName) => null;
 
   static const List<String> _methodsNames = const <String>[
-    'build',
+    'createState',
     'createElement',
-    'debugDescribeChildren',
+    'toStringShort',
     'debugFillProperties',
-    'defaultBuilder',
-    'generator',
-    'initialRoutesGenerate',
-    'toDiagnosticsNode',
-    'toString',
-    'toStringDeep',
     'toStringShallow',
-    'toStringShort'
+    'toStringDeep',
+    'toDiagnosticsNode',
+    'debugDescribeChildren',
+    'toString'
   ];
 
   @override
   List<String> get methodsNames => _methodsNames;
 
-  static final Map<String, MethodReflection<GetMaterialApp, dynamic>>
-      _methodsNoObject = <String, MethodReflection<GetMaterialApp, dynamic>>{};
+  static final Map<String, MethodReflection<MaterialApp, dynamic>>
+      _methodsNoObject = <String, MethodReflection<MaterialApp, dynamic>>{};
 
-  final Map<String, MethodReflection<GetMaterialApp, dynamic>> _methodsObject =
-      <String, MethodReflection<GetMaterialApp, dynamic>>{};
+  final Map<String, MethodReflection<MaterialApp, dynamic>> _methodsObject =
+      <String, MethodReflection<MaterialApp, dynamic>>{};
 
   @override
-  MethodReflection<GetMaterialApp, R>? method<R>(String methodName,
-      [GetMaterialApp? obj]) {
+  MethodReflection<MaterialApp, R>? method<R>(String methodName,
+      [MaterialApp? obj]) {
     if (obj == null) {
       if (object != null) {
         return _methodObjectImpl<R>(methodName);
@@ -1708,22 +1805,21 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
     return _methodNoObjectImpl<R>(methodName)?.withObject(obj);
   }
 
-  MethodReflection<GetMaterialApp, R>? _methodNoObjectImpl<R>(
-      String methodName) {
+  MethodReflection<MaterialApp, R>? _methodNoObjectImpl<R>(String methodName) {
     final m = _methodsNoObject[methodName];
     if (m != null) {
-      return m as MethodReflection<GetMaterialApp, R>;
+      return m as MethodReflection<MaterialApp, R>;
     }
     final m2 = _methodImpl(methodName, null);
     if (m2 == null) return null;
     _methodsNoObject[methodName] = m2;
-    return m2 as MethodReflection<GetMaterialApp, R>;
+    return m2 as MethodReflection<MaterialApp, R>;
   }
 
-  MethodReflection<GetMaterialApp, R>? _methodObjectImpl<R>(String methodName) {
+  MethodReflection<MaterialApp, R>? _methodObjectImpl<R>(String methodName) {
     final m = _methodsObject[methodName];
     if (m != null) {
-      return m as MethodReflection<GetMaterialApp, R>;
+      return m as MethodReflection<MaterialApp, R>;
     }
     var m2 = _methodNoObjectImpl<R>(methodName);
     if (m2 == null) return null;
@@ -1732,84 +1828,34 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
     return m2;
   }
 
-  MethodReflection<GetMaterialApp, dynamic>? _methodImpl(
-      String methodName, GetMaterialApp? obj) {
+  MethodReflection<MaterialApp, dynamic>? _methodImpl(
+      String methodName, MaterialApp? obj) {
     obj ??= object;
 
     var lc = methodName.trim().toLowerCase();
 
     switch (lc) {
-      case 'build':
-        return MethodReflection<GetMaterialApp, Widget>(
+      case 'createstate':
+        return MethodReflection<MaterialApp, State<MaterialApp>>(
             this,
-            GetMaterialApp,
-            'build',
-            __TR<Widget>(Widget),
+            MaterialApp,
+            'createState',
+            __TR<State<MaterialApp>>(
+                State, <__TR>[__TR<MaterialApp>(MaterialApp)]),
             false,
-            (o) => o!.build,
+            (o) => o!.createState,
             obj,
             false,
-            const <__PR>[
-              __PR(__TR<BuildContext>(BuildContext), 'context', false, true)
-            ],
+            null,
             null,
             null,
             const [override]);
-      case 'defaultbuilder':
-        return MethodReflection<GetMaterialApp, Widget>(
-            this,
-            GetMaterialApp,
-            'defaultBuilder',
-            __TR<Widget>(Widget),
-            false,
-            (o) => o!.defaultBuilder,
-            obj,
-            false,
-            const <__PR>[
-              __PR(__TR<BuildContext>(BuildContext), 'context', false, true),
-              __PR(__TR<Widget>(Widget), 'child', true, true)
-            ],
-            null,
-            null,
-            null);
-      case 'generator':
-        return MethodReflection<GetMaterialApp, Route<dynamic>>(
-            this,
-            GetMaterialApp,
-            'generator',
-            __TR<Route<dynamic>>(Route, <__TR>[__TR.tDynamic]),
-            false,
-            (o) => o!.generator,
-            obj,
-            false,
-            const <__PR>[
-              __PR(__TR<RouteSettings>(RouteSettings), 'settings', false, true)
-            ],
-            null,
-            null,
-            null);
-      case 'initialroutesgenerate':
-        return MethodReflection<GetMaterialApp, List<Route<dynamic>>>(
-            this,
-            GetMaterialApp,
-            'initialRoutesGenerate',
-            __TR<List<Route<dynamic>>>(List, <__TR>[
-              __TR<Route<dynamic>>(Route, <__TR>[__TR.tDynamic])
-            ]),
-            false,
-            (o) => o!.initialRoutesGenerate,
-            obj,
-            false,
-            const <__PR>[__PR(__TR.tString, 'name', false, true)],
-            null,
-            null,
-            null);
       case 'createelement':
-        return MethodReflection<GetMaterialApp, StatelessElement>(
+        return MethodReflection<MaterialApp, StatefulElement>(
             this,
-            StatelessWidget,
+            StatefulWidget,
             'createElement',
-            __TR<StatelessElement>(StatelessElement),
+            __TR<StatefulElement>(StatefulElement),
             false,
             (o) => o!.createElement,
             obj,
@@ -1819,7 +1865,7 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
             null,
             const [override]);
       case 'tostringshort':
-        return MethodReflection<GetMaterialApp, String>(
+        return MethodReflection<MaterialApp, String>(
             this,
             Widget,
             'toStringShort',
@@ -1833,7 +1879,7 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
             null,
             const [override]);
       case 'debugfillproperties':
-        return MethodReflection<GetMaterialApp, void>(
+        return MethodReflection<MaterialApp, void>(
             this,
             Widget,
             'debugFillProperties',
@@ -1854,7 +1900,7 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
             null,
             const [override]);
       case 'tostringshallow':
-        return MethodReflection<GetMaterialApp, String>(
+        return MethodReflection<MaterialApp, String>(
             this,
             DiagnosticableTree,
             'toStringShallow',
@@ -1872,7 +1918,7 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
             },
             null);
       case 'tostringdeep':
-        return MethodReflection<GetMaterialApp, String>(
+        return MethodReflection<MaterialApp, String>(
             this,
             DiagnosticableTree,
             'toStringDeep',
@@ -1893,7 +1939,7 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
             },
             null);
       case 'todiagnosticsnode':
-        return MethodReflection<GetMaterialApp, DiagnosticsNode>(
+        return MethodReflection<MaterialApp, DiagnosticsNode>(
             this,
             DiagnosticableTree,
             'toDiagnosticsNode',
@@ -1911,7 +1957,7 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
           override
         ]);
       case 'debugdescribechildren':
-        return MethodReflection<GetMaterialApp, List<DiagnosticsNode>>(
+        return MethodReflection<MaterialApp, List<DiagnosticsNode>>(
             this,
             DiagnosticableTree,
             'debugDescribeChildren',
@@ -1926,7 +1972,7 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
             null,
             const [protected]);
       case 'tostring':
-        return MethodReflection<GetMaterialApp, String>(
+        return MethodReflection<MaterialApp, String>(
             this,
             Diagnosticable,
             'toString',
@@ -1947,36 +1993,71 @@ class GetMaterialApp$reflection extends ClassReflection<GetMaterialApp>
     }
   }
 
-  static const List<String> _staticMethodsNames = const <String>[];
+  static const List<String> _staticMethodsNames = const <String>[
+    'createMaterialHeroController'
+  ];
 
   @override
   List<String> get staticMethodsNames => _staticMethodsNames;
 
+  static final Map<String, MethodReflection<MaterialApp, dynamic>>
+      _staticMethods = <String, MethodReflection<MaterialApp, dynamic>>{};
+
   @override
-  MethodReflection<GetMaterialApp, R>? staticMethod<R>(String methodName) =>
-      null;
+  MethodReflection<MaterialApp, R>? staticMethod<R>(String methodName) {
+    var m = _staticMethods[methodName];
+    if (m != null) {
+      return m as MethodReflection<MaterialApp, R>;
+    }
+    m = _staticMethodImpl(methodName);
+    if (m == null) return null;
+    _staticMethods[methodName] = m;
+    return m as MethodReflection<MaterialApp, R>;
+  }
+
+  MethodReflection<MaterialApp, dynamic>? _staticMethodImpl(String methodName) {
+    var lc = methodName.trim().toLowerCase();
+
+    switch (lc) {
+      case 'creatematerialherocontroller':
+        return MethodReflection<MaterialApp, HeroController>(
+            this,
+            MaterialApp,
+            'createMaterialHeroController',
+            __TR<HeroController>(HeroController),
+            false,
+            (o) => MaterialApp.createMaterialHeroController,
+            null,
+            true,
+            null,
+            null,
+            null,
+            null);
+      default:
+        return null;
+    }
+  }
 }
 
-extension GetMaterialApp$reflectionExtension on GetMaterialApp {
-  /// Returns a [ClassReflection] for type [GetMaterialApp]. (Generated by [ReflectionFactory])
-  ClassReflection<GetMaterialApp> get reflection =>
-      GetMaterialApp$reflection(this);
+extension MaterialApp$reflectionExtension on MaterialApp {
+  /// Returns a [ClassReflection] for type [MaterialApp]. (Generated by [ReflectionFactory])
+  ClassReflection<MaterialApp> get reflection => MaterialApp$reflection(this);
 
-  /// Returns a JSON for type [GetMaterialApp]. (Generated by [ReflectionFactory])
+  /// Returns a JSON for type [MaterialApp]. (Generated by [ReflectionFactory])
   Object? toJson({bool duplicatedEntitiesAsID = false}) =>
       reflection.toJson(null, null, duplicatedEntitiesAsID);
 
-  /// Returns a JSON [Map] for type [GetMaterialApp]. (Generated by [ReflectionFactory])
+  /// Returns a JSON [Map] for type [MaterialApp]. (Generated by [ReflectionFactory])
   Map<String, dynamic>? toJsonMap({bool duplicatedEntitiesAsID = false}) =>
       reflection.toJsonMap(duplicatedEntitiesAsID: duplicatedEntitiesAsID);
 
-  /// Returns an encoded JSON [String] for type [GetMaterialApp]. (Generated by [ReflectionFactory])
+  /// Returns an encoded JSON [String] for type [MaterialApp]. (Generated by [ReflectionFactory])
   String toJsonEncoded(
           {bool pretty = false, bool duplicatedEntitiesAsID = false}) =>
       reflection.toJsonEncoded(
           pretty: pretty, duplicatedEntitiesAsID: duplicatedEntitiesAsID);
 
-  /// Returns a JSON for type [GetMaterialApp] using the class fields. (Generated by [ReflectionFactory])
+  /// Returns a JSON for type [MaterialApp] using the class fields. (Generated by [ReflectionFactory])
   Object? toJsonFromFields({bool duplicatedEntitiesAsID = false}) => reflection
       .toJsonFromFields(duplicatedEntitiesAsID: duplicatedEntitiesAsID);
 }
@@ -1985,8 +2066,8 @@ extension ReflectionBridge1$reflectionExtension on ReflectionBridge1 {
   /// Returns a [ClassReflection] for type [T] or [obj]. (Generated by [ReflectionFactory])
   ClassReflection<T> reflection<T>([T? obj]) {
     switch (T) {
-      case GetMaterialApp:
-        return GetMaterialApp$reflection(obj as GetMaterialApp?)
+      case MaterialApp:
+        return MaterialApp$reflection(obj as MaterialApp?)
             as ClassReflection<T>;
       default:
         throw UnsupportedError('<$runtimeType> No reflection for Type: $T');
@@ -1995,7 +2076,7 @@ extension ReflectionBridge1$reflectionExtension on ReflectionBridge1 {
 }
 
 List<Reflection> _listSiblingsReflection() => <Reflection>[
-      GetMaterialApp$reflection(),
+      MaterialApp$reflection(),
     ];
 
 List<Reflection>? _siblingsReflectionList;

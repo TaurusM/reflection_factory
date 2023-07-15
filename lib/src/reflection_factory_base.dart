@@ -2395,7 +2395,7 @@ class TypeReflection<T> {
 
   @override
   String toString() {
-    String str = hasArguments ? '$typeName<${arguments.join(',')}>' : typeName;
+    String str = hasArguments ? '$typeName<${arguments.join(', ')}>' : typeName;
     if (str.contains('=>')) {
       List<String> splits = str.split('=>');
       str = '${splits[1].trim()} Function${splits[0].trim()}';
@@ -2450,6 +2450,10 @@ class FieldReflection<O, T> extends ElementReflection<O> implements ParameterRef
   /// A [Function] that returns the field setter.
   final FieldReflectionSetterAccessor<O, T>? setterAccessor;
 
+  final String? documentCommentOfEn;
+  final String? documentCommentOfCn;
+  final bool? isGenerated;
+
   /// Returns the associated object ([O]) of this field.
   /// Returns `null` for static fields.
   final O? object;
@@ -2478,8 +2482,7 @@ class FieldReflection<O, T> extends ElementReflection<O> implements ParameterRef
   List<JsonFieldAlias> get jsonFieldAliasAnnotations => jsonAnnotations.whereType<JsonFieldAlias>().toList();
 
   FieldReflection(ClassReflection<O> classReflection, Type declaringType, this.type, this.name, this.nullable, this.getterAccessor, this.setterAccessor,
-      this.object, bool isStatic, this.isFinal,
-      [List<Object>? annotations])
+      this.object, bool isStatic, this.isFinal, List<Object>? annotations, {this.documentCommentOfEn, this.documentCommentOfCn, this.isGenerated})
       : _annotations = annotations == null || annotations.isEmpty ? _annotationsEmpty : UnmodifiableListView<Object>(annotations),
         super(classReflection, declaringType, isStatic);
 
@@ -2495,12 +2498,15 @@ class FieldReflection<O, T> extends ElementReflection<O> implements ParameterRef
     bool isStatic,
     this.isFinal,
     this._annotations,
+    this.documentCommentOfEn,
+    this.documentCommentOfCn,
+    this.isGenerated,
   ) : super(classReflection, declaringType, isStatic);
 
   /// Returns a new instance that references [object].
   FieldReflection<O, T> withObject(O object) {
     return FieldReflection<O, T>._(
-        classReflection, declaringType, type, name, nullable, getterAccessor, setterAccessor, object, isStatic, isFinal, _annotations)
+        classReflection, declaringType, type, name, nullable, getterAccessor, setterAccessor, object, isStatic, isFinal, _annotations, documentCommentOfEn, documentCommentOfCn, isGenerated)
       .._hasJsonFieldHidden = _hasJsonFieldHidden
       .._hasJsonFieldVisible = _hasJsonFieldVisible
       .._hasJsonNameAlias = _hasJsonNameAlias
