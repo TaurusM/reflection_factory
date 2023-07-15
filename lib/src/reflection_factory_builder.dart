@@ -3099,7 +3099,8 @@ String _buildParameterReflectionList(_TypeAliasTable typeAliasTable, Iterable<_P
           "${e.type.asTypeReflectionCode(typeAliasTable)} , "
           "'${e.name}' , "
           "${e.isNullable} , "
-          "$required"
+          "$required, "
+          "'' "
           "${defaultValue == 'null' && annotationsAsListCode == 'null' ? '' : ', $defaultValue '}"
           "${annotationsAsListCode == 'null' ? '' : ', $annotationsAsListCode'}"
           ")";
@@ -3121,11 +3122,23 @@ String _buildNamedParameterReflectionMap(_TypeAliasTable typeAliasTable, Map<Str
       var defaultValue = e.value.defaultValue ?? 'null';
       var annotationsAsListCode = e.value.annotationsAsListCode;
 
+      String rawTypeName = value.type.toString();
+      if (value.type is FunctionType) {
+        if (value.type.alias?.element != null) {
+          rawTypeName = value.type.alias!.element.toString();
+          rawTypeName = rawTypeName.substring(rawTypeName.indexOf('=') + 1).trim();
+          if (value.isNullable) {
+            rawTypeName += '?';
+          }
+        }
+      }
+
       return "'$key': $pr( "
           "${value.type.asTypeReflectionCode(typeAliasTable)} , "
           "'${e.value.name}' , "
           "${e.value.isNullable} , "
-          "${e.value.required} "
+          "${e.value.required}, "
+          "'$rawTypeName' "
           "${defaultValue == 'null' && annotationsAsListCode == 'null' ? '' : ', $defaultValue '}"
           "${annotationsAsListCode == 'null' ? '' : ', $annotationsAsListCode'}"
           ")";

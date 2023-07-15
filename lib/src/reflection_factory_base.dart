@@ -1923,6 +1923,8 @@ class ParameterReflection {
   /// - Fields: `true` if is NOT [nullable].
   final bool required;
 
+  final String rawTypeName;
+
   /// The default value of this parameter.
   ///
   /// Only exists for optional and named parameters.
@@ -1933,7 +1935,7 @@ class ParameterReflection {
   /// The parameter annotations.
   List<Object>? get annotations => _annotations != null ? UnmodifiableListView<Object>(_annotations!) : _annotationsEmpty;
 
-  const ParameterReflection(this.type, this.name, this.nullable, this.required, [this.defaultValue, this._annotations]);
+  const ParameterReflection(this.type, this.name, this.nullable, this.required, this.rawTypeName, [this.defaultValue, this._annotations]);
 
   /// Returns `true` if [defaultValue] is NOT `null`.
   bool get hasDefaultValue => defaultValue != null;
@@ -2648,6 +2650,9 @@ class FieldReflection<O, T> extends ElementReflection<O> implements ParameterRef
   String toString() {
     return 'FieldReflection{ class: $className, name: $name, type: ${nullable ? '$type?' : '$type'}, static: $isStatic, final: $isFinal }${object != null ? '<$object>' : ''}';
   }
+
+  @override
+  String get rawTypeName => this.rawTypeName;
 }
 
 const Object absentParameterValue = _AbsentParameterValue();
