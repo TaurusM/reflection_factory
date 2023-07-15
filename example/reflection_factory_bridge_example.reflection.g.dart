@@ -212,35 +212,78 @@ class MaterialApp$reflection extends ClassReflection<MaterialApp>
             null,
             null,
             const <String, __PR>{
-              'actions': __PR(
-                  __TR<Map<Type, Action<Intent>>>(Map, <__TR>[
-                    __TR<Type>(Type),
-                    __TR<Action<Intent>>(Action, <__TR>[__TR<Intent>(Intent)])
-                  ]),
-                  'actions',
+              'key': __PR(__TR<Key>(Key), 'key', true, false),
+              'navigatorKey': __PR(
+                  __TR<GlobalKey<NavigatorState>>(
+                      GlobalKey, <__TR>[__TR<NavigatorState>(NavigatorState)]),
+                  'navigatorKey',
                   true,
                   false),
+              'scaffoldMessengerKey': __PR(
+                  __TR<GlobalKey<ScaffoldMessengerState>>(GlobalKey, <__TR>[
+                    __TR<ScaffoldMessengerState>(ScaffoldMessengerState)
+                  ]),
+                  'scaffoldMessengerKey',
+                  true,
+                  false),
+              'home': __PR(__TR<Widget>(Widget), 'home', true, false),
+              'routes': __PR(
+                  __TR<Map<String, Function>>(
+                      Map, <__TI>[__TI.tString, __TI.tFunction]),
+                  'routes',
+                  false,
+                  false,
+                  const <String, WidgetBuilder>{}),
+              'initialRoute': __PR(__TR.tString, 'initialRoute', true, false),
+              'onGenerateRoute': __PR(__TR<RouteFactory>(RouteFactory),
+                  'onGenerateRoute', true, false),
+              'onGenerateInitialRoutes': __PR(
+                  __TR<InitialRouteListFactory>(InitialRouteListFactory),
+                  'onGenerateInitialRoutes',
+                  true,
+                  false),
+              'onUnknownRoute': __PR(__TR<RouteFactory>(RouteFactory),
+                  'onUnknownRoute', true, false),
+              'navigatorObservers': __PR(
+                  __TR<List<NavigatorObserver>>(
+                      List, <__TR>[__TR<NavigatorObserver>(NavigatorObserver)]),
+                  'navigatorObservers',
+                  false,
+                  false,
+                  const <NavigatorObserver>[]),
               'builder': __PR(__TR<TransitionBuilder>(TransitionBuilder),
                   'builder', true, false),
-              'checkerboardOffscreenLayers': __PR(__TR.tBool,
-                  'checkerboardOffscreenLayers', false, false, false),
-              'checkerboardRasterCacheImages': __PR(__TR.tBool,
-                  'checkerboardRasterCacheImages', false, false, false),
+              'title': __PR(__TR.tString, 'title', false, false, ''),
+              'onGenerateTitle': __PR(__TR<GenerateAppTitle>(GenerateAppTitle),
+                  'onGenerateTitle', true, false),
               'color': __PR(__TR<Color>(Color), 'color', true, false),
+              'theme': __PR(__TR<ThemeData>(ThemeData), 'theme', true, false),
               'darkTheme':
                   __PR(__TR<ThemeData>(ThemeData), 'darkTheme', true, false),
-              'debugShowCheckedModeBanner': __PR(
-                  __TR.tBool, 'debugShowCheckedModeBanner', false, false, true),
-              'debugShowMaterialGrid': __PR(
-                  __TR.tBool, 'debugShowMaterialGrid', false, false, false),
-              'highContrastDarkTheme': __PR(__TR<ThemeData>(ThemeData),
-                  'highContrastDarkTheme', true, false),
               'highContrastTheme': __PR(
                   __TR<ThemeData>(ThemeData), 'highContrastTheme', true, false),
-              'home': __PR(__TR<Widget>(Widget), 'home', true, false),
-              'initialRoute': __PR(__TR.tString, 'initialRoute', true, false),
-              'key': __PR(__TR<Key>(Key), 'key', true, false),
+              'highContrastDarkTheme': __PR(__TR<ThemeData>(ThemeData),
+                  'highContrastDarkTheme', true, false),
+              'themeMode': __PR(__TR<ThemeMode>(ThemeMode), 'themeMode', true,
+                  false, ThemeMode.system),
+              'themeAnimationDuration': __PR(
+                  __TR<Duration>(Duration),
+                  'themeAnimationDuration',
+                  false,
+                  false,
+                  kThemeAnimationDuration),
+              'themeAnimationCurve': __PR(__TR<Curve>(Curve),
+                  'themeAnimationCurve', false, false, Curves.linear),
               'locale': __PR(__TR<Locale>(Locale), 'locale', true, false),
+              'localizationsDelegates': __PR(
+                  __TR<Iterable<LocalizationsDelegate<dynamic>>>(
+                      Iterable, <__TR>[
+                    __TR<LocalizationsDelegate<dynamic>>(
+                        LocalizationsDelegate, <__TR>[__TR.tDynamic])
+                  ]),
+                  'localizationsDelegates',
+                  true,
+                  false),
               'localeListResolutionCallback': __PR(
                   __TR<LocaleListResolutionCallback>(
                       LocaleListResolutionCallback),
@@ -252,57 +295,25 @@ class MaterialApp$reflection extends ClassReflection<MaterialApp>
                   'localeResolutionCallback',
                   true,
                   false),
-              'localizationsDelegates': __PR(
-                  __TR<Iterable<LocalizationsDelegate<dynamic>>>(
-                      Iterable, <__TR>[
-                    __TR<LocalizationsDelegate<dynamic>>(
-                        LocalizationsDelegate, <__TR>[__TR.tDynamic])
-                  ]),
-                  'localizationsDelegates',
-                  true,
-                  false),
-              'navigatorKey': __PR(
-                  __TR<GlobalKey<NavigatorState>>(
-                      GlobalKey, <__TR>[__TR<NavigatorState>(NavigatorState)]),
-                  'navigatorKey',
-                  true,
-                  false),
-              'navigatorObservers': __PR(
-                  __TR<List<NavigatorObserver>>(
-                      List, <__TR>[__TR<NavigatorObserver>(NavigatorObserver)]),
-                  'navigatorObservers',
+              'supportedLocales': __PR(
+                  __TR<Iterable<Locale>>(
+                      Iterable, <__TR>[__TR<Locale>(Locale)]),
+                  'supportedLocales',
                   false,
                   false,
-                  const <NavigatorObserver>[]),
-              'onGenerateInitialRoutes': __PR(
-                  __TR<InitialRouteListFactory>(InitialRouteListFactory),
-                  'onGenerateInitialRoutes',
-                  true,
-                  false),
-              'onGenerateRoute': __PR(__TR<RouteFactory>(RouteFactory),
-                  'onGenerateRoute', true, false),
-              'onGenerateTitle': __PR(__TR<GenerateAppTitle>(GenerateAppTitle),
-                  'onGenerateTitle', true, false),
-              'onUnknownRoute': __PR(__TR<RouteFactory>(RouteFactory),
-                  'onUnknownRoute', true, false),
-              'restorationScopeId':
-                  __PR(__TR.tString, 'restorationScopeId', true, false),
-              'routes': __PR(
-                  __TR<Map<String, Function>>(
-                      Map, <__TI>[__TI.tString, __TI.tFunction]),
-                  'routes',
-                  false,
-                  false,
-                  const <String, WidgetBuilder>{}),
-              'scaffoldMessengerKey': __PR(
-                  __TR<GlobalKey<ScaffoldMessengerState>>(GlobalKey, <__TR>[
-                    __TR<ScaffoldMessengerState>(ScaffoldMessengerState)
-                  ]),
-                  'scaffoldMessengerKey',
-                  true,
-                  false),
-              'scrollBehavior': __PR(__TR<ScrollBehavior>(ScrollBehavior),
-                  'scrollBehavior', true, false),
+                  const <Locale>[Locale('en', 'US')]),
+              'debugShowMaterialGrid': __PR(
+                  __TR.tBool, 'debugShowMaterialGrid', false, false, false),
+              'showPerformanceOverlay': __PR(
+                  __TR.tBool, 'showPerformanceOverlay', false, false, false),
+              'checkerboardRasterCacheImages': __PR(__TR.tBool,
+                  'checkerboardRasterCacheImages', false, false, false),
+              'checkerboardOffscreenLayers': __PR(__TR.tBool,
+                  'checkerboardOffscreenLayers', false, false, false),
+              'showSemanticsDebugger': __PR(
+                  __TR.tBool, 'showSemanticsDebugger', false, false, false),
+              'debugShowCheckedModeBanner': __PR(
+                  __TR.tBool, 'debugShowCheckedModeBanner', false, false, true),
               'shortcuts': __PR(
                   __TR<Map<ShortcutActivator, Intent>>(Map, <__TR>[
                     __TR<ShortcutActivator>(ShortcutActivator),
@@ -311,29 +322,18 @@ class MaterialApp$reflection extends ClassReflection<MaterialApp>
                   'shortcuts',
                   true,
                   false),
-              'showPerformanceOverlay': __PR(
-                  __TR.tBool, 'showPerformanceOverlay', false, false, false),
-              'showSemanticsDebugger': __PR(
-                  __TR.tBool, 'showSemanticsDebugger', false, false, false),
-              'supportedLocales': __PR(
-                  __TR<Iterable<Locale>>(
-                      Iterable, <__TR>[__TR<Locale>(Locale)]),
-                  'supportedLocales',
-                  false,
-                  false,
-                  const <Locale>[Locale('en', 'US')]),
-              'theme': __PR(__TR<ThemeData>(ThemeData), 'theme', true, false),
-              'themeAnimationCurve': __PR(__TR<Curve>(Curve),
-                  'themeAnimationCurve', false, false, Curves.linear),
-              'themeAnimationDuration': __PR(
-                  __TR<Duration>(Duration),
-                  'themeAnimationDuration',
-                  false,
-                  false,
-                  kThemeAnimationDuration),
-              'themeMode': __PR(__TR<ThemeMode>(ThemeMode), 'themeMode', true,
-                  false, ThemeMode.system),
-              'title': __PR(__TR.tString, 'title', false, false, ''),
+              'actions': __PR(
+                  __TR<Map<Type, Action<Intent>>>(Map, <__TR>[
+                    __TR<Type>(Type),
+                    __TR<Action<Intent>>(Action, <__TR>[__TR<Intent>(Intent)])
+                  ]),
+                  'actions',
+                  true,
+                  false),
+              'restorationScopeId':
+                  __PR(__TR.tString, 'restorationScopeId', true, false),
+              'scrollBehavior': __PR(__TR<ScrollBehavior>(ScrollBehavior),
+                  'scrollBehavior', true, false),
               'useInheritedMediaQuery': __PR(
                   __TR.tBool, 'useInheritedMediaQuery', false, false, false)
             },
@@ -425,12 +425,35 @@ class MaterialApp$reflection extends ClassReflection<MaterialApp>
             null,
             null,
             const <String, __PR>{
-              'actions': __PR(
-                  __TR<Map<Type, Action<Intent>>>(Map, <__TR>[
-                    __TR<Type>(Type),
-                    __TR<Action<Intent>>(Action, <__TR>[__TR<Intent>(Intent)])
+              'key': __PR(__TR<Key>(Key), 'key', true, false),
+              'scaffoldMessengerKey': __PR(
+                  __TR<GlobalKey<ScaffoldMessengerState>>(GlobalKey, <__TR>[
+                    __TR<ScaffoldMessengerState>(ScaffoldMessengerState)
                   ]),
-                  'actions',
+                  'scaffoldMessengerKey',
+                  true,
+                  false),
+              'routeInformationProvider': __PR(
+                  __TR<RouteInformationProvider>(RouteInformationProvider),
+                  'routeInformationProvider',
+                  true,
+                  false),
+              'routeInformationParser': __PR(
+                  __TR<RouteInformationParser<Object>>(
+                      RouteInformationParser, <__TR>[__TR.tObject]),
+                  'routeInformationParser',
+                  true,
+                  false),
+              'routerDelegate': __PR(
+                  __TR<RouterDelegate<Object>>(
+                      RouterDelegate, <__TR>[__TR.tObject]),
+                  'routerDelegate',
+                  true,
+                  false),
+              'routerConfig': __PR(
+                  __TR<RouterConfig<Object>>(
+                      RouterConfig, <__TR>[__TR.tObject]),
+                  'routerConfig',
                   true,
                   false),
               'backButtonDispatcher': __PR(
@@ -440,23 +463,37 @@ class MaterialApp$reflection extends ClassReflection<MaterialApp>
                   false),
               'builder': __PR(__TR<TransitionBuilder>(TransitionBuilder),
                   'builder', true, false),
-              'checkerboardOffscreenLayers': __PR(__TR.tBool,
-                  'checkerboardOffscreenLayers', false, false, false),
-              'checkerboardRasterCacheImages': __PR(__TR.tBool,
-                  'checkerboardRasterCacheImages', false, false, false),
+              'title': __PR(__TR.tString, 'title', false, false, ''),
+              'onGenerateTitle': __PR(__TR<GenerateAppTitle>(GenerateAppTitle),
+                  'onGenerateTitle', true, false),
               'color': __PR(__TR<Color>(Color), 'color', true, false),
+              'theme': __PR(__TR<ThemeData>(ThemeData), 'theme', true, false),
               'darkTheme':
                   __PR(__TR<ThemeData>(ThemeData), 'darkTheme', true, false),
-              'debugShowCheckedModeBanner': __PR(
-                  __TR.tBool, 'debugShowCheckedModeBanner', false, false, true),
-              'debugShowMaterialGrid': __PR(
-                  __TR.tBool, 'debugShowMaterialGrid', false, false, false),
-              'highContrastDarkTheme': __PR(__TR<ThemeData>(ThemeData),
-                  'highContrastDarkTheme', true, false),
               'highContrastTheme': __PR(
                   __TR<ThemeData>(ThemeData), 'highContrastTheme', true, false),
-              'key': __PR(__TR<Key>(Key), 'key', true, false),
+              'highContrastDarkTheme': __PR(__TR<ThemeData>(ThemeData),
+                  'highContrastDarkTheme', true, false),
+              'themeMode': __PR(__TR<ThemeMode>(ThemeMode), 'themeMode', true,
+                  false, ThemeMode.system),
+              'themeAnimationDuration': __PR(
+                  __TR<Duration>(Duration),
+                  'themeAnimationDuration',
+                  false,
+                  false,
+                  kThemeAnimationDuration),
+              'themeAnimationCurve': __PR(__TR<Curve>(Curve),
+                  'themeAnimationCurve', false, false, Curves.linear),
               'locale': __PR(__TR<Locale>(Locale), 'locale', true, false),
+              'localizationsDelegates': __PR(
+                  __TR<Iterable<LocalizationsDelegate<dynamic>>>(
+                      Iterable, <__TR>[
+                    __TR<LocalizationsDelegate<dynamic>>(
+                        LocalizationsDelegate, <__TR>[__TR.tDynamic])
+                  ]),
+                  'localizationsDelegates',
+                  true,
+                  false),
               'localeListResolutionCallback': __PR(
                   __TR<LocaleListResolutionCallback>(
                       LocaleListResolutionCallback),
@@ -468,51 +505,25 @@ class MaterialApp$reflection extends ClassReflection<MaterialApp>
                   'localeResolutionCallback',
                   true,
                   false),
-              'localizationsDelegates': __PR(
-                  __TR<Iterable<LocalizationsDelegate<dynamic>>>(
-                      Iterable, <__TR>[
-                    __TR<LocalizationsDelegate<dynamic>>(
-                        LocalizationsDelegate, <__TR>[__TR.tDynamic])
-                  ]),
-                  'localizationsDelegates',
-                  true,
-                  false),
-              'onGenerateTitle': __PR(__TR<GenerateAppTitle>(GenerateAppTitle),
-                  'onGenerateTitle', true, false),
-              'restorationScopeId':
-                  __PR(__TR.tString, 'restorationScopeId', true, false),
-              'routeInformationParser': __PR(
-                  __TR<RouteInformationParser<Object>>(
-                      RouteInformationParser, <__TR>[__TR.tObject]),
-                  'routeInformationParser',
-                  true,
-                  false),
-              'routeInformationProvider': __PR(
-                  __TR<RouteInformationProvider>(RouteInformationProvider),
-                  'routeInformationProvider',
-                  true,
-                  false),
-              'routerConfig': __PR(
-                  __TR<RouterConfig<Object>>(
-                      RouterConfig, <__TR>[__TR.tObject]),
-                  'routerConfig',
-                  true,
-                  false),
-              'routerDelegate': __PR(
-                  __TR<RouterDelegate<Object>>(
-                      RouterDelegate, <__TR>[__TR.tObject]),
-                  'routerDelegate',
-                  true,
-                  false),
-              'scaffoldMessengerKey': __PR(
-                  __TR<GlobalKey<ScaffoldMessengerState>>(GlobalKey, <__TR>[
-                    __TR<ScaffoldMessengerState>(ScaffoldMessengerState)
-                  ]),
-                  'scaffoldMessengerKey',
-                  true,
-                  false),
-              'scrollBehavior': __PR(__TR<ScrollBehavior>(ScrollBehavior),
-                  'scrollBehavior', true, false),
+              'supportedLocales': __PR(
+                  __TR<Iterable<Locale>>(
+                      Iterable, <__TR>[__TR<Locale>(Locale)]),
+                  'supportedLocales',
+                  false,
+                  false,
+                  const <Locale>[Locale('en', 'US')]),
+              'debugShowMaterialGrid': __PR(
+                  __TR.tBool, 'debugShowMaterialGrid', false, false, false),
+              'showPerformanceOverlay': __PR(
+                  __TR.tBool, 'showPerformanceOverlay', false, false, false),
+              'checkerboardRasterCacheImages': __PR(__TR.tBool,
+                  'checkerboardRasterCacheImages', false, false, false),
+              'checkerboardOffscreenLayers': __PR(__TR.tBool,
+                  'checkerboardOffscreenLayers', false, false, false),
+              'showSemanticsDebugger': __PR(
+                  __TR.tBool, 'showSemanticsDebugger', false, false, false),
+              'debugShowCheckedModeBanner': __PR(
+                  __TR.tBool, 'debugShowCheckedModeBanner', false, false, true),
               'shortcuts': __PR(
                   __TR<Map<ShortcutActivator, Intent>>(Map, <__TR>[
                     __TR<ShortcutActivator>(ShortcutActivator),
@@ -521,29 +532,18 @@ class MaterialApp$reflection extends ClassReflection<MaterialApp>
                   'shortcuts',
                   true,
                   false),
-              'showPerformanceOverlay': __PR(
-                  __TR.tBool, 'showPerformanceOverlay', false, false, false),
-              'showSemanticsDebugger': __PR(
-                  __TR.tBool, 'showSemanticsDebugger', false, false, false),
-              'supportedLocales': __PR(
-                  __TR<Iterable<Locale>>(
-                      Iterable, <__TR>[__TR<Locale>(Locale)]),
-                  'supportedLocales',
-                  false,
-                  false,
-                  const <Locale>[Locale('en', 'US')]),
-              'theme': __PR(__TR<ThemeData>(ThemeData), 'theme', true, false),
-              'themeAnimationCurve': __PR(__TR<Curve>(Curve),
-                  'themeAnimationCurve', false, false, Curves.linear),
-              'themeAnimationDuration': __PR(
-                  __TR<Duration>(Duration),
-                  'themeAnimationDuration',
-                  false,
-                  false,
-                  kThemeAnimationDuration),
-              'themeMode': __PR(__TR<ThemeMode>(ThemeMode), 'themeMode', true,
-                  false, ThemeMode.system),
-              'title': __PR(__TR.tString, 'title', false, false, ''),
+              'actions': __PR(
+                  __TR<Map<Type, Action<Intent>>>(Map, <__TR>[
+                    __TR<Type>(Type),
+                    __TR<Action<Intent>>(Action, <__TR>[__TR<Intent>(Intent)])
+                  ]),
+                  'actions',
+                  true,
+                  false),
+              'restorationScopeId':
+                  __PR(__TR.tString, 'restorationScopeId', true, false),
+              'scrollBehavior': __PR(__TR<ScrollBehavior>(ScrollBehavior),
+                  'scrollBehavior', true, false),
               'useInheritedMediaQuery': __PR(
                   __TR.tBool, 'useInheritedMediaQuery', false, false, false)
             },

@@ -2497,11 +2497,11 @@ class _Constructor<T> extends _Element {
 
   String get returnTypeAsCode => constructorElement.returnType.asTypeReflectionCode(typeAliasTable);
 
-  List<_Parameter> get normalParameters => constructorElement.type.normalParameters;
+  List<_Parameter> get normalParameters => constructorElement.normalParameters;
 
-  List<_Parameter> get optionalParameters => constructorElement.type.optionalParameters;
+  List<_Parameter> get optionalParameters => constructorElement.optionalParameters;
 
-  Map<String, _Parameter> get namedParameters => constructorElement.type.namedParameters;
+  Map<String, _Parameter> get namedParameters => constructorElement.namedParameters;
 
   String get normalParametersAsCode => _buildParameterReflectionList(typeAliasTable, normalParameters, nullOnEmpty: true, required: true);
 
