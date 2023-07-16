@@ -1477,6 +1477,8 @@ class _ClassTree<T> extends RecursiveElementVisitor<T> {
 
     str.write('class $reflectionClass extends ClassReflection<$className> with ${typeAliasTable.reflectionMixinName} {\n\n');
 
+    str.write("static String packageName = '';\n\n");
+
     if (optimizeReflectionInstances) {
       str.write('  static final Expando<$reflectionClass> _objectReflections = Expando();\n\n');
 
